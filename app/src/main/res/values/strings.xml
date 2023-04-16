@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Food4One</string>
+    <string name="title_activity_main_screen">MainScreen</string>
+
+    <string name="defaultUserName">UserName_Prueba</string>
+
+    <string name="title_coleccion">Coleccion</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_newRecipie">Nueva Receta</string>
+    <string name="nuevaReceta">Upload</string>
+    <string name="title_home">Recetas</string>
+    <string name="title_colecciones">Colecciones</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="title_explore">Explore</string>
+</resources>

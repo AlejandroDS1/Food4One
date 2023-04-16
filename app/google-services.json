@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "468260420108",
+    "project_id": "food4one-225e5",
+    "storage_bucket": "food4one-225e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468260420108:android:40c7dc56370f9df3758c29",
+        "android_client_info": {
+          "package_name": "Food4One.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "468260420108-r175burjuu9c9tk2a25komht6ptlgk72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZtyIvay2LVzH7ItMFpUqMZ084_hGkHJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "468260420108-r175burjuu9c9tk2a25komht6ptlgk72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

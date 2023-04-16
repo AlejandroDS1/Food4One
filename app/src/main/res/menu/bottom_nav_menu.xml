@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_newRecipie"
+        android:icon="@drawable/explorer_food4one_24"
+        android:title="@string/nuevaReceta" />
+
+    <item
+        android:id="@+id/navigation_recipies"
+        android:icon="@drawable/restaurant_menu"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_explore"
+        android:title="@string/title_explore"/>
+    <item
+        android:id="@+id/navigation_coleccion"
+        android:icon="@drawable/bookmark_24"
+        android:title="@string/title_colecciones" />
+    <item
+        android:id="@+id/navigation_perfil"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="@string/title_perfil" />
+
+</menu>

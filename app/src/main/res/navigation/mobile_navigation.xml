@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_explore">
+
+    <fragment
+        android:id="@+id/navigation_newRecipie"
+        android:name="Food4One.app.View.MainScreen.ui.NewRecipie.NewRecipieFragment"
+        android:label="@string/nuevaReceta"
+        tools:layout="@layout/fragment_new_recipie" />
+
+    <fragment
+        android:id="@+id/navigation_recipies"
+        android:name="Food4One.app.View.MainScreen.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_explore"
+        android:name="Food4One.app.View.MainScreen.ui.Explore.ExploreFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_coleccion"
+        android:name="Food4One.app.View.MainScreen.ui.Coleccion.ColeccionFragment"
+        android:label="@string/title_coleccion"
+        tools:layout="@layout/fragment_coleccion" />
+
+    <fragment
+        android:id="@+id/navigation_perfil"
+        android:name="Food4One.app.View.MainScreen.ui.Perfil.Perfil"
+        android:label="@string/title_perfil"
+        tools:layout="@layout/fragment_perfil" />
+</navigation>
