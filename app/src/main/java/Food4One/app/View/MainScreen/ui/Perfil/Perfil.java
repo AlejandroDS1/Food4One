@@ -63,6 +63,7 @@ public class Perfil extends Fragment {
                 //perfilViewModel.editarButton(binding);
                 Toast.makeText(getContext(), "Unimplemented", Toast.LENGTH_SHORT).show();
                 //TODO: Todavia hay que añadir pero es pruebastartActivity(new Intent(getActivity(), EditarPerfilActivity.class));
+
             }
         });
 
