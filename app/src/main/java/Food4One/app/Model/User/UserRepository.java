@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
  */
@@ -145,13 +146,17 @@ public class UserRepository {
      * @param firstName
      */
     public void addUser(
-            String email,
-            String firstName
+            String firstName,
+            String email
     ) {
         // Obtenir informació personal de l'usuari
         Map<String, Object> signedUpUser = new HashMap<>();
+        signedUpUser.put("Alergias", new ArrayList<String>());
         signedUpUser.put("Name", firstName);
         signedUpUser.put("Email", email);
+        signedUpUser.put("Description", " ");
+        signedUpUser.put("idRecetas", new ArrayList<String>());
+        signedUpUser.put("idCollections", new ArrayList<String>());
         signedUpUser.put("PictureUser", null);
 
         // Afegir-la a la base de dades

@@ -1,4 +1,4 @@
-package Food4One.app.ViewModel;
+package Food4One.app.View.MainScreen.ui.Perfil;
 
 import android.app.Application;
 import android.net.Uri;

@@ -1,10 +1,8 @@
-package com.example.apptry.ui.perfil.model;
+package Food4One.app.Model.Recipie.Recipie;
 
 
-import android.app.Dialog;
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -18,15 +16,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import Food4One.app.Model.Recipie.Ingredients.Ingrediente;
+import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
+
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
  */
-public class RecetaUserRepository {
+public class RecipeRepository {
 
     private static final String TAG = "Repository";
 
     /** Autoinstància, pel patró singleton */
-    private static final RecetaUserRepository mInstance = new RecetaUserRepository();
+    private static final RecipeRepository mInstance = new RecipeRepository();
 
     /** Referència a la Base de Dades */
     private FirebaseFirestore mDb;
@@ -36,7 +37,7 @@ public class RecetaUserRepository {
     /** Definició de listener (interficie),
      *  per escoltar quan s'hagin acabat de llegir les recetes de la BBDD */
     public interface OnLoadRecetaListener {
-        void onLoadRecetas(ArrayList<RecetaUser> recetas);
+        void onLoadRecetas(ArrayList<Recipe> recetas);
     }
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
 //-----------------------------------------------------------------------------------------------
@@ -56,7 +57,7 @@ public class RecetaUserRepository {
      * com marca el patró de disseny Singleton class
      */
 
-    private RecetaUserRepository() {
+    private RecipeRepository() {
         mDb = FirebaseFirestore.getInstance();
     }
 
@@ -64,7 +65,7 @@ public class RecetaUserRepository {
      * Retorna aqusta instancia singleton
      * @return
      */
-    public static RecetaUserRepository getInstance() {
+    public static RecipeRepository getInstance() {
         return mInstance;
     }
 
@@ -94,7 +95,7 @@ public class RecetaUserRepository {
      * Mètode que llegeix les recetes. Vindrà cridat des de fora i quan acabi,
      * avisarà sempre als listeners, invocant el seu OnLoadReceta.
      */
-    public void loadRecetasUser(ArrayList<RecetaUser> recetaUsers, ArrayList<String> idRecetasUser) {
+    public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser) {
         recetaUsers.clear();
         //Se cargan todas las recetas de la base de datos...
 
@@ -105,7 +106,9 @@ public class RecetaUserRepository {
             mDb.collection("Recetas").document(idReceta).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    RecetaUser recetaUser = documentSnapshot.toObject(RecetaUser.class);
+                    Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
+                    cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
+                    recetaUser.setNombre(((String) documentSnapshot.getId()).split("@")[0]);
                     recetaUsers.add(recetaUser);
                     /*Cuando se consigan todas las recetas del usuario, se llaman a los listeners
                     para que puedan cargar las recetas al RecycleView*/
@@ -126,7 +129,7 @@ public class RecetaUserRepository {
         }
     }
 
-    public void loadRecetas(ArrayList<RecetaUser> recetaUsers) {
+    public void loadRecetas(ArrayList<Recipe> recetaUsers) {
         recetaUsers.clear();
 
         //Se cargan todas las recetas de la base de datos...
@@ -135,11 +138,15 @@ public class RecetaUserRepository {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot document: queryDocumentSnapshots) {
+                    //Se tiene que cargar el String ID de los ingredientes...
+
 
                     Log.d(TAG, document.getId() + " => " + document.getData());
-                    RecetaUser recetaUser = new RecetaUser(document.getId(),
+                    Recipe recetaUser = new Recipe(document.getId(),
                             document.getString("pictureURL"),
-                            Integer.parseInt(document.getString("Likes"))
+                            Integer.parseInt(document.getString("likes")),
+                            cargarIngredientes((ArrayList<String>) document.get("Ingredientes")),
+                            (ArrayList<String>) document.get("pasos")
                     );
                     recetaUsers.add(recetaUser);
                 }
@@ -148,7 +155,23 @@ public class RecetaUserRepository {
                     l.onLoadRecetas(recetaUsers);
                 }
             }
+
         });
+    }
+
+    /*Se supone que el IdIngredientes jamás será nulo, porque siempre habrá como mínimo un ingrediente
+    * Si aparece un error aquí, es porque no han colocado ningún ingrediente en la base de datos...*/
+    private IngredientesList cargarIngredientes(ArrayList<String> IdIngredientes ) {
+
+        ArrayList<Ingrediente> ingredientesList = new ArrayList<>();
+
+        for(String ingredienteId : IdIngredientes){
+            Ingrediente ingrediente = new Ingrediente(ingredienteId);
+            ingredientesList.add(ingrediente);
+        }
+
+        return new IngredientesList(ingredientesList);
+
     }
 
     public void loadPictureOfReceta(){

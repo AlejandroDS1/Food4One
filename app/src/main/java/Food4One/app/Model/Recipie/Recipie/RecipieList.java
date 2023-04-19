@@ -6,10 +6,10 @@ import java.util.ArrayList;
 public class RecipieList implements Serializable {
 
 
-    private ArrayList<Recipie> recipies;
+    private ArrayList<Recipe> recipies;
 
 
-    public RecipieList(ArrayList<Recipie> recipies) {
+    public RecipieList(ArrayList<Recipe> recipies) {
         this.recipies = recipies;
     }
 
@@ -17,12 +17,12 @@ public class RecipieList implements Serializable {
         this.recipies = new ArrayList<>();
     }
 
-    public void add(Recipie recipie){
-        this.recipies.add(recipie);
+    public void add(Recipe recipe){
+        this.recipies.add(recipe);
     }
 
-    public void remove(Recipie recipie){
-        this.recipies.remove(recipie);
+    public void remove(Recipe recipe){
+        this.recipies.remove(recipe);
     }
 
     public void remove(int pos){

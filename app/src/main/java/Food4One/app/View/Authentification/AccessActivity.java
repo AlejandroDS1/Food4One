@@ -1,13 +1,19 @@
-package com.example.apptry;
-
-import androidx.appcompat.app.AppCompatActivity;
+package Food4One.app.View.Authentification;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+
+import Food4One.app.R;
+import Food4One.app.View.MainScreen.MainScreen;
 
 public class AccessActivity extends AppCompatActivity {
 
@@ -16,16 +22,38 @@ public class AccessActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_access);
 
-        //Si el usuario ya se registró en la App y ya hizo un login anteriormente, ya puede acceder
-        //directamente al navegador Home...
+        getSupportActionBar().hide();
 
+
+        //Animación entrada de App (Splash)----------------------------------------------------------
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.desplazar_abajo);
+        CardView logoApp = findViewById(R.id.logoSplashView);
+        logoApp.setAnimation(animation);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Si el usuario ya se registró en la App y ya hizo un login anteriormente, ya puede acceder
+                //directamente al navegador Home...
+                activityCorrespondent();
+                finish();
+            }
+        }, 2500);
+    }
+
+    public void activityCorrespondent() {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(user == null) //Si el Usuario no existe, creamos la ventana LOGIN.
+        if (user == null) //Si el Usuario no existe, creamos la ventana LOGIN.
             startActivity(new Intent(AccessActivity.this, LoginActivity.class));
         //Sino, nos dirigimos al Navegador con el Usuario Logeado.
-        startActivity(new Intent(AccessActivity.this, NavMainActivity.class));
+        else startActivity(new Intent(AccessActivity.this, MainScreen.class));
     }
+
+
+
+
 }

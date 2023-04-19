@@ -1,4 +1,4 @@
-package Food4One.app;
+package Food4One.app.View.MainScreen.ui.Perfil;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import Food4One.app.R;
 
 /**
  * A simple {@link Fragment} subclass.

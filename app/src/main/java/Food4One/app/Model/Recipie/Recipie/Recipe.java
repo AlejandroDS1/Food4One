@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import Food4One.app.Model.Alergias;
 import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
 
-public class Recipie {
+public class Recipe {
     private String nombre;
     private ArrayList<String> pasos;
     private IngredientesList ingredientes;
@@ -17,8 +17,9 @@ public class Recipie {
     // ATRIBUTOS OPCIONALES E IDEAS A IMPLEMETNTAR
     // Nivel
 
+    public Recipe(){} //Para la base de Datos se necesita un constructor sin argumentos...
     //Constructor
-    public Recipie(
+    public Recipe(
             final String nombre,
             final String pictureURL,
             int likes,
