@@ -65,6 +65,8 @@ public class MainScreen extends AppCompatActivity {
                 R.id.navigation_newRecipie, R.id.navigation_recipies, R.id.navigation_explore, R.id.navigation_coleccion, R.id.navigation_perfil)
                 .build();
 
+        getSupportActionBar().hide();
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_screen);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Food4One"
         tools:targetApi="31">
+
         <activity
             android:name=".View.MainScreen.MainScreen"
             android:exported="false"

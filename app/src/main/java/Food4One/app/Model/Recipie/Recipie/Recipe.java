@@ -12,6 +12,9 @@ public class Recipe {
     private IngredientesList ingredientes;
     private ArrayList<Alergias> alergias; // TODO: HASMAP CON NOMBRES -> POSIBLE OPTIMIZACION EN UN FUTURO.
     private String imagen; //MAYBE UN ARRAY PORQUE HAY VARIAS IMAGENES
+    private String descripcio;
+    private int likes;
+    private ArrayList<String> steps;
 
     // TODO: COMO IMPLEMENTAR LOS PASOS. NOTES
     // ATRIBUTOS OPCIONALES E IDEAS A IMPLEMETNTAR
@@ -25,15 +28,21 @@ public class Recipe {
         this.imagen = imagen;
     }
 
+
     /**
      * Constructor Dummy
      */
-    public Recipe(String nombre, final String imagen) {
+
+    public Recipe(String nombre, IngredientesList ingredientes, String imagen, String descripcio, int likes, ArrayList<String> steps) {
         this.nombre = nombre;
+        this.ingredientes = ingredientes;
         this.imagen = imagen;
+        this.descripcio = descripcio;
+        this.likes = likes;
+        this.steps = steps;
     }
 
-       //Getters
+    //Getters
 
     public String getNombre() {
         return nombre;

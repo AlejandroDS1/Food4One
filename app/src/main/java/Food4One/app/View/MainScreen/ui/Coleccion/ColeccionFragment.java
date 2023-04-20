@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,12 +26,15 @@ public class ColeccionFragment extends Fragment {
     private FragmentColeccionBinding binding;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private RecyclerViewAdapter mRecipeCardAdapter;
+
+    private ShoppingListFragment shoppingListFragment;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ColeccionViewModel coleccionViewModel =
                 new ViewModelProvider(this).get(ColeccionViewModel.class);
 
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
+
         View root = binding.getRoot();
 
         binding.recipeRV.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
@@ -52,6 +57,17 @@ public class ColeccionFragment extends Fragment {
 
         // A partir d'aquí, en cas que es faci cap canvi a la llista d'usuaris, ColeccionFragment ho sabrá
         coleccionViewModel.loadRecipesFromRepository();  // Internament pobla les receptes de la BBDD
+        binding.BtnList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Nova instància del fragment a iniciar
+                shoppingListFragment = new ShoppingListFragment();
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.replace(binding.childFragmentContainer.getId(), shoppingListFragment);
+                transaction.addToBackStack(null); //Permet tirar enrere
+                transaction.commit();
+            }
+        });
 
 
         return root;
