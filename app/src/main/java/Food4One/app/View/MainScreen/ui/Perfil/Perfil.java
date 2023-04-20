@@ -2,7 +2,7 @@ package Food4One.app.View.MainScreen.ui.Perfil;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -32,9 +32,8 @@ public class Perfil extends Fragment {
     private FragmentPerfilBinding binding;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    private DocumentReference userInformation = FirebaseFirestore.getInstance()
-            .document("Users/"+auth.getCurrentUser().getEmail());
-
+    //private DocumentReference userInformation = FirebaseFirestore.getInstance()
+            //.document("Users/"+auth.getCurrentUser().getEmail());
 
     //Para guardar la información del Usuario en el perfil
 
@@ -60,13 +59,11 @@ public class Perfil extends Fragment {
         binding.editarPerfilBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //perfilViewModel.editarButton(binding);
-                Toast.makeText(getContext(), "Unimplemented", Toast.LENGTH_SHORT).show();
-                //TODO: Todavia hay que añadir pero es pruebastartActivity(new Intent(getActivity(), EditarPerfilActivity.class));
-
+                perfilViewModel.editarButton(binding);
+                //Toast.makeText(getContext(), "Unimplemented", Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(getActivity(), EditarPerfilActivity.class));
             }
         });
-
 
         final Observer<String> observerPerfil = new Observer<String>() {
             @Override
@@ -85,10 +82,10 @@ public class Perfil extends Fragment {
                 .setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.SRC_IN);
 
         //Debo obtener la información del usuario del Cloud FireBase...
+
         userInformation.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            /*Como parámetro recibe el Documento donde debería estar la información del usuario,
-            si es que existe*/
+            //Como parámetro recibe el Documento donde debería estar la información del usuario, si es que existe
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
                     binding.nomusuari.setText(documentSnapshot.getString("Name"));
@@ -100,7 +97,9 @@ public class Perfil extends Fragment {
                 Log.w(TAG, "Error adding Document", e);
             }
         });
+
     }
+
 
     @Override
     public void onStart() {

@@ -9,7 +9,7 @@ public enum Alergias {
     TRIGO,
     MAIZ,
     PESCADO,
-    FRUTOS_SECOS,
+    FRUTOS_SECOS
 
     // TODO: Constructor con Strings ¿¿?¿?¿?  PARA HASMAP PUEDE SER IMPLEMENTACION
 }

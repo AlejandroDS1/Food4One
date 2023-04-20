@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,7 +20,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import Food4One.app.MainActivity;
 import Food4One.app.Model.User.User;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreen;
@@ -62,14 +60,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches())
                     if(!password.isEmpty()) {
                         auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 if (authResult.getUser().isEmailVerified()) {
                                     //FIREBASE______INFORMATION_______________________________________________
                                     Toast.makeText(getApplicationContext(), "LoginSuccess", Toast.LENGTH_SHORT).show();
                                     //Cuando vaya bien empezará la ventana Main
-
 
                                     //todo: Creamos un único usuario para el dominio del programa
                                     DocumentReference dmReference = FirebaseFirestore.getInstance().document("Users/" + email);

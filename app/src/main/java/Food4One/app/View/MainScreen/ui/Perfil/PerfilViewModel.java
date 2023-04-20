@@ -42,10 +42,10 @@ public class PerfilViewModel extends ViewModel {
         auth.signOut();
         binding.getRoot().getContext().startActivity(new Intent(binding.getRoot().getContext(), LoginActivity.class));
     }
-/*
+
     public void editarButton(FragmentPerfilBinding binding){
-        Intent editarperfil = new Intent(binding.getRoot().getContext(), EditarPerfilFragment.class);
+        Intent editarperfil = new Intent(binding.getRoot().getContext(), UserSettingsActivity.class);
         binding.getRoot().getContext().startActivity(editarperfil);
-    }*/
+    }
 
 }
