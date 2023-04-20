@@ -46,14 +46,14 @@ public class MainScreen extends AppCompatActivity {
         //mainScreenViewModel = new ViewModelProvider(this).get(MainScreenViewModel.class);
         //mainScreenViewModel.setUser(user);
 
-        TextView t = findViewById(R.id.DebugText);
+        /*TextView t = findViewById(R.id.DebugText);
 
         if (user == null){
             t.setText("User is null");
             return;
         }
 
-        t.setText("El user name es: " + user.getUserName() + "\nDebugText");
+        t.setText("El user name es: " + user.getUserName() + "\nDebugText");*/
 
     }
     private void init(){
