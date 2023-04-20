@@ -7,6 +7,7 @@ import Food4One.app.Model.Alergias;
 import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
 
 public class Recipe {
+    private String idUser;
     private String nombre;
     private ArrayList<String> pasos;
     private IngredientesList ingredientes;
@@ -40,6 +41,7 @@ public class Recipe {
     public IngredientesList getIngredientes() { return ingredientes; }
     public String getPictureURL() {  return pictureURL; }
     public int getLikes() { return likes; }
+    public String getIdUser(){return idUser;}
 
     //---------------SETTERS----------------------------------------
     public void setNombre(String nombre) { this.nombre = nombre;  }
