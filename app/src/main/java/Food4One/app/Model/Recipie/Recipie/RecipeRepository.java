@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -100,16 +102,23 @@ public class RecipeRepository {
         //Se cargan todas las recetas de la base de datos...
 
         Iterator iterator = idRecetasUser.iterator();
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         while(iterator.hasNext()) {
 
             String idReceta = (String) iterator.next();
             mDb.collection("Recetas").document(idReceta).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
                     cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
                     recetaUser.setNombre(((String) documentSnapshot.getId()).split("@")[0]);
+                    recetaUser.setNombre(userID);
+                    //---------------------------------------------------------------------------
+
+                    //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
+
                     /*Cuando se consigan todas las recetas del usuario, se llaman a los listeners
                     para que puedan cargar las recetas al RecycleView*/
                     if(recetaUsers.size() == idRecetasUser.size()) onLoadRecetasListenerMethod();
