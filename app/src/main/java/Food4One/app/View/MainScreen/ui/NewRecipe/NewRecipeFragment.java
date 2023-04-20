@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.NewRecipie;
+package Food4One.app.View.MainScreen.ui.NewRecipe;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import Food4One.app.databinding.FragmentNewRecipieBinding;
 
-public class NewRecipieFragment extends Fragment {
+public class NewRecipeFragment extends Fragment {
 
     private FragmentNewRecipieBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NewRecipieViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NewRecipieViewModel.class);
+        NewRecipeViewModel notificationsViewModel =
+                new ViewModelProvider(this).get(NewRecipeViewModel.class);
 
         binding = FragmentNewRecipieBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

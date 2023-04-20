@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_newRecipie"
-        android:name="Food4One.app.View.MainScreen.ui.NewRecipie.NewRecipieFragment"
+        android:name="Food4One.app.View.MainScreen.ui.NewRecipe.NewRecipeFragment"
         android:label="@string/nuevaReceta"
-        tools:layout="@layout/fragment_new_recipie" />
+        tools:layout="@layout/fragment_new_recipe" />
 
     <fragment
         android:id="@+id/navigation_recipies"
