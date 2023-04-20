@@ -32,5 +32,5 @@
         android:id="@+id/navigation_perfil"
         android:name="Food4One.app.View.MainScreen.ui.Perfil.Perfil"
         android:label="@string/title_perfil"
-        tools:layout="@layout/fragment_perfil" />
+        tools:layout="@layout/fragment_perfil_1" />
 </navigation>

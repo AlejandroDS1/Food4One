@@ -4,12 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -22,6 +16,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,12 +42,16 @@ import java.util.Date;
 import Food4One.app.Model.Recipie.Recipie.Recipe;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
-import Food4One.app.databinding.FragmentPerfilBinding;
+import Food4One.app.databinding.FragmentPerfil1Binding;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * create an instance of this fragment.
+ */
 public class Perfil extends Fragment {
 
-    private final String TAG = "PerfilFragment";
-    private FragmentPerfilBinding binding;
+    private final String TAG = "Perfil_Fragment";
+    private FragmentPerfil1Binding binding;
     private ImageView mTakePictureButton;//Editar la foto del Perfil
     private ImageView mLoggedPictureUser;//Foto del Usuario
     private Uri mPhotoUri;
@@ -58,12 +63,11 @@ public class Perfil extends Fragment {
     private FirebaseUser userFirebase;
     private ImageView choose;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         userFirebase= mAuth.getCurrentUser();
-        binding = FragmentPerfilBinding.inflate(inflater, container, false);
+        binding = FragmentPerfil1Binding.inflate(inflater, container, false);
         View root = binding.getRoot();
         perfilViewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
 
@@ -111,9 +115,7 @@ public class Perfil extends Fragment {
             @Override
             public void OnClickDetail(int position) {
                 //Al clicar se abrirá un nuevo Fragment
-                Intent intent =new Intent(binding.getRoot().getContext(), ScrollPerfilFragment.class);
-                intent.putExtra("Position", position); //El extra es un valor adicional
-                startActivity(intent);
+                //initScrollViewRecipes(position);
 
             }
         });
@@ -150,6 +152,10 @@ public class Perfil extends Fragment {
  -------});--------------------------------------------------------------------------------------------------*/
 
         return root;
+    }
+
+    private void initScrollViewRecipes(int position) {
+
     }
 
     /**
@@ -274,5 +280,4 @@ public class Perfil extends Fragment {
         try { Thread.sleep(700); } catch (InterruptedException e) { throw new RuntimeException(e);}
         binding.progressBarPerfil.setVisibility(View.GONE);
     }
-
 }

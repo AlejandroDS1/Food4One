@@ -32,7 +32,8 @@ public class AccessActivity extends AppCompatActivity {
         CardView logoApp = findViewById(R.id.logoSplashView);
         logoApp.setAnimation(animation);
 
-
+        activityCorrespondent();
+        /*
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -41,7 +42,7 @@ public class AccessActivity extends AppCompatActivity {
                 activityCorrespondent();
                 finish();
             }
-        }, 2500);
+        }, 500);*/
     }
 
     public void activityCorrespondent() {

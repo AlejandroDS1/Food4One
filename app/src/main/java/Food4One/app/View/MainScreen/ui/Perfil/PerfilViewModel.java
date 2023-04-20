@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,7 +48,7 @@ public class PerfilViewModel extends AndroidViewModel {
     private ProgressBar progressBar;
 
     public PerfilViewModel(Application application) {
-       super(application);
+        super(application);
 
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fra1gment");
@@ -124,11 +125,11 @@ public class PerfilViewModel extends AndroidViewModel {
         firestore.collection("Users").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    DocumentSnapshot document = task.getResult();
-                    ArrayList<String> recetasID = new ArrayList<>((ArrayList<String>) document.get("idRecetasUser"));
-                    for (String id : recetasID)
-                        user.addIdReceta(id);
-                }
+                DocumentSnapshot document = task.getResult();
+                ArrayList<String> recetasID = new ArrayList<>((ArrayList<String>) document.get("idRecetasUser"));
+                for (String id : recetasID)
+                    user.addIdReceta(id);
+            }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

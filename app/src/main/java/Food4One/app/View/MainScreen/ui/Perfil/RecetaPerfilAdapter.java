@@ -117,7 +117,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 this.mCardRecetaPictureUrl = itemView.findViewById(R.id.picturerecetaPerfil);
                 this.mCardNumberLikes = itemView.findViewById(R.id.likesPicture);
                 this.mCorazon = itemView.findViewById(R.id.corazonCard);
-
                 this.recipeCard  = itemView.findViewById(R.id.recipephotoProfile);
 
             }
