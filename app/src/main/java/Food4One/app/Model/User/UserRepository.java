@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Food4One.app.Model.Alergias;
 
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -196,11 +195,39 @@ public class UserRepository {
                 });
     }
 
+    public void setUserNameDDB(String email, String userName){
 
-    public void setAlegia(String userId, ArrayList<String> alergias){
-        /*mDb.collection("Users")
-                .document(userId).*/
+        HashMap<String, String> store = new HashMap<>();
+        store.put("Name", userName);
 
+        mDb.collection("Users").document(email).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "User Name updated to " + userName);
+                })
+                .addOnFailureListener(exception -> {
+                    Log.d(TAG, "User Name update failed: " + userName);
+                });
+    }
 
+    public void loadUserFromDDB(String email){
+        mDb.collection("Users").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+
+                    User user = User.getInstance(document.getString(User.NAME_TAG), email);
+
+                    user.setAlergias((ArrayList<String>) document.get(User.ALERGIAS_TAG));
+
+                    user.setDescripcion(document.getString(User.DESCRIPCION_TAG));
+
+                    user.setProfilePictureURL(document.getString(User.PICTUREURL_TAG));
+
+                    user.setIdCollections((ArrayList<String>) document.get(User.IDCOLLECTIONS_TAG));
+
+                    user.setIdRecetas((ArrayList<String>) document.get(User.IDRECETAS_TAG));
+                }
+            }
+        });
     }
 }

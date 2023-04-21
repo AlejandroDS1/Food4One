@@ -1,10 +1,14 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
 
+
+import android.content.Intent;
+
 import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -32,7 +36,6 @@ import Food4One.app.Model.User.UserRepository;
 public class PerfilViewModel extends AndroidViewModel {
 
     private final String TAG = "FotosmeActivityViewModel";
-
     private FirebaseStorage mStorage;
 
     /* Elements observables del ViewModel */
@@ -40,6 +43,7 @@ public class PerfilViewModel extends AndroidViewModel {
 
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
+
     private final MutableLiveData<String> mText;
 
     /*Repositori (base de dades) de les recetes-Details*/
@@ -119,6 +123,7 @@ public class PerfilViewModel extends AndroidViewModel {
     public LiveData<String> getPictureProfileUrl() {
         return mPictureUrl;
     }
+
 
     public void loadIDRecetasUser(String email, User user){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();

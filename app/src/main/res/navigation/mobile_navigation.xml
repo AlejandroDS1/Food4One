@@ -33,6 +33,9 @@
         android:name="Food4One.app.View.MainScreen.ui.Perfil.Perfil"
         android:label="@string/title_perfil"
         tools:layout="@layout/fragment_perfil" />
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> main
 </navigation>

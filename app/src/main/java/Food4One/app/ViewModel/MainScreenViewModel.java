@@ -1,12 +1,9 @@
 package Food4One.app.ViewModel;
 
-import android.os.Parcelable;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import Food4One.app.Model.User.User;

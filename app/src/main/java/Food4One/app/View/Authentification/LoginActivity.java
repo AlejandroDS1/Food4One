@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,7 +21,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import Food4One.app.MainActivity;
+import java.util.ArrayList;
+
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
@@ -76,16 +76,20 @@ public class LoginActivity extends AppCompatActivity {
                                     if (authResult.getUser().isEmailVerified()) {
                                         Toast.makeText(getApplicationContext(), "LoginSuccess", Toast.LENGTH_SHORT).show();
 
-                                        /*Ahora que es seguro que el usuario existirá en la App,
-                                         *lo añadimos a los demás usuarios guardados en el Respository de la App*/
-                                        if(FirebaseFirestore.getInstance().collection(email).get() == null)
-                                            afegirPerfilCuenta(getIntent().getStringExtra("nameUser"), auth.getCurrentUser().getEmail());
+                                        //Ahora que es seguro que el usuario existirá en la App,
+                                         //lo añadimos a los demás usuarios guardados en el Respository de la App
+                                        if(FirebaseFirestore.getInstance().collection(email).get() == null){
+                                            afegirPerfilCuenta(getIntent().getStringExtra("nameUser"), email);
+                                            User.getInstance(getIntent().getStringExtra("nameUser"), email);
+
+                                        }else
+                                            mUserRespository.loadUserFromDDB(email);
+
                                         //Cuando vaya bien empezará la ventana Main
                                         startActivity(new Intent(LoginActivity.this, MainScreen.class));
                                         finish();
                                     } else
                                         Toast.makeText(getApplicationContext(), "No se ha verificado el correo", Toast.LENGTH_SHORT).show();
-
                                 }
                                 //EN el caso de que no se pueda hacer el Login se muestra por pantalla el fallo--------------------------
                             }).addOnFailureListener(new OnFailureListener() {

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
+import Food4One.app.Model.User.User;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
 import Food4One.app.databinding.FragmentPerfilBinding;
@@ -118,7 +119,6 @@ public class Perfil extends Fragment {
             public void OnClickDetail(int position) {
                 //Al clicar se abrirá un nuevo Fragment
                 initScrollViewRecipes(position);
-
             }
         });
 
@@ -149,10 +149,11 @@ public class Perfil extends Fragment {
                     new Intent(binding.getRoot().getContext(), LoginActivity.class));
         });
 
-//-------------------BOTON PARA EDITAR EL PERFIL___ AUN NO ESTÁ IMPLEMENTADO___ALEJANDRO____--------------------------
-        /*binding.editarPerfilBtn.setOnClickListener(view -> {
-            startActivity(new Intent(getActivity(), EditarPerfilActivity.class));
- -------});--------------------------------------------------------------------------------------------------*/
+
+        binding.editarPerfilBtn.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity().getApplicationContext(), UserSettingsActivity.class));
+        });
+
         return root;
     }
 
@@ -172,34 +173,13 @@ public class Perfil extends Fragment {
         transaction.commit();
 
     }
-
     /**
      * Por ahora este método sólo carga el nombre, email y la descripción del Usuario, si queremos
      * guardar más datos del usuario, ya sea su edad, hobbies, o gustos culinarios, lo guardaríamos
      * en la base de datos y lo cargaríamos con este método...
      */
     private void cargarUsuarioDeBaseDatos() {
-        DocumentReference userInformation = FirebaseFirestore.getInstance()
-                .document("Users/"+mAuth.getCurrentUser().getEmail());
-        userInformation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot document = task.getResult();
-                    if(document.exists()){
-                        // Array con todas las recetas del usuario
-                        ArrayList<String> recetaUsers = (ArrayList<String>) document.get("idRecetas");
-                        String email = userFirebase.getEmail();
-                        binding.nomusuari.setText(document.getString("Name"));
-                        binding.emailPerfil.setText(email);
-                        binding.decripcionPerfil.setText(document.getString("Description"));
-                        perfilViewModel.loadPictureOfUser(email);
-
-                        perfilViewModel.loadRecetasOfUserFromRepository(recetaUsers);
-                    }
-                }
-            }
-        });
+        perfilViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas());
     }
 
 

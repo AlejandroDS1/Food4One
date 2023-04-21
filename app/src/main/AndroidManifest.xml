@@ -15,22 +15,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Food4One"
         tools:targetApi="31" >
+<<<<<<< HEAD
+=======
+        <activity
+            android:name=".View.MainScreen.ui.Perfil.UserSettingsActivity"
+            android:exported="false"
+            android:label="UserSettingsActivity"
+            android:screenOrientation="portrait"/>
+>>>>>>> main
         <activity
             android:name=".View.MainScreen.MainScreen"
             android:exported="false"
-            android:label="@string/title_activity_main_screen" />
+            android:label="@string/title_activity_main_screen"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".View.Authentification.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".View.Authentification.LoginActivity"
+<<<<<<< HEAD
             android:exported="false" />
         <activity
             android:name=".View.Authentification.AccessActivity"
             android:exported="true" >
+=======
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".View.Authentification.AccessActivity"
+            android:exported="true">
+>>>>>>> main
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

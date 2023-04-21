@@ -12,6 +12,8 @@ import androidx.cardview.widget.CardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreen;
 
@@ -51,7 +53,10 @@ public class AccessActivity extends AppCompatActivity {
         if (user == null) //Si el Usuario no existe, creamos la ventana LOGIN.
             startActivity(new Intent(AccessActivity.this, LoginActivity.class));
         //Sino, nos dirigimos al Navegador con el Usuario Logeado.
-        else startActivity(new Intent(AccessActivity.this, MainScreen.class));
+        else {
+            UserRepository.getInstance().loadUserFromDDB(user.getEmail());
+            startActivity(new Intent(AccessActivity.this, MainScreen.class));
+        }
     }
 
 
