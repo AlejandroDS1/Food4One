@@ -130,7 +130,7 @@ public class Perfil extends Fragment {
             @Override
             public void onChanged(ArrayList<Recipe> recetas) {
                 mCardRecetaRVAdapter.notifyDataSetChanged();
-                perfilViewModel.setRecetes(recetasTotales);
+               // perfilViewModel.setRecetes();
             }
         };
 
