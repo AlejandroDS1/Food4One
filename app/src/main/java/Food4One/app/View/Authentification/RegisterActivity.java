@@ -1,47 +1,38 @@
 package Food4One.app.View.Authentification;
 
-import static android.content.ContentValues.TAG;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import Food4One.app.R;
-
 public class RegisterActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth; // Para autentificar al usuario con Firebase
+    private FirebaseAuth auth;
 
-    private FirebaseFirestore fibase = FirebaseFirestore.getInstance(); // Firestiore BDD
+    //GUARDAR TODA LA INFORMACIÓN DEL USUARIO
+    private FirebaseFirestore fibase = FirebaseFirestore.getInstance();
     private Button regisBtn;
     private EditText userName, emailUser, passwordUser, passUConfirm;
     private TextView tornaLogin;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        getSupportActionBar().hide();
 
         // FirebaeAuth object to Sig/Log in.
         auth = FirebaseAuth.getInstance();
@@ -49,81 +40,52 @@ public class RegisterActivity extends AppCompatActivity {
         // Init objetos view xml.
         initLayout();
 
-        tornaLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-            }
+        tornaLogin.setOnClickListener(view-> {
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         });
 
+        regisBtn.setOnClickListener(view-> {
 
-        regisBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (userName.length() == 0 || passwordUser.length() == 0|| emailUser.length()==0 )
+                //Mensaje que muestra en pantalla que el Registro ha resultado en un fracaso.
+                Toast.makeText(getApplicationContext(), "Rellena todos los espacios para iniciar", Toast.LENGTH_SHORT).show();
 
-                if (userName.length() == 0 || passwordUser.length() == 0|| emailUser.length()==0 )
-                    //Mensaje que muestra en pantalla que el Registro ha resultado en un fracaso.
-                    Toast.makeText(getApplicationContext(), "Rellena todos los espacios para iniciar", Toast.LENGTH_SHORT).show();
+            else if (! passwordUser.getText().toString().equals(passUConfirm.getText().toString())) {
+                //Si no se ha confirmado correctamente la contraseña se muestra un mensaje avisando al usuario
+                Toast.makeText(getApplicationContext(), "Error al confirmar la contraseña", Toast.LENGTH_SHORT).show();
 
-                else if (! passwordUser.getText().toString().equals(passUConfirm.getText().toString())) {
-                    //Si no se ha confirmado correctamente la contraseña se muestra un mensaje avisando al usuario
-                    Toast.makeText(getApplicationContext(), "Error al confirmar la contraseña", Toast.LENGTH_SHORT).show();
-
-                }else{
-                    String nameUser = userName.getText().toString();
-                    String email = emailUser.getText().toString();
-                    String pass = passwordUser.getText().toString();
-                    //FIREBASE______INFORMATION_______________________________________________
-                    auth.createUserWithEmailAndPassword(email, pass)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            }else{
+                String nameUser = userName.getText().toString();
+                String email = emailUser.getText().toString();
+                String pass = passwordUser.getText().toString();
+                //FIREBASE______INFORMATION_______________________________________________
+                auth.createUserWithEmailAndPassword(email, passwordUser.getText().toString())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     //COMPROBAR SU CORREO ELECTRONICO
-                                    FirebaseUser user = auth.getCurrentUser();
-                                    user.sendEmailVerification();
+                                    auth.getCurrentUser().sendEmailVerification();
                                     //-------------------------------------------------------
-                                    Toast.makeText(getApplicationContext(), "Se ha enviado un correo de Verificación", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Se ha enviado un correo de Verificación",Toast.LENGTH_SHORT).show();
 
-                                    //Toca crear la información del Usuario.
-                                    afegirPerfilCuenta(nameUser, email);
+                                    /*Teniendo la supuesta cuenta del usuario creada, habrá que esperar
+                                     * a que confirme su correo. Por lo tanto, aún no lo añadiremos a
+                                     * la base de datos, sino que almacenaremos el nombre del usuario
+                                     * en cuestión en el Intento, y se lo pasamos así al LOGIN*/
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    intent.putExtra("nameUser", nameUser);
+                                    startActivity(intent);    //Vamos al LOGIN a verificar al usuario.
 
-                                    //Cuando vaya bien empezará la ventana Main
-                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "SignUp Failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Asegúrate de no tener espacios en el Gmail", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-                }
-
             }
         });
-
-    };
-
-    private void afegirPerfilCuenta(String nameUser, String email) {
-        Map<String, Object> perfil = new HashMap<>();
-        perfil.put("Email", email);
-        perfil.put("Name", nameUser);
-
-        Context context = this.getApplicationContext();
-
-        DocumentReference userInformation = fibase.document("Users/"+perfil.get("Email"));
-        userInformation.set(perfil).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-
-                Log.d(TAG, "Document added! ");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding Document", e);
-            }
-        });
-
     }
+
 
     private void initLayout(){
         tornaLogin = findViewById(R.id.backLogin);
@@ -133,4 +95,5 @@ public class RegisterActivity extends AppCompatActivity {
         passUConfirm = findViewById(R.id.editTextConfitmPassword);
         regisBtn = findViewById(R.id.registrarseBtn);
     }
+
 }

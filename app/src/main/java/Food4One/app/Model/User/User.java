@@ -17,6 +17,8 @@ public class User implements Serializable {
     private ArrayList<String> idRecetas;
     private ArrayList<String> alergias;
 
+    private ArrayList<String> idCollections;
+
     // ATRIBUTOS OPCIONALES *******
     // PREMIUM BOOLEAN IDEA PARA EL FINAL
     // LISTAS (compra)
@@ -25,13 +27,16 @@ public class User implements Serializable {
     public User(String userName, String email) {
         this.userName = userName;
         this.email = email;
-        this.alergias = null; // Dejamos alegias a null
+        this.alergias = new ArrayList<>(); // Dejamos alegias a null
+        this.idCollections = new ArrayList<>();
     }
 
     public User(String userName, String email, ArrayList<String> idRecetas) {
         this.userName = userName;
         this.email = email;
         this.idRecetas = idRecetas;
+        this.alergias = new ArrayList<>(); // Dejamos alegias a null
+        this.idCollections = new ArrayList<>();
     }
 
 
@@ -106,8 +111,18 @@ public class User implements Serializable {
         return arrayBool;
     }
 
+    //Getter
+    public ArrayList<String> getIdCollections() {
+        return idCollections;
+    }
+
     public String getDescripcion() {
         return descripcion;
+    }
+
+    // Setter
+    public void setIdCollections(ArrayList<String> idCollections) {
+        this.idCollections = idCollections;
     }
 
     public void setDescripcion(String descripcion) {

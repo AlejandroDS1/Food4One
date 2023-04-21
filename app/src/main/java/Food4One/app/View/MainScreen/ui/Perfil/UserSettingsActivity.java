@@ -24,6 +24,8 @@ public class UserSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUserSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().hide();
+
 
         // Conseguimos el objeto viewmodel para relizar operaciones
         userSettingsViewModel = new ViewModelProvider(this).get(UserSettingsViewModel.class);
@@ -32,8 +34,6 @@ public class UserSettingsActivity extends AppCompatActivity {
 
         initLayout();
         configAlergias();
-
-
     }
 
     private void setObservers(){

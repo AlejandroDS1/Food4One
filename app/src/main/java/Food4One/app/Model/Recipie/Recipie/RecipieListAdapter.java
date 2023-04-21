@@ -8,14 +8,14 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipieListAdapter extends ArrayAdapter<Recipie> {
+public class RecipieListAdapter extends ArrayAdapter<Recipe> {
 
-    private ArrayList<Recipie> recipies;
+    private ArrayList<Recipe> recipies;
     private Context contexto;
 
-    public RecipieListAdapter(@NonNull Context context, int resource, @NonNull List<Recipie> objects) {
+    public RecipieListAdapter(@NonNull Context context, int resource, @NonNull List<Recipe> objects) {
         super(context, resource, objects);
-        recipies = (ArrayList<Recipie>) objects;
+        recipies = (ArrayList<Recipe>) objects;
         contexto = context;
     }
 }

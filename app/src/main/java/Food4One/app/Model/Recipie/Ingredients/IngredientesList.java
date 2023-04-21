@@ -9,7 +9,7 @@ public class IngredientesList implements Serializable {
     private ArrayList<Ingrediente> ingredientes;
 
     public IngredientesList(final ArrayList<Ingrediente> ingredientes) {
-        this.ingredientes = new ArrayList<>(ingredientes);
+        this.ingredientes = ingredientes;
     }
 
     public IngredientesList(final ArrayList<Ingrediente> ingredientes, final String id){
