@@ -74,14 +74,14 @@
                 android:id="@+id/userName_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alejandro"
+                android:text="Your User Name"
                 android:textColor="@color/Gris"
                 android:textSize="14dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layoutemail_settings"
+            android:id="@+id/layoutDescripcion_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -92,17 +92,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
-                android:text="@string/Email"
+                android:text="@string/Descripcion"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
 
+
             <TextView
-                android:id="@+id/email_settings"
-                android:layout_width="wrap_content"
+                android:id="@+id/descripcion_settings"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Not_set"
+                android:layout_marginEnd="50dp"
+                android:text="Your Description"
                 android:textColor="@color/Gris"
                 android:textSize="14dp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -143,12 +146,13 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/arr_usrAlergias_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
+                android:layout_marginTop="10dp"
                 android:text="None"
                 android:textColor="@color/Gris"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

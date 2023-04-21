@@ -33,7 +33,7 @@ public class MainScreen extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         init();
-        prueba();
+        //prueba();
     }
 
     private void prueba(){

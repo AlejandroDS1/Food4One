@@ -20,6 +20,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 import Food4One.app.Model.User.User;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreen;
@@ -78,14 +80,11 @@ public class LoginActivity extends AppCompatActivity {
                                             // Ahora el user esta guardado en el mainScreenViewModel por lo que deberia de guardarse
                                             //mainScreenViewModel.setUser(new User(documentSnapshot.getString("Name"), email));
 
-                                            User user = new User(documentSnapshot.getString("Name"), email);
 
-                                            Intent intent = new Intent(LoginActivity.this, MainScreen.class);
+                                            // Guardamos el usuario de manera global.
+                                            User.getInstance(documentSnapshot.getString("Name"), email);
 
-                                            intent.putExtra("User", user);
-
-                                            startActivity(intent);
-                                            //startActivity(new Intent(LoginActivity.this, MainScreen.class));
+                                            startActivity(new Intent(LoginActivity.this, MainScreen.class));
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -135,12 +134,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Guardamos un usuario prueba en mainScreenVM
-                User user = new User("UserName_Prueba", "UserPrueba@gmail.com");
+                User.getInstance("UserName_Prueba", "UserPrueba@gmail.com");
+
+                ArrayList<String> alergias = new ArrayList<>();
+
+                alergias.add("Frutos Secos");
+                alergias.add("Pescado");                alergias.add("Huevo");
+
+
+                User.getInstance().setAlergias(alergias);
 
                 Toast.makeText(getApplicationContext(), "Sesion como Invitado", Toast.LENGTH_SHORT).show();
 
                 // Pasamos el usuario con un intent a la nueva Activity
-                startActivity(new Intent(LoginActivity.this, MainScreen.class).putExtra(User.TAG, user));
+                startActivity(new Intent(LoginActivity.this, MainScreen.class));
             }
         });
 

@@ -1,12 +1,4 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
-/*
-import androidx.lifecycle.ViewModel;
-
-public class PerfilViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
-}
-*/
-
 
 import android.content.Intent;
 
@@ -23,7 +15,6 @@ import Food4One.app.databinding.FragmentPerfilBinding;
 public class PerfilViewModel extends ViewModel {
 
     private final String TAG = "FotosmeActivityViewModel";
-
     private FirebaseStorage mstore;
     private final MutableLiveData<String> mText;
 
@@ -47,5 +38,6 @@ public class PerfilViewModel extends ViewModel {
         Intent editarperfil = new Intent(binding.getRoot().getContext(), UserSettingsActivity.class);
         binding.getRoot().getContext().startActivity(editarperfil);
     }
+
 
 }
