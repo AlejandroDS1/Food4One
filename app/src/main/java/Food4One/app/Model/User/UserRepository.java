@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Food4One.app.Model.Alergias;
+
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
@@ -192,5 +194,13 @@ public class UserRepository {
                 .addOnFailureListener(exception -> {
                     Log.d(TAG, "Photo upload failed: " + pictureUrl);
                 });
+    }
+
+
+    public void setAlegia(String userId, ArrayList<String> alergias){
+        /*mDb.collection("Users")
+                .document(userId).*/
+
+
     }
 }

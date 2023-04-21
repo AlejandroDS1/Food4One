@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -42,7 +44,7 @@ import java.util.Date;
 import Food4One.app.Model.Recipie.Recipie.Recipe;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
-import Food4One.app.databinding.FragmentPerfil1Binding;
+import Food4One.app.databinding.FragmentPerfilBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +53,7 @@ import Food4One.app.databinding.FragmentPerfil1Binding;
 public class Perfil extends Fragment {
 
     private final String TAG = "Perfil_Fragment";
-    private FragmentPerfil1Binding binding;
+    private FragmentPerfilBinding binding;
     private ImageView mTakePictureButton;//Editar la foto del Perfil
     private ImageView mLoggedPictureUser;//Foto del Usuario
     private Uri mPhotoUri;
@@ -67,7 +69,7 @@ public class Perfil extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         userFirebase= mAuth.getCurrentUser();
-        binding = FragmentPerfil1Binding.inflate(inflater, container, false);
+        binding = FragmentPerfilBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         perfilViewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
 
@@ -115,19 +117,20 @@ public class Perfil extends Fragment {
             @Override
             public void OnClickDetail(int position) {
                 //Al clicar se abrirá un nuevo Fragment
-                //initScrollViewRecipes(position);
+                initScrollViewRecipes(position);
 
             }
         });
 
         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
 
-        // Observer a HomeActivity per veure si la llista de Receta (observable MutableLiveData)
+        // Observer a Perfil per veure si la llista de Receta (observable MutableLiveData)
         // a PerfilViewModel ha canviat.
         final Observer<ArrayList<Recipe>> observerRecetes= new Observer<ArrayList<Recipe>>() {
             @Override
-            public void onChanged(ArrayList<Recipe> users) {
+            public void onChanged(ArrayList<Recipe> recetas) {
                 mCardRecetaRVAdapter.notifyDataSetChanged();
+                perfilViewModel.setRecetes(recetasTotales);
             }
         };
 
@@ -150,11 +153,23 @@ public class Perfil extends Fragment {
         /*binding.editarPerfilBtn.setOnClickListener(view -> {
             startActivity(new Intent(getActivity(), EditarPerfilActivity.class));
  -------});--------------------------------------------------------------------------------------------------*/
-
         return root;
     }
 
     private void initScrollViewRecipes(int position) {
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("RecycleViewPosition", position);
+
+        // Create new fragment and transaction
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setReorderingAllowed(true)
+                .addToBackStack("ScrollPerfil") ;
+        // Replace whatever is in the fragment_container view with this fragment
+        transaction.replace(R.id.container, ScrollPerfil.class, bundle);
+        // Commit the transaction
+        transaction.commit();
 
     }
 

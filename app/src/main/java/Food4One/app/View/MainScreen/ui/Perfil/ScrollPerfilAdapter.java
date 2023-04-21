@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -124,6 +125,8 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final Recipe recetaUser, ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
+
+       // ViewCompat.setTransitionName(image, id);
 
         //mCorazon.setVisibility(View.VISIBLE);
         mCorazon.setImageResource(R.drawable.heart_24);

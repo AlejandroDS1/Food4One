@@ -157,7 +157,7 @@ public class PerfilViewModel extends AndroidViewModel {
     }
 
     public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){
-        mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
+         mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
     }
     public void setPictureUrlOfUser(String userId, Uri imageUri) {
 

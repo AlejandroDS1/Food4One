@@ -9,7 +9,7 @@ public class User implements Serializable {
 
     public final static String TAG = "User";
     public String userName;
-    private final String email;
+    private String email;
 
     private String profilePictureURL;
     private ArrayList<String> idRecetas;
@@ -20,6 +20,17 @@ public class User implements Serializable {
     // PREMIUM BOOLEAN IDEA PARA EL FINAL
     // LISTAS (compra)
 
+
+    private static User user;
+
+    public static User getInstance(){
+        if(user== null){
+            user = new User();
+        }
+        return user;
+    }
+
+    public User(){}
     public User(String userName, String email) {
         this.userName = userName;
         this.email = email;

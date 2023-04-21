@@ -28,25 +28,35 @@ public class RecipeRepository {
 
     private static final String TAG = "Repository";
 
-    /** Autoinstància, pel patró singleton */
+    /**
+     * Autoinstància, pel patró singleton
+     */
     private static final RecipeRepository mInstance = new RecipeRepository();
 
-    /** Referència a la Base de Dades */
+    /**
+     * Referència a la Base de Dades
+     */
     private FirebaseFirestore mDb;
 
 
 //----------------------------------------------------------------------------------------------
-    /** Definició de listener (interficie),
-     *  per escoltar quan s'hagin acabat de llegir les recetes de la BBDD */
+
+    /**
+     * Definició de listener (interficie),
+     * per escoltar quan s'hagin acabat de llegir les recetes de la BBDD
+     */
     public interface OnLoadRecetaListener {
         void onLoadRecetas(ArrayList<Recipe> recetas);
     }
+
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
 //-----------------------------------------------------------------------------------------------
 
-    /** Definició de listener (interficie)
+    /**
+     * Definició de listener (interficie)
      * per poder escoltar quan s'hagi acabat de llegir la Url de la foto de perfil
-     * d'un usuari concret */
+     * d'un usuari concret
+     */
     public interface OnLoadRecetaPictureUrlListener {
         void OnLoadRecetaPictureUrl(String pictureUrl);
     }
@@ -65,6 +75,7 @@ public class RecipeRepository {
 
     /**
      * Retorna aqusta instancia singleton
+     *
      * @return
      */
     public static RecipeRepository getInstance() {
@@ -72,20 +83,24 @@ public class RecipeRepository {
     }
 
 //-------------------------------------------------------------------------------------------------
+
     /**
      * Afegir un listener de la operació OnLoadRecetaListener.
      * Pot haver-n'hi només un. Fem llista, com a exemple, per demostrar la flexibilitat
      * d'aquest disseny.
+     *
      * @param listener
      */
     public void addOnLoadRecetaListener(OnLoadRecetaListener listener) {
         mOnloadRecetaListeners.add(listener);
     }
 //-------------------------------------------------------------------------------------------------
+
     /**
      * Setejem un listener de la operació OnLoadUserPictureUrlListener.
      * En aquest cas, no és una llista de listeners. Només deixem haver-n'hi un,
      * també a tall d'exemple.
+     *
      * @param listener
      */
     public void setOnLoadUserPictureListener(OnLoadRecetaPictureUrlListener listener) {
@@ -103,7 +118,7 @@ public class RecipeRepository {
 
         Iterator iterator = idRecetasUser.iterator();
         String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
 
             String idReceta = (String) iterator.next();
             mDb.collection("Recetas").document(idReceta).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -121,10 +136,11 @@ public class RecipeRepository {
 
                     /*Cuando se consigan todas las recetas del usuario, se llaman a los listeners
                     para que puedan cargar las recetas al RecycleView*/
-                    if(recetaUsers.size() == idRecetasUser.size()) onLoadRecetasListenerMethod();
+                    if (recetaUsers.size() == idRecetasUser.size())
+                        onLoadRecetasListenerMethod();
                 }
 
-                private void onLoadRecetasListenerMethod() {
+                private void  onLoadRecetasListenerMethod() {
                     /*Llamamos a sus listeners*/
                     for (OnLoadRecetaListener l : mOnloadRecetaListeners)
                         l.onLoadRecetas(recetaUsers);
@@ -137,6 +153,7 @@ public class RecipeRepository {
             });
         }
     }
+
 
     public void loadRecetas(ArrayList<Recipe> recetaUsers) {
         recetaUsers.clear();

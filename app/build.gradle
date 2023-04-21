@@ -67,4 +67,9 @@ dependencies {
 
     //PICASSO
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //FRAGMENT
+    def fragment_version = "1.5.7"
+
+    // Java language implementation
+    implementation "androidx.fragment:fragment:$fragment_version"
 }
