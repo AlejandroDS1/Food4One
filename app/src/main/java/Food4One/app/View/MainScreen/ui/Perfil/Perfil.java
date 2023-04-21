@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
+import Food4One.app.Model.User.User;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
 import Food4One.app.databinding.FragmentPerfilBinding;
@@ -160,27 +161,7 @@ public class Perfil extends Fragment {
      * en la base de datos y lo cargaríamos con este método...
      */
     private void cargarUsuarioDeBaseDatos() {
-        DocumentReference userInformation = FirebaseFirestore.getInstance()
-                .document("Users/"+mAuth.getCurrentUser().getEmail());
-        userInformation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot document = task.getResult();
-                    if(document.exists()){
-                        // Array con todas las recetas del usuario
-                        ArrayList<String> recetaUsers = (ArrayList<String>) document.get("idRecetas");
-                        String email = userFirebase.getEmail();
-                        binding.nomusuari.setText(document.getString("Name"));
-                        binding.emailPerfil.setText(email);
-                        binding.decripcionPerfil.setText(document.getString("Description"));
-                        perfilViewModel.loadPictureOfUser(email);
-
-                        perfilViewModel.loadRecetasOfUserFromRepository(recetaUsers);
-                    }
-                }
-            }
-        });
+        perfilViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas());
     }
 
 

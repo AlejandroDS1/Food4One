@@ -194,6 +194,19 @@ public class UserRepository {
                 });
     }
 
+    public void setUserNameDDB(String email, String userName){
+
+        HashMap<String, String> store = new HashMap<>();
+        store.put("Name", userName);
+
+        mDb.collection("Users").document(email).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "User Name updated to " + userName);
+                })
+                .addOnFailureListener(exception -> {
+                    Log.d(TAG, "User Name update failed: " + userName);
+                });
+    }
+
     public void loadUserFromDDB(String email){
         mDb.collection("Users").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -201,17 +214,17 @@ public class UserRepository {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
 
-                    User user = User.getInstance(document.getString("Name"), email);
+                    User user = User.getInstance(document.getString(User.NAME_TAG), email);
 
-                    user.setAlergias((ArrayList<String>) document.get("Alergias"));
+                    user.setAlergias((ArrayList<String>) document.get(User.ALERGIAS_TAG));
 
-                    user.setDescripcion(document.getString("Description"));
+                    user.setDescripcion(document.getString(User.DESCRIPCION_TAG));
 
-                    user.setProfilePictureURL(document.getString("PictureURL"));
+                    user.setProfilePictureURL(document.getString(User.PICTUREURL_TAG));
 
-                    user.setIdCollections((ArrayList<String>) document.get("idCollections"));
+                    user.setIdCollections((ArrayList<String>) document.get(User.IDCOLLECTIONS_TAG));
 
-                    user.setIdRecetas((ArrayList<String>) document.get("idRecetas"));
+                    user.setIdRecetas((ArrayList<String>) document.get(User.IDRECETAS_TAG));
                 }
             }
         });

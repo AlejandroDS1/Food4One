@@ -7,16 +7,22 @@ import java.util.List;
 
 public class User implements Serializable {
 
+    // TAGS para acceder a los atributos de la base de datos.
     public final static String TAG = "User";
+    public final static String NAME_TAG = "Name";
+    public final static String ALERGIAS_TAG = "Alergias";
+    public final static String DESCRIPCION_TAG = "Description";
+    public final static String PICTUREURL_TAG = "PictureURL";
+    public final static String IDCOLLECTIONS_TAG = "idCollections";
+    public final static String IDRECETAS_TAG = "idRecetas";
+
     private static User user;
     public String userName;
-
     private String descripcion;
     private String email;
     private String profilePictureURL;
     private ArrayList<String> idRecetas;
     private ArrayList<String> alergias;
-
     private ArrayList<String> idCollections;
 
     // ATRIBUTOS OPCIONALES *******
