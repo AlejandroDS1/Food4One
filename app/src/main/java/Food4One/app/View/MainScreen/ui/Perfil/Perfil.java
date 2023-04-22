@@ -77,7 +77,7 @@ public class Perfil extends Fragment {
         userFirebase= mAuth.getCurrentUser();
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        perfilViewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
+        perfilViewModel = PerfilViewModel.getInstance();
 
         cargarObjectsView();
         //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD

@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentEditarPerfilScreenBinding;
 
@@ -51,7 +52,7 @@ public class EditarPerfilScreen extends Fragment {
         // Inflate the layout for this fragment
         binding= FragmentEditarPerfilScreenBinding.inflate(inflater, container, false);
 
-        perfilViewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
+        perfilViewModel = PerfilViewModel.getInstance();
 
         initObjectsOnTheView();
         initListenersOfTheViews();
@@ -73,7 +74,7 @@ public class EditarPerfilScreen extends Fragment {
             @Override
             public void onChanged(String pictureUrl) {
                 Picasso.get()
-                        .load(pictureUrl).resize(mLoggedPictureUser.getWidth(), mLoggedPictureUser.getHeight())
+                        .load(pictureUrl).resize(1000, 1000)
                         .into(mLoggedPictureUser);
                 User.getInstance().setProfilePictureURL(pictureUrl);
             }

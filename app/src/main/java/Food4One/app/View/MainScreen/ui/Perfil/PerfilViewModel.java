@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +35,7 @@ import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
-public class PerfilViewModel extends AndroidViewModel {
+public class PerfilViewModel extends ViewModel {
 
     private final String TAG = "FotosmeActivityViewModel";
     private FirebaseStorage mStorage;
@@ -51,8 +52,15 @@ public class PerfilViewModel extends AndroidViewModel {
     private UserRepository mUserRepository;
     private ProgressBar progressBar;
 
-    public PerfilViewModel(Application application) {
-        super(application);
+    private static PerfilViewModel perfilViewModel;
+
+    public static PerfilViewModel getInstance(){
+        if (perfilViewModel == null) perfilViewModel = new PerfilViewModel();
+        return perfilViewModel;
+    }
+
+
+    public PerfilViewModel() {
 
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fra1gment");

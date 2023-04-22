@@ -44,7 +44,7 @@ public class ScrollPerfil extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentScrollPerfilBinding.inflate(inflater, container, false);
 
-        perfilViewModel = new ViewModelProvider(requireActivity()).get(PerfilViewModel.class);
+        perfilViewModel = PerfilViewModel.getInstance();
 
         inicioObjectsView();
 
@@ -77,9 +77,6 @@ public class ScrollPerfil extends Fragment {
 
         //Tenemos que esperar a que se cargue el recycle View con la info del Fragment anterior
         postponeEnterTransition();
-        ArrayList<Recipe> recetasGrid = (ArrayList<Recipe>) RecipesUserApp.getInstance().clone();
-        //Colocamos todas las recetas del Usuario al perfilViewModel
-        perfilViewModel.setRecetes(recetasGrid);
 
         final ViewGroup parentView = (ViewGroup) view.getParent();
         // Wait for the data to load
@@ -90,7 +87,7 @@ public class ScrollPerfil extends Fragment {
 
                         //Hay que invertir el  orden de las recetas, ya que el recycle view los
                         //va añadiendo como una pila, y no como un array
-                        Collections.reverse(perfilViewModel.getRecetes().getValue());
+                        //Collections.reverse((ArrayList<Recipe>)perfilViewModel.getRecetes().getValue().clone());
 
                         // Set the data on the RecyclerView adapter
                         //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles

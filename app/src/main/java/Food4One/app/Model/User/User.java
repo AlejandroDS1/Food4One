@@ -60,17 +60,13 @@ public class User implements Serializable {
     }
 
     public ArrayList<String> getIdRecetas(){return idRecetas; }
-
     //Getters
 
     public String getUserName() {
         return userName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
+    public String getEmail() { return email; }
     public String getProfilePictureURL() {
         return profilePictureURL;
     }
