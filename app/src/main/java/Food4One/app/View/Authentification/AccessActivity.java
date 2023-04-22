@@ -28,7 +28,6 @@ public class AccessActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-
         //Animación entrada de App (Splash)----------------------------------------------------------
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.desplazar_abajo);
         CardView logoApp = findViewById(R.id.logoSplashView);

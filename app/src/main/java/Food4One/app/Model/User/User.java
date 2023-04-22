@@ -8,7 +8,7 @@ import java.util.List;
 public class User implements Serializable {
 
     // TAGS para acceder a los atributos de la base de datos.
-    public final static String TAG = "User";
+    public final static String TAG = "Users";
     public final static String NAME_TAG = "Name";
     public final static String ALERGIAS_TAG = "Alergias";
     public final static String DESCRIPCION_TAG = "Description";
@@ -54,6 +54,9 @@ public class User implements Serializable {
         if (user == null) user = new User();
         return user;
     }
+
+    // Este metodo es utiliza para vaciar la clase si cerramos sesion.
+    public static void logOutUser(){ user = null; }
 
     public void addIdReceta(String idreceta){
         this.idRecetas.add(idreceta);

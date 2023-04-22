@@ -78,12 +78,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                         //Ahora que es seguro que el usuario existirá en la App,
                                          //lo añadimos a los demás usuarios guardados en el Respository de la App
-                                        if(FirebaseFirestore.getInstance().collection(email).get() == null){
+                                        if(FirebaseFirestore.getInstance().collection(email).get() == null) {
                                             afegirPerfilCuenta(getIntent().getStringExtra("nameUser"), email);
                                             User.getInstance(getIntent().getStringExtra("nameUser"), email);
+                                        }
 
-                                        }else
-                                            mUserRespository.loadUserFromDDB(email);
+                                        else mUserRespository.loadUserFromDDB(email);
 
                                         //Cuando vaya bien empezará la ventana Main
                                         startActivity(new Intent(LoginActivity.this, MainScreen.class));

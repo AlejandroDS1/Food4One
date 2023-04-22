@@ -144,6 +144,7 @@ public class Perfil extends Fragment {
         //Se carga los procesos que realiza el fragmento...
         binding.logoutButn.setOnClickListener(view-> {
             mAuth.signOut();
+            User.logOutUser(); // Vaciamos la clase para volver a llenarla en el LoginAcivity
             binding.getRoot().getContext().startActivity(
                     new Intent(binding.getRoot().getContext(), LoginActivity.class));
         });
@@ -228,6 +229,7 @@ public class Perfil extends Fragment {
     private void setChoosePictureListener(@NonNull View choosePicture) {
         // Codi que s'encarrega de rebre el resultat de l'intent de seleccionar foto de galeria
         // i que es llençarà des del listener que definirem a baix.
+
         ActivityResultLauncher<Intent> startActivityForResult = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {

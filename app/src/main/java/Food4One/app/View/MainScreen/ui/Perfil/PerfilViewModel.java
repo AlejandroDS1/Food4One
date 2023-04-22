@@ -127,11 +127,11 @@ public class PerfilViewModel extends AndroidViewModel {
 
     public void loadIDRecetasUser(String email, User user){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection("Users").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firestore.collection(User.TAG).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult();
-                ArrayList<String> recetasID = new ArrayList<>((ArrayList<String>) document.get("idRecetasUser"));
+                ArrayList<String> recetasID = new ArrayList<>((ArrayList<String>) document.get(User.IDRECETAS_TAG));
                 for (String id : recetasID)
                     user.addIdReceta(id);
             }

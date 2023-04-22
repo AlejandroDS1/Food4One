@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your User Name"
-                android:textColor="@color/Gris"
+                android:textColor="@color/naranjaclaro"
                 android:textSize="14dp" />
 
         </LinearLayout>
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
                 android:text="Your Description"
-                android:textColor="@color/Gris"
+                android:textColor="@color/naranjaclaro"
                 android:textSize="14dp" />
 
         </LinearLayout>
