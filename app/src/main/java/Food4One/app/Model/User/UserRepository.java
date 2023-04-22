@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Food4One.app.View.MainScreen.ui.Perfil.Perfil;
+import Food4One.app.View.MainScreen.ui.Perfil.PerfilViewModel;
 
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -47,7 +49,17 @@ public class UserRepository {
         void OnLoadUserPictureUrl(String pictureUrl);
     }
 
+    public interface  OnLoadUserNameListener{
+        void OnLoadUserName(String name);
+    }
+    public interface OnLoadUserDescriptionListener{
+        void OnLoadUserDescription(String description);
+    }
+    public OnLoadUserNameListener mOnLoadUserNameListener;
+
     public OnLoadUserPictureUrlListener mOnLoadUserPictureUrlListener;
+
+    public OnLoadUserDescriptionListener mOnLoadUserDescritionListener;
 
     /**
      * Constructor privat per a forçar la instanciació amb getInstance(),
@@ -83,6 +95,12 @@ public class UserRepository {
      */
     public void setOnLoadUserPictureListener(OnLoadUserPictureUrlListener listener) {
         mOnLoadUserPictureUrlListener = listener;
+    }
+    public void setOnLoadUserNameListener( OnLoadUserNameListener listener){
+        this.mOnLoadUserNameListener = listener;
+    }
+    public void setOnLoadUserDescription(OnLoadUserDescriptionListener listener){
+        this.mOnLoadUserDescritionListener = listener;
     }
 
     /**
@@ -203,7 +221,8 @@ public class UserRepository {
         store.put(User.NAME_TAG, userName);
 
         mDb.collection(User.TAG).document(email).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
-                    User.getInstance().setUserName(userName);
+                    User.getInstance().setUserName(userName); //Lo cambiamos en el User Global
+                    PerfilViewModel.getInstance().getOnLoadUserListener().OnLoadUserName(userName); //Y en la ventana Perfil
         });
 
         // Comprovamos si ha entrado en el OnSucces, si retorna falso es porque no se ha subido a base de datos.
@@ -226,6 +245,7 @@ public class UserRepository {
                         mdescription.setValue(description);
 
                     User.getInstance().setDescripcion(description);
+                    PerfilViewModel.getInstance().getOnLoadUserDescrptionListener().OnLoadUserDescription(description);
                 });
     }
 

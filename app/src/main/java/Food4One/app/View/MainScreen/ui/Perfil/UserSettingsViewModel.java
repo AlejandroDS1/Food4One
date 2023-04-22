@@ -23,7 +23,6 @@ public class UserSettingsViewModel extends ViewModel {
     private final MutableLiveData<String> userName;
     private final MutableLiveData<String> description;
 
-
     public UserSettingsViewModel(){
 
         User user = User.getInstance();
@@ -127,9 +126,7 @@ public class UserSettingsViewModel extends ViewModel {
         AlertDialog.Builder build = new AlertDialog.Builder(context);
 
         build.setTitle("Tu descripcion");
-
         EditText input = new EditText(context);
-
         input.setMaxLines(10);
         input.setSingleLine(false);
         input.setText(User.getInstance().getDescripcion());

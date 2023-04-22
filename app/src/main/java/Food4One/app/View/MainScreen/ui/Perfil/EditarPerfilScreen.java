@@ -35,11 +35,11 @@ import Food4One.app.databinding.FragmentEditarPerfilScreenBinding;
 public class EditarPerfilScreen extends Fragment {
     private FragmentEditarPerfilScreenBinding binding;
     private PerfilViewModel perfilViewModel;
-    private Uri mPhotoUri;
+    private ImageView mLoggedPictureUser;
     private LinearLayout galeryAccess;
     private LinearLayout camaraAccess;
     private TextView backButton;
-    private ImageView mLoggedPictureUser;//Foto del Usuario
+    private Uri mPhotoUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

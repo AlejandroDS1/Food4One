@@ -60,7 +60,6 @@ public class PerfilViewModel extends ViewModel {
 
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fra1gment");
-
         mUsers = new MutableLiveData<>(new ArrayList<>());
         mStorage = FirebaseStorage.getInstance();
         mRecetaRepository = RecipeRepository.getInstance();
@@ -72,6 +71,29 @@ public class PerfilViewModel extends ViewModel {
 
         userPictureliteners();
         recetasPictureListeners();
+        infoUserListener();
+    }
+
+    private void infoUserListener() {
+        mUserRepository.setOnLoadUserNameListener(new UserRepository.OnLoadUserNameListener() {
+            @Override
+            public void OnLoadUserName(String name) {
+                PerfilViewModel.this.setmUserName(name);
+            }
+        });
+
+        mUserRepository.setOnLoadUserDescription(new UserRepository.OnLoadUserDescriptionListener() {
+            @Override
+            public void OnLoadUserDescription(String description) {
+                PerfilViewModel.this.setUserDescription(description);
+            }
+        });
+    }
+
+    public void setUserDescription(String description){ this.mDescription.setValue(description);}
+
+    public void setmUserName(String name){
+        this.mUserName.setValue(name);
     }
 
     private void recetasPictureListeners() {
@@ -131,6 +153,13 @@ public class PerfilViewModel extends ViewModel {
         return mPictureUrl;
     }
 
+    public MutableLiveData<String> getmUserName() {
+        return mUserName;
+    }
+
+    public MutableLiveData<String> getmDescription() {
+        return mDescription;
+    }
 
     public void loadIDRecetasUser(String email, User user){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -156,8 +185,6 @@ public class PerfilViewModel extends ViewModel {
     public void setUsers(ArrayList<User> users){
         mUsers.setValue(users);
     }
-
-
 
     public void loadPictureOfUser(String email){ mUserRepository.loadPictureOfUser(email);}
 
@@ -212,14 +239,12 @@ public class PerfilViewModel extends ViewModel {
         });
 
     }
-    public void setProgressBar(ProgressBar p){
-        progressBar =p;
+
+    public UserRepository.OnLoadUserNameListener getOnLoadUserListener(){
+        return mUserRepository.mOnLoadUserNameListener;
+    }
+    public UserRepository.OnLoadUserDescriptionListener getOnLoadUserDescrptionListener(){
+        return mUserRepository.mOnLoadUserDescritionListener;
     }
 
-    public void initProgressBar(){
-        progressBar.setVisibility(View.VISIBLE);
-    }
-    public void endProgressBar(){
-        progressBar.setVisibility(View.GONE);
-    }
 }
