@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
+
 public class User implements Serializable {
 
     // TAGS para acceder a los atributos de la base de datos.
@@ -56,7 +58,10 @@ public class User implements Serializable {
     }
 
     // Este metodo es utiliza para vaciar la clase si cerramos sesion.
-    public static void logOutUser(){ user = null; }
+    public static void logOutUser(){
+        user = null;
+        RecipesUserApp.removeSingleton();
+    }
 
     public void addIdReceta(String idreceta){
         this.idRecetas.add(idreceta);

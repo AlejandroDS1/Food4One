@@ -139,10 +139,11 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 recipeCard.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View view) {
+                       view.requestFocus();
                        listener.OnClickDetail(getAdapterPosition());
                    }
                 });
             }
         }
 
-    }
+}

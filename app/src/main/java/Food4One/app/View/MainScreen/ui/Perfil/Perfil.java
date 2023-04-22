@@ -51,13 +51,13 @@ public class Perfil extends Fragment {
     private FragmentPerfilBinding binding;
     private ImageView mTakePictureButton;//Editar la foto del Perfil
     private ImageView mLoggedPictureUser;//Foto del Usuario
-    private Uri mPhotoUri;
     private PerfilViewModel perfilViewModel;
     private RecyclerView mRecetaCardsRV;
     private RecetaPerfilAdapter mCardRecetaRVAdapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser userFirebase;
 
+    private Uri mPhotoUri;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -137,7 +137,7 @@ public class Perfil extends Fragment {
         final Observer<String> observerDescription = new Observer<String>() {
             @Override
             public void onChanged(String description) {
-                binding.decripcionPerfil.setText(description);
+                binding.descripcionPerfil.setText(description);
             }
         };
         perfilViewModel.getmDescription().observe(this.getActivity(), observerDescription);
@@ -180,9 +180,16 @@ public class Perfil extends Fragment {
 
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in,  // enter
+                        R.anim.fade_out,  // exit
+                        R.anim.fade_in,   // popEnter
+                        R.anim.slide_out  // popExit
+                         );
         transaction.setReorderingAllowed(true)
                 .addToBackStack("PerfilFragChange") ;
+
+
         // Replace whatever is in the fragment_container view with this fragment
         transaction.replace(R.id.perfilFragment, ScrollPerfil.class, bundle);
         // Commit the transaction
@@ -197,8 +204,7 @@ public class Perfil extends Fragment {
     private void cargarUsuarioDeBaseDatos() {
         User userInfo = User.getInstance();
         binding.nomusuari.setText(userInfo.getUserName());
-        binding.decripcionPerfil.setText(userInfo.getDescripcion());
-
+        binding.descripcionPerfil.setText(userInfo.getDescripcion());
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
         if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
             perfilViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas());

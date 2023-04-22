@@ -1,5 +1,6 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +93,8 @@ public class ScrollPerfil extends Fragment {
 
                         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
 
+                        mRecetaCardsRV.scrollToPosition(focusSelection);
+
                         // Start the transition once all views have been
                         // measured and laid out
                         parentView.getViewTreeObserver()
@@ -101,7 +104,6 @@ public class ScrollPerfil extends Fragment {
                                         parentView.getViewTreeObserver()
                                                 .removeOnPreDrawListener(this);
                                         startPostponedEnterTransition();
-                                        mRecetaCardsRV.scrollToPosition(focusSelection);
                                         return true;
                                     }
                         });
@@ -109,5 +111,10 @@ public class ScrollPerfil extends Fragment {
                 });
 
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 }

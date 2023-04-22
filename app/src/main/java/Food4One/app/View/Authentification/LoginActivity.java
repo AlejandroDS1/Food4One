@@ -73,8 +73,11 @@ public class LoginActivity extends AppCompatActivity {
                                         //Ahora que es seguro que el usuario existirá en la App,
                                          //lo añadimos a los demás usuarios guardados en el Respository de la App
                                         if(FirebaseFirestore.getInstance().collection(email).get() == null) {
-                                            afegirPerfilCuenta(getIntent().getStringExtra("nameUser"), email);
-                                            User.getInstance(getIntent().getStringExtra("nameUser"), email);
+                                            String userName = getIntent().getStringExtra("nameUser"); // Conseguimos el username
+
+                                            // Añadimos el usuario a la base de datos, de momento solo el username y el email.
+                                            mUserRespository.addUser(userName, email);
+                                            User.getInstance(userName, email); // Creamos el objeto user.
                                         }
 
                                         else mUserRespository.loadUserFromDDB(email);
@@ -137,18 +140,5 @@ public class LoginActivity extends AppCompatActivity {
         el programa empezará directamente en el HomeFragment*/
         if( currentUser != null && currentUser.isEmailVerified() )
             startActivity(new Intent(LoginActivity.this, MainScreen.class));
-    }
-
-
-    /**
-     * Método que añade a la Base de Datos la entrada a los datos del Usuario.
-     * @param nameUser Nombre del Usuario
-     * @param email Entrada a los datos del Usuario
-     */
-    private void afegirPerfilCuenta(String nameUser, String email) {
-
-        /*EL usuario inicialmente guarda en la base de datos su nombre y descrpición, ya a medida que use la app
-        se irán añadiendo los demás datos que cree, como las recetas de su perfil*/
-        mUserRespository.addUser(nameUser, email); //Lo añadimos a la base de datos...
     }
 }
