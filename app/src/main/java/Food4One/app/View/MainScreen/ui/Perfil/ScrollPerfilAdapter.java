@@ -3,12 +3,10 @@ package Food4One.app.View.MainScreen.ui.Perfil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -16,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
+import Food4One.app.Model.User.User;
 import Food4One.app.R;
 
 public class ScrollPerfilAdapter extends RecyclerView.Adapter<ScrollPerfilAdapter.ViewHolder> {
@@ -115,40 +114,41 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
 
     public ViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.mCorazon = itemView.findViewById(R.id.corazonCard);
-        this.mrecipeName = itemView.findViewById(R.id.nombreReceta);
+        this.mCorazon = itemView.findViewById(R.id.imageHeartDetail);
+        this.mrecipeName = itemView.findViewById(R.id.nombreDetailReceta);
         this.mCardNumberLikes = itemView.findViewById(R.id.likesDetailRecipe);
-        this.mCardDescription = itemView.findViewById(R.id.decriptionReceta);
+        this.mCardDescription = itemView.findViewById(R.id.decriptionDetailReceta);
         this.mCardUserPictureURL = itemView.findViewById(R.id.pictureUserReceta);
-        this.mCardRecetaPictureUrl = itemView.findViewById(R.id.picturerecetaPerfil);
+        this.mCardRecetaPictureUrl = itemView.findViewById(R.id.pictureDetailReceta);
 
     }
 
     public void bind(final Recipe recetaUser, ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
 
-       // ViewCompat.setTransitionName(image, id);
-
-        //mCorazon.setVisibility(View.VISIBLE);
         mCorazon.setImageResource(R.drawable.heart_24);
         mrecipeName.setText(recetaUser.getNombre());
         mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
+        mCardDescription.setText(User.getInstance().getUserName()+"  "+ recetaUser.getDescription());
 
-
-
-        // Carrega foto de l'usuari de la llista directament des d'una Url d'Internet.
-        Picasso.get().load(recetaUser.getPictureURL())
-                .resize(200, 200)
-                .centerCrop().into(mCardRecetaPictureUrl);
-        // Seteja el listener onClick del botó d'amagar (hide), que alhora
-        // cridi el mètode OnClickHide que implementen els nostres propis
-        // listeners de tipus OnClickHideListener.
-
+        cargarPhotoUserAndRecipe(recetaUser);
         mrecipeName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.OnClickDoRecipe(getAdapterPosition());
             }
         });
+    }
+
+    private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
+        //Es carrega l'imatge de la receta i del User d'internet
+        Picasso.get().load(recetaUser.getPictureURL())
+                .resize(450, 250)
+                .centerCrop().into(mCardRecetaPictureUrl);
+
+        Picasso.get().load(User.getInstance().getProfilePictureURL())
+                .resize(200, 200)
+                .centerCrop().into(mCardUserPictureURL);
+
     }
 }
 

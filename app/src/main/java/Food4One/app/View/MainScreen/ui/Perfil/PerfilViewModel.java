@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
 import Food4One.app.Model.Recipie.Recipie.RecipeRepository;
+import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
@@ -43,7 +44,6 @@ public class PerfilViewModel extends AndroidViewModel {
 
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
-
     private final MutableLiveData<String> mText;
 
     /*Repositori (base de dades) de les recetes-Details*/
@@ -74,6 +74,7 @@ public class PerfilViewModel extends AndroidViewModel {
             @Override
             public void onLoadRecetas(ArrayList<Recipe> recetas) {
                 PerfilViewModel.this.setRecetes(recetas);
+                RecipesUserApp.setRecetasUser(recetas);
             }
         });
 
@@ -105,7 +106,7 @@ public class PerfilViewModel extends AndroidViewModel {
             @Override
             public void OnLoadUserPictureUrl(String pictureUrl) {
                 //Si hay una foto en la base de datos la cambiamos, sino, dejamos la predeterminada
-                if(pictureUrl!=null) mPictureUrl.setValue(pictureUrl);
+                if(pictureUrl != null) mPictureUrl.setValue(pictureUrl);
             }
         });
     }
@@ -150,9 +151,6 @@ public class PerfilViewModel extends AndroidViewModel {
         mUsers.setValue(users);
     }
 
-    public void loadPictureOfReceta() {
-        mRecetaRepository.loadPictureOfReceta();
-    }
 
 
     public void loadPictureOfUser(String email){ mUserRepository.loadPictureOfUser(email);}

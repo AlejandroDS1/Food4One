@@ -1,6 +1,8 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -42,7 +46,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
+import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
 import Food4One.app.databinding.FragmentPerfilBinding;
@@ -64,7 +70,6 @@ public class Perfil extends Fragment {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser userFirebase;
-    private ImageView choose;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -74,9 +79,36 @@ public class Perfil extends Fragment {
         View root = binding.getRoot();
         perfilViewModel = new ViewModelProvider(this).get(PerfilViewModel.class);
 
-        mLoggedPictureUser = binding.avatarusuario;
-        mTakePictureButton = binding.photobuttomPerfil;
-        choose= binding.chooseImagePerfil;
+        cargarObjectsView();
+        //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
+        cargarUsuarioDeBaseDatos();
+
+        clickListenerObjectsView();
+
+        setTakeCameraPictureListener(mTakePictureButton);
+
+        recycleViewGrid();//Instancia del Recycle View(Grid) que contendrá las recetas
+        observerObjectsView();
+
+        return root;
+    }
+
+    private void clickListenerObjectsView() {
+
+        //Se carga los procesos que realiza el fragmento...
+        binding.logoutButn.setOnClickListener(view-> {
+            mAuth.signOut();
+            binding.getRoot().getContext().startActivity(
+                    new Intent(binding.getRoot().getContext(), LoginActivity.class));
+        });
+
+        binding.editarPerfilBtn.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity().getApplicationContext(), UserSettingsActivity.class));
+        });
+
+        binding.avatarusuario.setOnClickListener(v->{
+            initEditPerfilWindow();
+        });
 
         /*-------------------------------------------------------------------------------------*/
 
@@ -88,19 +120,26 @@ public class Perfil extends Fragment {
                 Picasso.get()
                         .load(pictureUrl).resize(200, 200)
                         .into(mLoggedPictureUser);
+                User.getInstance().setProfilePictureURL(pictureUrl);
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
+    }
 
-        perfilViewModel.loadPictureOfReceta();
+    private void observerObjectsView() {
+        // Observer a Perfil per veure si la llista de Receta (observable MutableLiveData)
+        // a PerfilViewModel ha canviat.
+        final Observer<ArrayList<Recipe>> observerRecetes= new Observer<ArrayList<Recipe>>() {
+            @Override
+            public void onChanged(ArrayList<Recipe> recetas) {
+                mCardRecetaRVAdapter.notifyDataSetChanged();
+            }
+        };
+        perfilViewModel.getRecetes().observe(this.getViewLifecycleOwner(), observerRecetes);
 
-        //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
-        cargarUsuarioDeBaseDatos();
-        setTakeCameraPictureListener(mTakePictureButton);
-        setChoosePictureListener(choose);
+    }
 
-        /*-----------Instancia del Recycle View(Grid) que contendrá las recetas----------------------------*/
-
+    private void recycleViewGrid() {
         mRecetaCardsRV = binding.getRoot().findViewById(R.id.fotosperfil_RV);
 
         //Ahora le definimos un Manager Grid
@@ -123,38 +162,11 @@ public class Perfil extends Fragment {
         });
 
         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
+    }
 
-        // Observer a Perfil per veure si la llista de Receta (observable MutableLiveData)
-        // a PerfilViewModel ha canviat.
-        final Observer<ArrayList<Recipe>> observerRecetes= new Observer<ArrayList<Recipe>>() {
-            @Override
-            public void onChanged(ArrayList<Recipe> recetas) {
-                mCardRecetaRVAdapter.notifyDataSetChanged();
-               // perfilViewModel.setRecetes();
-            }
-        };
-
-        perfilViewModel.getRecetes().observe(this.getViewLifecycleOwner(), observerRecetes);
-
-        // A partir d'aquí, en cas que es faci cap canvi a la llista d'usuaris, HomeActivity ho sabrá
-        // perfilViewModel.loadRecetesFromRepository();  // Internament pobla les recetes de la BBDD
-
-
-        // perfilViewModel.cargarWindowProfile(userInformation, binding);
-
-        //Se carga los procesos que realiza el fragmento...
-        binding.logoutButn.setOnClickListener(view-> {
-            mAuth.signOut();
-            binding.getRoot().getContext().startActivity(
-                    new Intent(binding.getRoot().getContext(), LoginActivity.class));
-        });
-
-
-        binding.editarPerfilBtn.setOnClickListener(view -> {
-            startActivity(new Intent(getActivity().getApplicationContext(), UserSettingsActivity.class));
-        });
-
-        return root;
+    private void cargarObjectsView() {
+        mLoggedPictureUser = binding.avatarusuario;
+        mTakePictureButton = binding.photobuttomPerfil;
     }
 
     private void initScrollViewRecipes(int position) {
@@ -166,9 +178,9 @@ public class Perfil extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setReorderingAllowed(true)
-                .addToBackStack("ScrollPerfil") ;
+                .addToBackStack("PerfilFragChange") ;
         // Replace whatever is in the fragment_container view with this fragment
-        transaction.replace(R.id.container, ScrollPerfil.class, bundle);
+        transaction.replace(R.id.perfilFragment, ScrollPerfil.class, bundle);
         // Commit the transaction
         transaction.commit();
 
@@ -179,7 +191,14 @@ public class Perfil extends Fragment {
      * en la base de datos y lo cargaríamos con este método...
      */
     private void cargarUsuarioDeBaseDatos() {
-        perfilViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas());
+        User userInfo = User.getInstance();
+        binding.nomusuari.setText(userInfo.getUserName());
+        binding.emailPerfil.setText(userInfo.getEmail());
+        binding.decripcionPerfil.setText(userInfo.getDescripcion());
+
+        perfilViewModel.loadPictureOfUser(userInfo.getEmail());
+        if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+            perfilViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas());
     }
 
 
@@ -243,30 +262,20 @@ public class Perfil extends Fragment {
         });
     }
 
-    private void setChoosePictureListener(@NonNull View choosePicture) {
-        // Codi que s'encarrega de rebre el resultat de l'intent de seleccionar foto de galeria
-        // i que es llençarà des del listener que definirem a baix.
-        ActivityResultLauncher<Intent> startActivityForResult = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(), result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        Uri contentUri = data.getData(); // En aquest intent, sí que hi arriba la URI
 
-                        perfilViewModel.setPictureUrlOfUser(
-                                mAuth.getCurrentUser().getEmail(), contentUri);
-                    }
-                });
 
-        // Listener del botó de seleccionar imatge, que llençarà l'intent amb l'ActivityResultLauncher.
-        choosePicture.setOnClickListener(view -> {
-            Intent data = new Intent(Intent.ACTION_GET_CONTENT);
-            data.addCategory(Intent.CATEGORY_OPENABLE);
-            data.setType("image/*");
-            Intent intent = Intent.createChooser(data, "Choose a file");
-
-            startActivityForResult.launch(intent);
-        });
+    private void initEditPerfilWindow() {
+        // Create new fragment and transaction
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setReorderingAllowed(true)
+                .addToBackStack("PerfilFragChange") ;
+        // Replace whatever is in the fragment_container view with this fragment
+        transaction.replace(R.id.perfilFragment, new EditarPerfilScreen());
+        // Commit the transaction
+        transaction.commit();
     }
+
 
     @Override
     public void onResume() {
@@ -275,4 +284,5 @@ public class Perfil extends Fragment {
         try { Thread.sleep(700); } catch (InterruptedException e) { throw new RuntimeException(e);}
         binding.progressBarPerfil.setVisibility(View.GONE);
     }
+
 }

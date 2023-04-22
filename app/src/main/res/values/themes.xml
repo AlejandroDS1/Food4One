@@ -14,20 +14,11 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-<<<<<<< HEAD
-=======
 
->>>>>>> main
     <style name="Theme.Food4One.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-<<<<<<< HEAD
-    <style name="Theme.Food4One.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-=======
 
-    <style name="Theme.Food4One.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
->>>>>>> main
     <style name="Theme.Food4One.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

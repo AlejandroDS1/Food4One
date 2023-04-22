@@ -20,6 +20,7 @@ import java.util.Iterator;
 
 import Food4One.app.Model.Recipie.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
+import Food4One.app.Model.User.User;
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
@@ -117,7 +118,7 @@ public class RecipeRepository {
         //Se cargan todas las recetas de la base de datos...
 
         Iterator iterator = idRecetasUser.iterator();
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String userID = User.getInstance().getEmail();
         while (iterator.hasNext()) {
 
             String idReceta = (String) iterator.next();
@@ -127,8 +128,8 @@ public class RecipeRepository {
                     //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
                     cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
-                    recetaUser.setNombre(((String) documentSnapshot.getId()).split("@")[0]);
-                    recetaUser.setNombre(userID);
+                    recetaUser.setNombre(documentSnapshot.getId());
+                    recetaUser.setIdUser(userID);
                     //---------------------------------------------------------------------------
 
                     //Lo añadimos a la lista de recetas que se mostrarán...
@@ -200,9 +201,6 @@ public class RecipeRepository {
 
     }
 
-    public void loadPictureOfReceta(){
-       // mOnLoadRecetaPictureUrlListener.OnLoadUserPictureUrl();
-    }
 
 
 }
