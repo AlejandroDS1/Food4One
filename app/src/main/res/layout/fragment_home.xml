@@ -2,11 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeViewLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.ui.home.HomeFragment"
     android:layout_marginBottom="28dp"
-    android:paddingBottom="15dp">
+    android:paddingBottom="15dp"
+    tools:context=".View.MainScreen.ui.home.HomeFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/titleHome"
@@ -24,10 +25,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:paddingVertical="35dp"
-                android:textSize="45dp"
-                android:textStyle="bold"
+                android:text="Recetas"
                 android:textColor="@color/orange"
-                android:text="Recetas" />
+                android:textSize="45dp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleHomeRecetas"

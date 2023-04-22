@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,19 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import Food4One.app.R;
+import Food4One.app.View.MainScreen.ui.Perfil.ScrollPerfil;
 import Food4One.app.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
     ArrayList<ListRecipes> recetasHome = new ArrayList<>();
-
     private FragmentHomeBinding binding;
     private RecyclerView viewRV;
+    private HomeViewModel homeViewModel ;
+    ListRecipesAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+
+        homeViewModel =HomeViewModel.getInstance();
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -34,12 +38,40 @@ public class HomeFragment extends Fragment {
         viewRV = binding.recycleHomeRecetas;
         setupModelRecetasHome();
 
-        ListRecipesAdapter adapter = new ListRecipesAdapter(getContext(), recetasHome);
+        adapter = new ListRecipesAdapter(getContext(), recetasHome);
         viewRV.setAdapter(adapter);
         viewRV.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
+        agregarListeners();
         return root;
+    }
+
+    private void agregarListeners() {
+
+        adapter.setmOnClickListenerHomeSelection(new ListRecipesAdapter.OnClickListenerHomeSelection() {
+            @Override
+            public void onClickHomeSelection(String position) {
+                openSelectionHome(position);
+            }
+        });
+
+
+    }
+
+    private void openSelectionHome(String position) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Selection", position);
+
+        // Create new fragment and transaction
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setReorderingAllowed(true)
+                .addToBackStack("HomeFragChange") ;
+        // Replace whatever is in the fragment_container view with this fragment
+        transaction.replace(R.id.homeViewLayout, RecipeVariety.class, bundle);
+        // Commit the transaction
+        transaction.commit();
     }
 
     public void setupModelRecetasHome(){

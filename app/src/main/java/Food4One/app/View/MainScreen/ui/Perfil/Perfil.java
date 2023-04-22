@@ -171,6 +171,14 @@ public class Perfil extends Fragment {
 
     private void initScrollViewRecipes(int position) {
 
+        //Se carga los procesos que realiza el fragmento...
+        binding.logoutButn.setOnClickListener(view-> {
+            mAuth.signOut();
+            User.logOutUser(); // Vaciamos la clase para volver a llenarla en el LoginAcivity
+            binding.getRoot().getContext().startActivity(
+                    new Intent(binding.getRoot().getContext(), LoginActivity.class));
+        });
+
         Bundle bundle = new Bundle();
         bundle.putInt("RecycleViewPosition", position);
 

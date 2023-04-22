@@ -8,6 +8,7 @@
     >
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/homeSelection"
         android:layout_width="370dp"
         android:layout_height="110dp"
         app:cardCornerRadius="20dp"

@@ -87,13 +87,14 @@ public class ScrollPerfil extends Fragment {
 
                         //Hay que invertir el  orden de las recetas, ya que el recycle view los
                         //va añadiendo como una pila, y no como un array
-                        //Collections.reverse((ArrayList<Recipe>)perfilViewModel.getRecetes().getValue().clone());
+                        ArrayList<Recipe> recetas = new ArrayList<>();
+                        recetas = (ArrayList<Recipe>)perfilViewModel.getRecetes().getValue().clone();
+                        Collections.reverse(recetas);
 
                         // Set the data on the RecyclerView adapter
                         //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles
 
-                        mCardRecetaRVAdapter = new ScrollPerfilAdapter(
-                                perfilViewModel.getRecetes().getValue());
+                        mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas);
 
                         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
 

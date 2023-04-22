@@ -23,4 +23,5 @@ public class RecipesUserApp {
     public void addNewRecipeUserApp(Recipe recipe){
         RecipesUserApp.recetasUser.add(recipe);
     }
+
 }

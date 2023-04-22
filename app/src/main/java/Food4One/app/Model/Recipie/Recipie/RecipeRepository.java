@@ -28,17 +28,14 @@ import Food4One.app.Model.User.User;
 public class RecipeRepository {
 
     private static final String TAG = "Repository";
-
     /**
      * Autoinstància, pel patró singleton
      */
     private static final RecipeRepository mInstance = new RecipeRepository();
-
     /**
      * Referència a la Base de Dades
      */
     private FirebaseFirestore mDb;
-
 
 //----------------------------------------------------------------------------------------------
 
@@ -158,9 +155,7 @@ public class RecipeRepository {
 
     public void loadRecetas(ArrayList<Recipe> recetaUsers) {
         recetaUsers.clear();
-
         //Se cargan todas las recetas de la base de datos...
-
         mDb.collection("Recetas").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -191,16 +186,35 @@ public class RecipeRepository {
     private IngredientesList cargarIngredientes(ArrayList<String> IdIngredientes ) {
 
         ArrayList<Ingrediente> ingredientesList = new ArrayList<>();
-
         for(String ingredienteId : IdIngredientes){
             Ingrediente ingrediente = new Ingrediente(ingredienteId);
             ingredientesList.add(ingrediente);
         }
-
         return new IngredientesList(ingredientesList);
-
     }
 
+    public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection) {
+        mDb.collection("RecetasApp").document(selection)
+                .collection(selection + "Types").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
 
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            Recipe recetaUser = new Recipe(document.getId(),
+                                    document.getString(Recipe.PICTURE_APP_TAG),0,
+                                    cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)),
+                                    (ArrayList<String>) document.get(Recipe.PASOS_APP_TAG)
+                            );
+
+                            recetaUsers.add(recetaUser);
+                        }
+                        /*Luego llamamos a sus listeners*/
+                        for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
+                            l.onLoadRecetas(recetaUsers);
+                        }
+                    }
+                });
+    }
 
 }

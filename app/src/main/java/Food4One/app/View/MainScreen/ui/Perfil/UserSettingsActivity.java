@@ -29,7 +29,6 @@ public class UserSettingsActivity extends AppCompatActivity {
 
         // Conseguimos el objeto viewmodel para relizar operaciones
         userSettingsViewModel = new ViewModelProvider(this).get(UserSettingsViewModel.class);
-
         setObservers();
 
         initLayout();

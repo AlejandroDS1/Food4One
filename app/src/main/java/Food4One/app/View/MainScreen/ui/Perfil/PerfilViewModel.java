@@ -39,10 +39,8 @@ public class PerfilViewModel extends ViewModel {
 
     private final String TAG = "FotosmeActivityViewModel";
     private FirebaseStorage mStorage;
-
     /* Elements observables del ViewModel */
     private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Els usuaris que la RecyclerView mostra al home
-
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
     private final MutableLiveData<String> mText;

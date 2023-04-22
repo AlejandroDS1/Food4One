@@ -16,7 +16,6 @@ public class Ingrediente {
     }
 
     public Ingrediente(String id) {
-
         // Formato del id ~~ nombre | cantidad | magnitud | multiplicador ~~ SIN ESPACIOS
 
         String items[] = id.split("[|]");

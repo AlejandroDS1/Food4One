@@ -23,6 +23,15 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
         this.context = context;
         this.mData = mData;
     }
+    public interface OnClickListenerHomeSelection{
+        void onClickHomeSelection(String position);
+    }
+
+    private OnClickListenerHomeSelection mOnClickListenerHomeSelection;
+
+    public void setmOnClickListenerHomeSelection(OnClickListenerHomeSelection mOnClickListenerHomeSelection) {
+        this.mOnClickListenerHomeSelection = mOnClickListenerHomeSelection;
+    }
 
     @NonNull
     @Override
@@ -34,7 +43,7 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ListRecipesAdapter.ViewHolder holder, int position) {
-        holder.bindData(mData.get(position));
+        holder.bindData(mData.get(position), this.mOnClickListenerHomeSelection);
     }
 
     @Override
@@ -50,11 +59,20 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
             super(itemView);
             this.imageViewRecipe = itemView.findViewById(R.id.imageOfRecipes);
             this.nameViewRecipe = itemView.findViewById(R.id.nameOfRecipes);
+            this.totalCard = itemView.findViewById(R.id.homeSelection);
         }
 
-        public void bindData(ListRecipes item){
+        public void bindData(ListRecipes item, OnClickListenerHomeSelection listenerHomeSelection){
+
             imageViewRecipe.setImageResource(item.getImagen());
             nameViewRecipe.setText(item.getNameRecipeCard());
+            totalCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listenerHomeSelection.onClickHomeSelection(item.getNameRecipeCard());
+                }
+            });
+
         }
     }
 }
