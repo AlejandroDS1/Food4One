@@ -128,7 +128,7 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
         mCorazon.setImageResource(R.drawable.heart_24);
         mrecipeName.setText(recetaUser.getNombre());
         mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
-        mCardDescription.setText(User.getInstance().getUserName()+"  "+ recetaUser.getDescription());
+        mCardDescription.setText(User.getInstance().getUserName() +"  "+ recetaUser.getDescription());
 
         cargarPhotoUserAndRecipe(recetaUser);
         mrecipeName.setOnClickListener(new View.OnClickListener() {

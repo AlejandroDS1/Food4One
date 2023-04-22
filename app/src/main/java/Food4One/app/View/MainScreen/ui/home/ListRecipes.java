@@ -1,7 +1,5 @@
 package Food4One.app.View.MainScreen.ui.home;
 
-import android.widget.ImageView;
-
 public class ListRecipes {
     private int imagen;
     private String nameRecipeCard;

@@ -43,7 +43,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         final Observer<String> alergiasObserver = new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                binding.arrUsrAlergiasSettings.setText(userSettingsViewModel.getAlergiasText().getValue());
+                binding.arrUsrAlergiasSettings.setText(s);
             }
         };
 
@@ -53,7 +53,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         final Observer<String> userNameObserver = new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                binding.userNameSettings.setText(userSettingsViewModel.getUserName().getValue());
+                binding.userNameSettings.setText(s);
             }
         };
         userSettingsViewModel.getUserName().observe(this, userNameObserver);
@@ -62,7 +62,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         final Observer<String> descripcionObserver = new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                binding.descripcionSettings.setText(userSettingsViewModel.getDescription().getValue());
+                binding.descripcionSettings.setText(s);
             }
         };
         userSettingsViewModel.getDescription().observe(this, descripcionObserver);

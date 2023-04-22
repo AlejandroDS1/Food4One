@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.MainScreen.ui.home.RecipeVariety"
-    android:paddingTop="">
+    android:paddingTop="20dp">
 
 
     <ScrollView

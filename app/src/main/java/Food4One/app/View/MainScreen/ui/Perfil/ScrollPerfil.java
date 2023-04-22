@@ -1,29 +1,23 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
-import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
-import Food4One.app.R;
 import Food4One.app.databinding.FragmentScrollPerfilBinding;
 
 public class ScrollPerfil extends Fragment {
@@ -88,7 +82,7 @@ public class ScrollPerfil extends Fragment {
                         //Hay que invertir el  orden de las recetas, ya que el recycle view los
                         //va añadiendo como una pila, y no como un array
                         ArrayList<Recipe> recetas = new ArrayList<>();
-                        recetas = (ArrayList<Recipe>)perfilViewModel.getRecetes().getValue().clone();
+                        recetas = (ArrayList<Recipe>) perfilViewModel.getRecetes().getValue().clone();
                         Collections.reverse(recetas);
 
                         // Set the data on the RecyclerView adapter

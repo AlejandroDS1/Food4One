@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 
 public class UserSettingsViewModel extends ViewModel {
 
@@ -65,8 +66,8 @@ public class UserSettingsViewModel extends ViewModel {
                 for (int i = 0; i < alergias_arr.length; i++)
                     if (selectedAlergies[i]) alergias.add(alergias_arr[i]);
 
-                // Cambiamos las alergias por las nuevas.
-                setAlergias(alergias);
+                // Cambiamos las alergias por las nuevas y las añadimos a la base de datos.
+                UserRepository.getInstance().setUserAlergiasDDB(User.getInstance().getEmail(), alergias, alergiasText);
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -74,10 +75,9 @@ public class UserSettingsViewModel extends ViewModel {
 
                 ArrayList<String> alergias = User.getInstance().getAlergias();
 
-                for (int i = 0; i < alergias_arr.length; i++){
-                    if (alergias.contains(alergias_arr[i])) selectedAlergies[i] = true;
-                    else selectedAlergies[i] = false;
-                }
+                for (int i = 0; i < alergias_arr.length; i++)
+                    selectedAlergies[i] = alergias.contains(alergias_arr[i]);
+
                 dialogInterface.dismiss();
             }
         });
@@ -100,9 +100,16 @@ public class UserSettingsViewModel extends ViewModel {
         build.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // TODO: COMPROVAR QUE SE PUEDE ACEPTAR ESE NOMBRE DE USUARIO. TMB BASE DE DATOS.
-                User.getInstance().setUserName(input.getText().toString());
-                setUserName(input.getText().toString());
+
+                if (User.getInstance().userName.equals(input.getText().toString())) return;
+
+                // Actualizamos el userName en la base de datos.
+                boolean succes = UserRepository.getInstance().setUserNameDDB(User.getInstance().getEmail(),
+                        input.getText().toString());
+
+                // Si el anterior metodo a dado como resultado true, esque se a cambiado el userName correctamente
+                // por lo que podemos actulizar el MutableLiveData para notificar al observer
+                if (succes) userName.setValue(input.getText().toString());
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
@@ -129,10 +136,20 @@ public class UserSettingsViewModel extends ViewModel {
         build.setView(input);
 
         build.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                User.getInstance().setDescripcion(input.getText().toString());
-                setDescription(input.getText().toString());
+
+                if (description.getValue().equals(input.getText().toString())) return;
+
+                UserRepository.getInstance().setUserDescriptionDDB(User.getInstance().getEmail(), input.getText().toString(), description);
+            }
+        });
+
+        build.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
             }
         });
 
@@ -150,15 +167,6 @@ public class UserSettingsViewModel extends ViewModel {
     }
     public void setAlergiasText(String txt){
         this.alergiasText.setValue(txt);
-    }
-
-    private void setAlergias(ArrayList<String> alergias){
-
-        User.getInstance().setAlergias(alergias);
-
-        String _alergias = alergias.toString().substring(1, alergias.toString().length()-1);
-
-        setAlergiasText(_alergias);
     }
 
 

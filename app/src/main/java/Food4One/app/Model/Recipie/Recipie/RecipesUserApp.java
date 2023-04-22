@@ -2,8 +2,6 @@ package Food4One.app.Model.Recipie.Recipie;
 
 import java.util.ArrayList;
 
-import Food4One.app.Model.User.User;
-
 public class RecipesUserApp {
     private static ArrayList<Recipe> recetasUser;
 

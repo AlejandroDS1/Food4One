@@ -1,17 +1,12 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
 
 
-import android.content.Intent;
-
-import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -43,6 +38,9 @@ public class PerfilViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Els usuaris que la RecyclerView mostra al home
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
+
+    private final MutableLiveData<String> mUserName;
+    private final MutableLiveData<String> mDescription;
     private final MutableLiveData<String> mText;
 
     /*Repositori (base de dades) de les recetes-Details*/
@@ -67,6 +65,8 @@ public class PerfilViewModel extends ViewModel {
         mStorage = FirebaseStorage.getInstance();
         mRecetaRepository = RecipeRepository.getInstance();
         mRecetas = new MutableLiveData<>(new ArrayList<>());
+        mUserName = new MutableLiveData<>();
+        mDescription = new MutableLiveData<>();
         mPictureUrl = new MutableLiveData<>();
         mUserRepository = UserRepository.getInstance();
 
@@ -134,11 +134,11 @@ public class PerfilViewModel extends ViewModel {
 
     public void loadIDRecetasUser(String email, User user){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection("Users").document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firestore.collection(User.TAG).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult();
-                ArrayList<String> recetasID = new ArrayList<>((ArrayList<String>) document.get("idRecetasUser"));
+                ArrayList<String> recetasID = new ArrayList<>((ArrayList<String>) document.get(User.IDRECETAS_TAG));
                 for (String id : recetasID)
                     user.addIdReceta(id);
             }
