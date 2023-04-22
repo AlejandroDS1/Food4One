@@ -15,6 +15,7 @@ public class UserSettingsActivity extends AppCompatActivity {
 
     private UserSettingsViewModel userSettingsViewModel;
     private ActivityUserSettingsBinding binding;
+    private PerfilViewModel perfilViewModel;
     private LinearLayout linearLayout;
     boolean [] selectedAlergies;
     String [] alergias_arr;
@@ -29,6 +30,8 @@ public class UserSettingsActivity extends AppCompatActivity {
 
         // Conseguimos el objeto viewmodel para relizar operaciones
         userSettingsViewModel = new ViewModelProvider(this).get(UserSettingsViewModel.class);
+        perfilViewModel = PerfilViewModel.getInstance();
+
         setObservers();
 
         initLayout();
@@ -57,6 +60,7 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         };
         userSettingsViewModel.getUserName().observe(this, userNameObserver);
+        perfilViewModel.getmUserName().observe(this, userNameObserver);
 
         //Observer de la descripcion del usuario
         final Observer<String> descripcionObserver = new Observer<String>() {
@@ -66,6 +70,7 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         };
         userSettingsViewModel.getDescription().observe(this, descripcionObserver);
+        perfilViewModel.getmDescription().observe(this, descripcionObserver);
 
     }
 

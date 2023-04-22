@@ -55,7 +55,6 @@ public class Perfil extends Fragment {
     private PerfilViewModel perfilViewModel;
     private RecyclerView mRecetaCardsRV;
     private RecetaPerfilAdapter mCardRecetaRVAdapter;
-
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser userFirebase;
 
@@ -86,6 +85,7 @@ public class Perfil extends Fragment {
         //Se carga los procesos que realiza el fragmento...
         binding.logoutButn.setOnClickListener(view-> {
             mAuth.signOut();
+            User.logOutUser();
             binding.getRoot().getContext().startActivity(
                     new Intent(binding.getRoot().getContext(), LoginActivity.class));
         });
@@ -112,6 +112,8 @@ public class Perfil extends Fragment {
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
+
+
     }
 
     private void observerObjectsView() {
@@ -125,6 +127,20 @@ public class Perfil extends Fragment {
         };
         perfilViewModel.getRecetes().observe(this.getViewLifecycleOwner(), observerRecetes);
 
+        final Observer<String> observeNameUser = new Observer<String>() {
+            @Override
+            public void onChanged(String name) {
+                binding.nomusuari.setText(name);
+            }
+        };
+        perfilViewModel.getmUserName().observe(this.getActivity(), observeNameUser);
+        final Observer<String> observerDescription = new Observer<String>() {
+            @Override
+            public void onChanged(String description) {
+                binding.decripcionPerfil.setText(description);
+            }
+        };
+        perfilViewModel.getmDescription().observe(this.getActivity(), observerDescription);
     }
 
     private void recycleViewGrid() {
@@ -158,14 +174,6 @@ public class Perfil extends Fragment {
     }
 
     private void initScrollViewRecipes(int position) {
-
-        //Se carga los procesos que realiza el fragmento...
-        binding.logoutButn.setOnClickListener(view-> {
-            mAuth.signOut();
-            User.logOutUser(); // Vaciamos la clase para volver a llenarla en el LoginAcivity
-            binding.getRoot().getContext().startActivity(
-                    new Intent(binding.getRoot().getContext(), LoginActivity.class));
-        });
 
         Bundle bundle = new Bundle();
         bundle.putInt("RecycleViewPosition", position);
