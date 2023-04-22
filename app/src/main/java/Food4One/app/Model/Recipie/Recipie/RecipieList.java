@@ -8,7 +8,6 @@ public class RecipieList implements Serializable {
 
     private ArrayList<Recipe> recipies;
 
-
     public RecipieList(ArrayList<Recipe> recipies) {
         this.recipies = recipies;
     }

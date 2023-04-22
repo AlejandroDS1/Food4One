@@ -1,19 +1,15 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
 
 
-import android.content.Intent;
-
-import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,10 +26,11 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
 import Food4One.app.Model.Recipie.Recipie.RecipeRepository;
+import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
-public class PerfilViewModel extends AndroidViewModel {
+public class PerfilViewModel extends ViewModel {
 
     private final String TAG = "FotosmeActivityViewModel";
     private FirebaseStorage mStorage;
@@ -43,7 +40,6 @@ public class PerfilViewModel extends AndroidViewModel {
 
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
-
     private final MutableLiveData<String> mText;
 
     /*Repositori (base de dades) de les recetes-Details*/
@@ -51,8 +47,15 @@ public class PerfilViewModel extends AndroidViewModel {
     private UserRepository mUserRepository;
     private ProgressBar progressBar;
 
-    public PerfilViewModel(Application application) {
-        super(application);
+    private static PerfilViewModel perfilViewModel;
+
+    public static PerfilViewModel getInstance(){
+        if (perfilViewModel == null) perfilViewModel = new PerfilViewModel();
+        return perfilViewModel;
+    }
+
+
+    public PerfilViewModel() {
 
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fra1gment");
@@ -74,6 +77,7 @@ public class PerfilViewModel extends AndroidViewModel {
             @Override
             public void onLoadRecetas(ArrayList<Recipe> recetas) {
                 PerfilViewModel.this.setRecetes(recetas);
+                RecipesUserApp.setRecetasUser(recetas);
             }
         });
 
@@ -105,7 +109,7 @@ public class PerfilViewModel extends AndroidViewModel {
             @Override
             public void OnLoadUserPictureUrl(String pictureUrl) {
                 //Si hay una foto en la base de datos la cambiamos, sino, dejamos la predeterminada
-                if(pictureUrl!=null) mPictureUrl.setValue(pictureUrl);
+                if(pictureUrl != null) mPictureUrl.setValue(pictureUrl);
             }
         });
     }
@@ -150,9 +154,6 @@ public class PerfilViewModel extends AndroidViewModel {
         mUsers.setValue(users);
     }
 
-    public void loadPictureOfReceta() {
-        mRecetaRepository.loadPictureOfReceta();
-    }
 
 
     public void loadPictureOfUser(String email){ mUserRepository.loadPictureOfUser(email);}
@@ -162,7 +163,7 @@ public class PerfilViewModel extends AndroidViewModel {
     }
 
     public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){
-        mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
+         mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
     }
     public void setPictureUrlOfUser(String userId, Uri imageUri) {
 

@@ -9,6 +9,7 @@ import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
 public class Recipe {
     private String idUser;
     private String nombre;
+    private String Description;
     private ArrayList<String> pasos;
     private IngredientesList ingredientes;
     private ArrayList<Alergias> alergias; // TODO: HASMAP CON NOMBRES -> POSIBLE OPTIMIZACION EN UN FUTURO.
@@ -42,6 +43,7 @@ public class Recipe {
     public String getPictureURL() {  return pictureURL; }
     public int getLikes() { return likes; }
     public String getIdUser(){return idUser;}
+    public String getDescription(){ return Description; }
 
     //---------------SETTERS----------------------------------------
     public void setNombre(String nombre) { this.nombre = nombre;  }
@@ -49,6 +51,8 @@ public class Recipe {
     public void setIngredientes(IngredientesList ingredientes){ this.ingredientes = ingredientes; }
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
     public void setLikes(int likes) { this.likes = likes; }
+    public void setIdUser(String idUser){ this.idUser = idUser; }
+    public void setDescription(String description){ Description = description; }
 
     //REMOVE
     public boolean removeAlergias(Alergias alergia){
