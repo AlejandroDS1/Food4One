@@ -86,6 +86,7 @@ public class Perfil extends Fragment {
         //Se carga los procesos que realiza el fragmento...
         binding.logoutButn.setOnClickListener(view-> {
             mAuth.signOut();
+            User.logOutUser();
             binding.getRoot().getContext().startActivity(
                     new Intent(binding.getRoot().getContext(), LoginActivity.class));
         });
@@ -159,14 +160,6 @@ public class Perfil extends Fragment {
 
     private void initScrollViewRecipes(int position) {
 
-        //Se carga los procesos que realiza el fragmento...
-        binding.logoutButn.setOnClickListener(view-> {
-            mAuth.signOut();
-            User.logOutUser(); // Vaciamos la clase para volver a llenarla en el LoginAcivity
-            binding.getRoot().getContext().startActivity(
-                    new Intent(binding.getRoot().getContext(), LoginActivity.class));
-        });
-
         Bundle bundle = new Bundle();
         bundle.putInt("RecycleViewPosition", position);
 
@@ -189,8 +182,7 @@ public class Perfil extends Fragment {
     private void cargarUsuarioDeBaseDatos() {
         User userInfo = User.getInstance();
         binding.nomusuari.setText(userInfo.getUserName());
-        binding.emailPerfil.setText(userInfo.getEmail());
-        binding.decripcionPerfil.setText(userInfo.getDescripcion());
+        binding.descripcionPerfil.setText(userInfo.getDescripcion());
 
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
         if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario

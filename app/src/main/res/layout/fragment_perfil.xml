@@ -5,7 +5,6 @@
     android:id="@+id/perfilFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".View.MainScreen.ui.Perfil.Perfil">
 
     <ScrollView
@@ -28,17 +27,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="45dp"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
 
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:layout_gravity="right|bottom"
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="10dp"
@@ -58,9 +63,10 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_marginLeft="90dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="25dp"
+                        android:layout_marginTop="10dp"
                         app:cardCornerRadius="65dp">
 
                         <ImageView
@@ -71,53 +77,57 @@
                             android:src="@mipmap/ic_launcher_foreground" />
 
                     </androidx.cardview.widget.CardView>
+
                 </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nomusuari"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:text="Your User Name"
+                        android:textColor="@color/naranjaclaro"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Descripcion"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"/>
+
+
+                <TextView
+                    android:id="@+id/descripcionPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="left"
+                    android:layout_gravity="left"
+                    android:text="Your Description"
+                    android:textSize="14sp"
+                    android:textColor="@color/naranjaclaro"
+                    android:textStyle="italic" />
+
+                </LinearLayout>
+
             </LinearLayout>
+
+        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:gravity="right"
-                    android:text="Usuario: "
-                    android:textColor="@color/common_google_signin_btn_text_light"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/nomusuari"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="@color/common_google_signin_btn_text_light"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Email: "
-                    android:textColor="@color/common_google_signin_btn_text_light"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/emailPerfil"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/common_google_signin_btn_text_light" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -150,21 +160,11 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/decripcionPerfil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="10dp"
-                android:text=""
-                android:textColor="@color/common_google_signin_btn_text_light"
-                android:textStyle="italic" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fotosperfil_RV"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp">
 
             </androidx.recyclerview.widget.RecyclerView>
 

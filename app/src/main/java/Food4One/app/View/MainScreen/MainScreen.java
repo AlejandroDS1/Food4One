@@ -17,7 +17,6 @@ import Food4One.app.databinding.ActivityMainScreenBinding;
 
 public class MainScreen extends AppCompatActivity {
     private ActivityMainScreenBinding binding;
-    private User user;
 
     private MainScreenViewModel mainScreenViewModel;
 

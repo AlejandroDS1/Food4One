@@ -13,6 +13,7 @@ public class RecipesUserApp {
     public static ArrayList<Recipe> getRecetasUser() {
         return recetasUser;
     }
+    public static void removeSingleton(){ recetasUser = null; }
 
     public static void setRecetasUser(ArrayList<Recipe> recetasUser) {
         RecipesUserApp.recetasUser = recetasUser;
