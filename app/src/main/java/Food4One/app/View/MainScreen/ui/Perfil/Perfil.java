@@ -197,7 +197,6 @@ public class Perfil extends Fragment {
     private void cargarUsuarioDeBaseDatos() {
         User userInfo = User.getInstance();
         binding.nomusuari.setText(userInfo.getUserName());
-        binding.emailPerfil.setText(userInfo.getEmail());
         binding.decripcionPerfil.setText(userInfo.getDescripcion());
 
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());

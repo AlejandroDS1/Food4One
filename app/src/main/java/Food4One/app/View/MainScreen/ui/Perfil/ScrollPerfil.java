@@ -98,10 +98,10 @@ public class ScrollPerfil extends Fragment {
                                 .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                                     @Override
                                     public boolean onPreDraw(){
-                                        mRecetaCardsRV.setFocusable(focusSelection);
                                         parentView.getViewTreeObserver()
                                                 .removeOnPreDrawListener(this);
                                         startPostponedEnterTransition();
+                                        mRecetaCardsRV.scrollToPosition(focusSelection);
                                         return true;
                                     }
                         });
