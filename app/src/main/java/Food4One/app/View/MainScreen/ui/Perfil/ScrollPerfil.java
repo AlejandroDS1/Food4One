@@ -90,10 +90,8 @@ public class ScrollPerfil extends Fragment {
                         //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles
 
                         mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas);
-
                         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
-
-                        mRecetaCardsRV.scrollToPosition(focusSelection);
+                        mRecetaCardsRV.scrollToPosition((recetas.size() - focusSelection)-1);
 
                         // Start the transition once all views have been
                         // measured and laid out

@@ -4,23 +4,23 @@
     <item
         android:id="@+id/navigation_newRecipie"
         android:icon="@drawable/explorer_food4one_24"
-        android:title="@string/nuevaReceta" />
+        android:title="" />
 
     <item
         android:id="@+id/navigation_recipies"
         android:icon="@drawable/restaurant_menu"
-        android:title="@string/title_home" />
+        android:title="" />
 
     <item
         android:id="@+id/navigation_explore"
-        android:title="@string/title_explore"/>
+        android:title=""/>
     <item
         android:id="@+id/navigation_coleccion"
         android:icon="@drawable/bookmark_24"
-        android:title="@string/title_colecciones" />
+        android:title="" />
     <item
         android:id="@+id/navigation_perfil"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="@string/title_perfil" />
+        android:title="" />
 
 </menu>

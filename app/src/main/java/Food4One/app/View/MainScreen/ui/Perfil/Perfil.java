@@ -275,7 +275,8 @@ public class Perfil extends Fragment {
     private void initEditPerfilWindow() {
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                ;
         transaction.setReorderingAllowed(true)
                 .addToBackStack("PerfilFragChange") ;
         // Replace whatever is in the fragment_container view with this fragment
