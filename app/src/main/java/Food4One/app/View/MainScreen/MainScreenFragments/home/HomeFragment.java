@@ -1,5 +1,6 @@
-package Food4One.app.View.MainScreen.ui.home;
+package Food4One.app.View.MainScreen.MainScreenFragments.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import Food4One.app.R;
-import Food4One.app.View.MainScreen.ui.Perfil.ScrollPerfil;
 import Food4One.app.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -55,13 +54,15 @@ public class HomeFragment extends Fragment {
                 openSelectionHome(position);
             }
         });
-
-
     }
 
     private void openSelectionHome(String position) {
-        Bundle bundle = new Bundle();
-        bundle.putString("Selection", position);
+
+        if (position.equalsIgnoreCase("Surprise me")){
+            startActivity(new Intent(getContext(), RotateActivity.class));
+        }
+
+        homeViewModel.loadRecetasApp(position);
 
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -69,7 +70,7 @@ public class HomeFragment extends Fragment {
         transaction.setReorderingAllowed(true)
                 .addToBackStack("HomeFragChange") ;
         // Replace whatever is in the fragment_container view with this fragment
-        transaction.replace(R.id.homeViewLayout, RecipeVariety.class, bundle);
+        transaction.replace(R.id.homeViewLayout, new RecipeVariety());
         // Commit the transaction
         transaction.commit();
     }

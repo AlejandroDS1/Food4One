@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.Perfil;
+package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -70,11 +70,11 @@ public class Perfil extends Fragment {
         //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
         cargarUsuarioDeBaseDatos();
 
-        clickListenerObjectsView();
+        recycleViewGrid();//Instancia del Recycle View(Grid) que contendrá las recetas
 
+        clickListenerObjectsView();
         setTakeCameraPictureListener(mTakePictureButton);
 
-        recycleViewGrid();//Instancia del Recycle View(Grid) que contendrá las recetas
         observerObjectsView();
 
         return root;
@@ -112,8 +112,6 @@ public class Perfil extends Fragment {
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
-
-
     }
 
     private void observerObjectsView() {
@@ -154,7 +152,7 @@ public class Perfil extends Fragment {
 
         //Luego instanciamos el Adapter de las fotos
         mCardRecetaRVAdapter = new RecetaPerfilAdapter(
-                perfilViewModel.getRecetes().getValue() );
+                perfilViewModel.getRecetes().getValue());
 
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
@@ -290,7 +288,7 @@ public class Perfil extends Fragment {
     public void onResume() {
         super.onResume();
         //Pequeño tiempo antes de borrar la barra de Cargando...
-        try { Thread.sleep(700); } catch (InterruptedException e) { throw new RuntimeException(e);}
+        //try { Thread.sleep(700); } catch (InterruptedException e) { throw new RuntimeException(e);}
         binding.progressBarPerfil.setVisibility(View.GONE);
     }
 

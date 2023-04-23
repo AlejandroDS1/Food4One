@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/perfilFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.ui.Perfil.Perfil">
+    tools:context=".View.MainScreen.MainScreenFragments.Perfil.Perfil">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="60dp">
+        android:layout_marginBottom="55dp">
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -27,7 +28,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
             <LinearLayout
@@ -119,8 +120,7 @@
                                 android:textSize="14sp"
                                 android:textStyle="italic" />
 
-                    </LinearLayout>
-
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -165,12 +165,13 @@
                 android:id="@+id/fotosperfil_RV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:paddingLeft="3dp">
+                android:layout_marginHorizontal="5dp">
+
 
             </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar

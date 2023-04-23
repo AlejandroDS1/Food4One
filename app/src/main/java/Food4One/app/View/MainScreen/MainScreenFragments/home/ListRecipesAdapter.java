@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.home;
+package Food4One.app.View.MainScreen.MainScreenFragments.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,6 +18,8 @@ import Food4One.app.R;
 public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.ViewHolder> {
     Context context;
     private ArrayList<ListRecipes> mData;
+    private OnClickListenerHomeSelection mOnClickListenerHomeSelection;
+
 
     public ListRecipesAdapter(Context context, ArrayList<ListRecipes> mData) {
         this.context = context;
@@ -26,8 +28,6 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
     public interface OnClickListenerHomeSelection{
         void onClickHomeSelection(String position);
     }
-
-    private OnClickListenerHomeSelection mOnClickListenerHomeSelection;
 
     public void setmOnClickListenerHomeSelection(OnClickListenerHomeSelection mOnClickListenerHomeSelection) {
         this.mOnClickListenerHomeSelection = mOnClickListenerHomeSelection;
@@ -66,6 +66,15 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
 
             imageViewRecipe.setImageResource(item.getImagen());
             nameViewRecipe.setText(item.getNameRecipeCard());
+            // TODO: ESTA PARTE DE CODIGO ES SOLO PARA PROBAR LA RULETA DE JULIA
+            if (item.getNameRecipeCard().equalsIgnoreCase("Surprise me")) {
+                totalCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listenerHomeSelection.onClickHomeSelection(item.getNameRecipeCard());
+                    }
+                });
+            }
             totalCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

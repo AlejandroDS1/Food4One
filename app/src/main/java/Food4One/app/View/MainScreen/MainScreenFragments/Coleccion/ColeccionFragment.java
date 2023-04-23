@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.NewRecipie;
+package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import Food4One.app.databinding.FragmentNewRecipieBinding;
+import Food4One.app.databinding.FragmentColeccionBinding;
 
-public class NewRecipieFragment extends Fragment {
+public class ColeccionFragment extends Fragment {
 
-    private FragmentNewRecipieBinding binding;
-
+    private FragmentColeccionBinding binding;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NewRecipieViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NewRecipieViewModel.class);
+        ColeccionViewModel coleccionViewModel =
+                new ViewModelProvider(this).get(ColeccionViewModel.class);
 
-        binding = FragmentNewRecipieBinding.inflate(inflater, container, false);
+        binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textDashboard;
+        coleccionViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

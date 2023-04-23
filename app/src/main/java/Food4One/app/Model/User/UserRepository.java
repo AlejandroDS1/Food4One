@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Food4One.app.View.MainScreen.ui.Perfil.Perfil;
-import Food4One.app.View.MainScreen.ui.Perfil.PerfilViewModel;
+import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model

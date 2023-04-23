@@ -1,9 +1,8 @@
-package Food4One.app.View.MainScreen.ui.Perfil;
+package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -82,7 +81,7 @@ public class PerfilViewModel extends ViewModel {
         mUserRepository.setOnLoadUserDescription(new UserRepository.OnLoadUserDescriptionListener() {
             @Override
             public void OnLoadUserDescription(String description) {
-                PerfilViewModel.this.setUserDescription(description);
+                setUserDescription(description);
             }
         });
     }

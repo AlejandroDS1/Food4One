@@ -23,7 +23,6 @@ import Food4One.app.Model.User.User;
  * Segueix el patró de disseny Singleton.
  */
 public class RecipeRepository {
-
     private static final String TAG = "Repository";
     /**
      * Autoinstància, pel patró singleton
@@ -45,6 +44,7 @@ public class RecipeRepository {
     }
 
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
+
 //-----------------------------------------------------------------------------------------------
 
     /**
@@ -55,6 +55,11 @@ public class RecipeRepository {
     public interface OnLoadRecetaPictureUrlListener {
         void OnLoadRecetaPictureUrl(String pictureUrl);
     }
+
+    public interface OnLoadRecetaAppListener{
+        void OnLoadRecetaApp(ArrayList<Recipe> recetas);
+    }
+    public OnLoadRecetaAppListener onLoadRecetaAppListener;
 
     public OnLoadRecetaPictureUrlListener mOnLoadRecetaPictureUrlListener;
 //-------------------------------------------------------------------------------------------------
@@ -89,6 +94,11 @@ public class RecipeRepository {
     public void addOnLoadRecetaListener(OnLoadRecetaListener listener) {
         mOnloadRecetaListeners.add(listener);
     }
+
+    public void addOnLoadRecetaAppListener(OnLoadRecetaAppListener listenr){
+        this.onLoadRecetaAppListener = listenr;
+    }
+
 //-------------------------------------------------------------------------------------------------
 
     /**
@@ -116,12 +126,12 @@ public class RecipeRepository {
         while (iterator.hasNext()) {
 
             String idReceta = (String) iterator.next();
-            mDb.collection("Recetas").document(idReceta).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            mDb.collection(Recipe.TAG).document(idReceta).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
-                    cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
+                    cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG));
                     recetaUser.setNombre(documentSnapshot.getId());
                     recetaUser.setIdUser(userID);
                     //---------------------------------------------------------------------------
@@ -129,8 +139,8 @@ public class RecipeRepository {
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
 
-                    /*Cuando se consigan todas las recetas del usuario, se llaman a los listeners
-                    para que puedan cargar las recetas al RecycleView*/
+                    //Cuando se consigan todas las recetas del usuario, se llaman a los listeners
+                    //para que puedan cargar las recetas al RecycleView
                     if (recetaUsers.size() == idRecetasUser.size())
                         onLoadRecetasListenerMethod();
                 }
@@ -147,13 +157,14 @@ public class RecipeRepository {
                 }
             });
         }
+
     }
 
 
     public void loadRecetas(ArrayList<Recipe> recetaUsers) {
         recetaUsers.clear();
         //Se cargan todas las recetas de la base de datos...
-        mDb.collection("Recetas").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        mDb.collection(Recipe.TAG).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot document: queryDocumentSnapshots) {
@@ -164,7 +175,7 @@ public class RecipeRepository {
                     Recipe recetaUser = new Recipe(document.getId(),
                             document.getString("pictureURL"),
                             Integer.parseInt(document.getString("likes")),
-                            cargarIngredientes((ArrayList<String>) document.get("Ingredientes")),
+                            cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)),
                             (ArrayList<String>) document.get("pasos")
                     );
                     recetaUsers.add(recetaUser);
@@ -206,6 +217,7 @@ public class RecipeRepository {
 
                             recetaUsers.add(recetaUser);
                         }
+
                         /*Luego llamamos a sus listeners*/
                         for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
                             l.onLoadRecetas(recetaUsers);

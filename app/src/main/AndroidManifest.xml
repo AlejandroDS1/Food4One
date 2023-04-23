@@ -17,11 +17,14 @@
         tools:targetApi="31" >
 
         <activity
-            android:name=".View.MainScreen.ui.Perfil.UserSettingsActivity"
+            android:name=".View.MainScreen.MainScreenFragments.Perfil.UserSettingsActivity"
             android:exported="false"
             android:label="UserSettingsActivity"
             android:screenOrientation="portrait"/>
-
+        <activity android:name=".View.MainScreen.MainScreenFragments.home.RotateActivity"
+            android:exported="false"
+            android:label="RotateActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".View.MainScreen.MainScreen"
             android:exported="false"

@@ -8,10 +8,11 @@ import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
 
 public class Recipe {
 
+    public static final String TAG = "Recetas";
     public static final String PICTURE_APP_TAG = "PictureURL";
     public static final String DESCRIPTION_APP_TAG = "Description";
     public static final String PASOS_APP_TAG = "Pasos";
-    public static final String INGREDIENTES_APP_TAG = "Ingrendientes";
+    public static final String INGREDIENTES_APP_TAG = "Ingredientes";
 
     private String idUser;
     private String nombre;

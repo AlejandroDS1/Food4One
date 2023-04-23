@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.Perfil;
+package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.view.LayoutInflater;
 import android.view.View;
