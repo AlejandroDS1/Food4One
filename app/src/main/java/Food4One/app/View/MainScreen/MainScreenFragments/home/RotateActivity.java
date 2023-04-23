@@ -1,11 +1,12 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.home;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import Food4One.app.R;
 

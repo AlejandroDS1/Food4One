@@ -1,27 +1,31 @@
-package Food4One.app.Model.Recipie.Recipie;
+package Food4One.app.Model.Recipe.Recipe;
 
 
 import java.util.ArrayList;
 
 import Food4One.app.Model.Alergias;
-import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
 public class Recipe {
 
+<<<<<<< HEAD:app/src/main/java/Food4One/app/Model/Recipie/Recipie/Recipe.java
     public static final String TAG = "Recetas";
     public static final String PICTURE_APP_TAG = "PictureURL";
     public static final String DESCRIPTION_APP_TAG = "Description";
     public static final String PASOS_APP_TAG = "Pasos";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
 
+=======
+>>>>>>> Mar:app/src/main/java/Food4One/app/Model/Recipe/Recipe/Recipe.java
     private String idUser;
     private String nombre;
-    private String Description;
-    private ArrayList<String> pasos;
     private IngredientesList ingredientes;
     private ArrayList<Alergias> alergias; // TODO: HASMAP CON NOMBRES -> POSIBLE OPTIMIZACION EN UN FUTURO.
-    private String pictureURL;
+    private String pictureURL; //MAYBE UN ARRAY PORQUE HAY VARIAS IMAGENES
+    private String Description;
     private int likes;
+    private ArrayList<String> pasos;
+
     // TODO: COMO IMPLEMENTAR LOS PASOS. NOTES
     // ATRIBUTOS OPCIONALES E IDEAS A IMPLEMETNTAR
     // Nivel
@@ -34,14 +38,30 @@ public class Recipe {
             int likes,
             final IngredientesList ingredientes,
             final ArrayList<String> pasos
-            )
+    )
     {
-            this.nombre = nombre;
-            this.pictureURL = pictureURL;
-            this.likes = likes;
-            this.ingredientes = ingredientes;
-            this.pasos = pasos;
+        this.nombre = nombre;
+        this.pictureURL = pictureURL;
+        this.likes = likes;
+        this.ingredientes = ingredientes;
+        this.pasos = pasos;
     }
+
+
+    /**
+     * Constructor Dummy
+     */
+
+    public Recipe(String nombre, IngredientesList ingredientes, String pictureURL, String Description, int likes, ArrayList<String> pasos) {
+        this.nombre = nombre;
+        this.ingredientes = ingredientes;
+        this.pictureURL = pictureURL;
+        this.Description = Description;
+        this.likes = likes;
+        this.pasos = pasos;
+    }
+
+    //Getters
 
     //------------..-GETTERS-----------------------------
     public String getNombre() { return nombre;}

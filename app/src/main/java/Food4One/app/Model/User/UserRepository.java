@@ -69,7 +69,7 @@ public class UserRepository {
     }
 
     /**
-     * Retorna aqusta instancia singleton
+     * Retorna aquesta instancia singleton
      * @return
      */
     public static UserRepository getInstance() {

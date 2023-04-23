@@ -10,7 +10,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import Food4One.app.Model.User.User;
 import Food4One.app.R;
 import Food4One.app.ViewModel.MainScreenViewModel;
 import Food4One.app.databinding.ActivityMainScreenBinding;

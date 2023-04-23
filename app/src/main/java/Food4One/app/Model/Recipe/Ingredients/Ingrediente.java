@@ -1,4 +1,4 @@
-package Food4One.app.Model.Recipie.Ingredients;
+package Food4One.app.Model.Recipe.Ingredients;
 
 public class Ingrediente {
     private String name;

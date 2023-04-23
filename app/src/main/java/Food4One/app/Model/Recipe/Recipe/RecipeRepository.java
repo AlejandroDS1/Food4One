@@ -1,4 +1,4 @@
-package Food4One.app.Model.Recipie.Recipie;
+package Food4One.app.Model.Recipe.Recipe;
 
 
 import android.util.Log;
@@ -15,8 +15,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import Food4One.app.Model.Recipie.Ingredients.Ingrediente;
-import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
+import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -37,7 +37,7 @@ public class RecipeRepository {
 
     /**
      * Definició de listener (interficie),
-     * per escoltar quan s'hagin acabat de llegir les recetes de la BBDD
+     * per escoltar quan s'hagin acabat de llegir les receptes de la BBDD
      */
     public interface OnLoadRecetaListener {
         void onLoadRecetas(ArrayList<Recipe> recetas);
@@ -131,8 +131,13 @@ public class RecipeRepository {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
+<<<<<<< HEAD:app/src/main/java/Food4One/app/Model/Recipie/Recipie/RecipeRepository.java
                     cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG));
                     recetaUser.setNombre(documentSnapshot.getId());
+=======
+                    cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
+                    recetaUser.setNombre(documentSnapshot.getId().split("@")[0]);
+>>>>>>> Mar:app/src/main/java/Food4One/app/Model/Recipe/Recipe/RecipeRepository.java
                     recetaUser.setIdUser(userID);
                     //---------------------------------------------------------------------------
 
@@ -190,7 +195,7 @@ public class RecipeRepository {
     }
 
     /*Se supone que el IdIngredientes jamás será nulo, porque siempre habrá como mínimo un ingrediente
-    * Si aparece un error aquí, es porque no han colocado ningún ingrediente en la base de datos...*/
+     * Si aparece un error aquí, es porque no han colocado ningún ingrediente en la base de datos...*/
     private IngredientesList cargarIngredientes(ArrayList<String> IdIngredientes ) {
 
         ArrayList<Ingrediente> ingredientesList = new ArrayList<>();
@@ -201,6 +206,7 @@ public class RecipeRepository {
         return new IngredientesList(ingredientesList);
     }
 
+<<<<<<< HEAD:app/src/main/java/Food4One/app/Model/Recipie/Recipie/RecipeRepository.java
     public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection) {
         mDb.collection("RecetasApp").document(selection)
                 .collection(selection + "Types").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -227,3 +233,6 @@ public class RecipeRepository {
     }
 
 }
+=======
+}
+>>>>>>> Mar:app/src/main/java/Food4One/app/Model/Recipe/Recipe/RecipeRepository.java

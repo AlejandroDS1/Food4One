@@ -3,7 +3,6 @@ package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.net.Uri;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -23,16 +22,24 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
-import Food4One.app.Model.Recipie.Recipie.Recipe;
-import Food4One.app.Model.Recipie.Recipie.RecipeRepository;
-import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
+import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
 public class PerfilViewModel extends ViewModel {
 
     private final String TAG = "FotosmeActivityViewModel";
+<<<<<<< HEAD:app/src/main/java/Food4One/app/View/MainScreen/MainScreenFragments/Perfil/PerfilViewModel.java
     private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Els usuaris que la RecyclerView mostra al home
+=======
+    private FirebaseStorage mStorage;
+
+    /* Elements observables del ViewModel */
+    private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Les receptes que la RecyclerView mostra al perfil
+
+>>>>>>> Mar:app/src/main/java/Food4One/app/View/MainScreen/ui/Perfil/PerfilViewModel.java
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
     private final MutableLiveData<String> mUserName;
@@ -183,6 +190,7 @@ public class PerfilViewModel extends ViewModel {
     public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){
          mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
     }
+
     public void setPictureUrlOfUser(String userId, Uri imageUri) {
 
         StorageReference storageRef = mStorage.getReference();
