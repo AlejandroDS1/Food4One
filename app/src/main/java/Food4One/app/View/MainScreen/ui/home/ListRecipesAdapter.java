@@ -18,6 +18,8 @@ import Food4One.app.R;
 public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.ViewHolder> {
     Context context;
     private ArrayList<ListRecipes> mData;
+    private OnClickListenerHomeSelection mOnClickListenerHomeSelection;
+
 
     public ListRecipesAdapter(Context context, ArrayList<ListRecipes> mData) {
         this.context = context;
@@ -26,8 +28,6 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
     public interface OnClickListenerHomeSelection{
         void onClickHomeSelection(String position);
     }
-
-    private OnClickListenerHomeSelection mOnClickListenerHomeSelection;
 
     public void setmOnClickListenerHomeSelection(OnClickListenerHomeSelection mOnClickListenerHomeSelection) {
         this.mOnClickListenerHomeSelection = mOnClickListenerHomeSelection;

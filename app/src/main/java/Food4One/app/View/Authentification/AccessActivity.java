@@ -2,11 +2,9 @@ package Food4One.app.View.Authentification;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,21 +25,22 @@ public class AccessActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //Animación entrada de App (Splash)----------------------------------------------------------
+        /*
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.desplazar_abajo);
-        CardView logoApp = findViewById(R.id.logoSplashView);
+        FrameLayout logoApp = findViewById(R.id.logo_splashView);
         logoApp.setAnimation(animation);
 
-        activityCorrespondent();
-        /*
+
+         */
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 //Si el usuario ya se registró en la App y ya hizo un login anteriormente, ya puede acceder
                 //directamente al navegador Home...
                 activityCorrespondent();
-                finish();
+                //finish();
             }
-        }, 500);*/
+        }, 1000);
     }
 
     public void activityCorrespondent() {
@@ -55,8 +54,4 @@ public class AccessActivity extends AppCompatActivity {
             startActivity(new Intent(AccessActivity.this, MainScreen.class));
         }
     }
-
-
-
-
 }
