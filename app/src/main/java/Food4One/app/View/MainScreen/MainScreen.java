@@ -1,10 +1,8 @@
 package Food4One.app.View.MainScreen;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,31 +30,13 @@ public class MainScreen extends AppCompatActivity {
         // Conseguimos el Layout con el binding
         binding = ActivityMainScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().hide();
 
         init();
-        prueba();
-    }
-
-    private void prueba(){
-
-        // Conseguimos el user desde el intent que hemos pasado
-        user = (User) getIntent().getSerializableExtra(User.TAG);
-
-        // Tendriamos que crear al mainScreenViewModel y pasarle el User
-        //mainScreenViewModel = new ViewModelProvider(this).get(MainScreenViewModel.class);
-        //mainScreenViewModel.setUser(user);
-
-        /*TextView t = findViewById(R.id.DebugText);
-
-        if (user == null){
-            t.setText("User is null");
-            return;
-        }
-
-        t.setText("El user name es: " + user.getUserName() + "\nDebugText");*/
 
     }
     private void init(){
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         // Passing each menu ID as a set of Ids because each
@@ -65,10 +45,8 @@ public class MainScreen extends AppCompatActivity {
                 R.id.navigation_newRecipie, R.id.navigation_recipies, R.id.navigation_explore, R.id.navigation_coleccion, R.id.navigation_perfil)
                 .build();
 
-        getSupportActionBar().hide();
 
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_screen);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_mainscreen);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 

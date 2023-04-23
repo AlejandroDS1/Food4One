@@ -3,6 +3,8 @@ package Food4One.app.Model.User;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,6 +17,8 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
@@ -87,7 +91,7 @@ public class UserRepository {
      */
     public void loadUsers(ArrayList<User> users){
         users.clear();
-        mDb.collection("Users")
+        mDb.collection(User.TAG)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -96,9 +100,9 @@ public class UserRepository {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 User user = new User(
-                                        document.getString("Name"),
+                                        document.getString(User.NAME_TAG),
                                         document.getString("Email"),
-                                        (ArrayList<String>) document.get("idRecetasUser")
+                                        (ArrayList<String>) document.get(User.ALERGIAS_TAG)
                                 );
                                 users.add(user);
                             }
@@ -119,7 +123,7 @@ public class UserRepository {
      * invocant el seu OnLoadUserPictureUrl.
      */
     public void loadPictureOfUser(String email) {
-        mDb.collection("Users")
+        mDb.collection(User.TAG)
                 .document(email)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -127,7 +131,7 @@ public class UserRepository {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
-                                mOnLoadUserPictureUrlListener.OnLoadUserPictureUrl(document.getString("PictureUser"));
+                                mOnLoadUserPictureUrlListener.OnLoadUserPictureUrl(document.getString(User.PICTUREURL_TAG));
                             } else {
                                 Log.d("LOGGER", "No such document");
                             }
@@ -145,17 +149,21 @@ public class UserRepository {
      * @param firstName
      */
     public void addUser(
-            String email,
-            String firstName
+            String firstName,
+            String email
     ) {
         // Obtenir informació personal de l'usuari
         Map<String, Object> signedUpUser = new HashMap<>();
-        signedUpUser.put("Name", firstName);
+        signedUpUser.put(User.ALERGIAS_TAG, new ArrayList<String>());
+        signedUpUser.put(User.NAME_TAG, firstName);
         signedUpUser.put("Email", email);
-        signedUpUser.put("PictureUser", null);
+        signedUpUser.put(User.DESCRIPCION_TAG, " ");
+        signedUpUser.put(User.IDRECETAS_TAG, new ArrayList<String>());
+        signedUpUser.put(User.IDCOLLECTIONS_TAG, new ArrayList<String>());
+        signedUpUser.put(User.PICTUREURL_TAG, null);
 
         // Afegir-la a la base de dades
-        mDb.collection("Users").document(email).set(signedUpUser)
+        mDb.collection(User.TAG).document(email).set(signedUpUser)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -176,9 +184,9 @@ public class UserRepository {
      */
     public void setPictureUrlOfUser(String userId, String pictureUrl) {
         Map<String, Object> userEntry = new HashMap<>();
-        userEntry.put("PictureUser", pictureUrl);
+        userEntry.put(User.PICTUREURL_TAG, pictureUrl);
 
-        mDb.collection("Users")
+        mDb.collection(User.TAG)
                 .document(userId)
                 .set(userEntry, SetOptions.merge())
                 .addOnSuccessListener(documentReference -> {
@@ -187,5 +195,78 @@ public class UserRepository {
                 .addOnFailureListener(exception -> {
                     Log.d(TAG, "Photo upload failed: " + pictureUrl);
                 });
+    }
+
+    public boolean setUserNameDDB(String email, String userName){
+
+        HashMap<String, String> store = new HashMap<>();
+        store.put(User.NAME_TAG, userName);
+
+        mDb.collection(User.TAG).document(email).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
+                    User.getInstance().setUserName(userName);
+        });
+
+        // Comprovamos si ha entrado en el OnSucces, si retorna falso es porque no se ha subido a base de datos.
+        return !User.getInstance().userName.equals(userName);
+    }
+
+
+
+    // TODO: Si podemos mejorar el paso por parametro de un MutableLiveData mejor
+    // Se puede utilizar pasandole un null sino se utiliza para actualizar el texto de UserSettings
+    public void setUserDescriptionDDB(String email, String description, @Nullable MutableLiveData<String> mdescription){
+
+        HashMap<String, String> store = new HashMap<>();
+        store.put(User.DESCRIPCION_TAG, description);
+
+        mDb.collection(User.TAG).document(email)
+                .set(store, SetOptions.merge())
+                .addOnSuccessListener(succesListener -> {
+                    if (mdescription != null)
+                        mdescription.setValue(description);
+
+                    User.getInstance().setDescripcion(description);
+                });
+    }
+
+    public void setUserAlergiasDDB(String email, ArrayList<String> alergias, @Nullable MutableLiveData<String> alergiasTxt) {
+
+        HashMap<String, ArrayList<String>> store = new HashMap<>();
+        store.put(User.ALERGIAS_TAG, alergias);
+
+        mDb.collection(User.TAG).document(email)
+                .set(store, SetOptions.merge())
+                .addOnSuccessListener(succesListener -> {
+                    if (alergiasTxt != null){
+                        // Creamos el texto que tenemos que poner en alergiasTxt y lo cambiamos.
+                        // Por defecto el ArrayListObject.toString() da como resultado [ Item1, Item2...] Aqui quitamos los "[]"
+                        String _alergias = alergias.toString().substring(1, alergias.toString().length()-1);
+                        alergiasTxt.setValue(_alergias);
+                    }
+                    User.getInstance().setAlergias(alergias);
+                });
+    }
+
+    public void loadUserFromDDB(String email){
+        mDb.collection(User.TAG).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+
+                    User user = User.getInstance(document.getString(User.NAME_TAG), email);
+
+                    user.setAlergias((ArrayList<String>) document.get(User.ALERGIAS_TAG));
+
+                    user.setDescripcion(document.getString(User.DESCRIPCION_TAG));
+
+                    user.setProfilePictureURL(document.getString(User.PICTUREURL_TAG));
+
+                    user.setIdCollections((ArrayList<String>) document.get(User.IDCOLLECTIONS_TAG));
+
+                    user.setIdRecetas((ArrayList<String>) document.get(User.IDRECETAS_TAG));
+                }
+            }
+        });
     }
 }

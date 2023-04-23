@@ -1,131 +1,282 @@
 package Food4One.app.View.MainScreen.ui.Perfil;
 
-import static android.content.ContentValues.TAG;
-
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import Food4One.app.Model.Recipie.Recipie.Recipe;
+import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
+import Food4One.app.Model.User.User;
 import Food4One.app.R;
+import Food4One.app.View.Authentification.LoginActivity;
 import Food4One.app.databinding.FragmentPerfilBinding;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * create an instance of this fragment.
+ */
 public class Perfil extends Fragment {
 
+    private final String TAG = "Perfil_Fragment";
     private FragmentPerfilBinding binding;
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private ImageView mTakePictureButton;//Editar la foto del Perfil
+    private ImageView mLoggedPictureUser;//Foto del Usuario
+    private Uri mPhotoUri;
+    private PerfilViewModel perfilViewModel;
+    private RecyclerView mRecetaCardsRV;
+    private RecetaPerfilAdapter mCardRecetaRVAdapter;
 
-    private DocumentReference userInformation = FirebaseFirestore.getInstance()
-            .document("Users/"+auth.getCurrentUser().getEmail());
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser userFirebase;
 
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
 
-    //Para guardar la información del Usuario en el perfil
-
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        PerfilViewModel perfilViewModel =
-                new ViewModelProvider(this).get(PerfilViewModel.class);
-
-
+        userFirebase= mAuth.getCurrentUser();
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        perfilViewModel = PerfilViewModel.getInstance();
 
-        // perfilViewModel.cargarWindowProfile(userInformation, binding);
+        cargarObjectsView();
+        //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
+        cargarUsuarioDeBaseDatos();
 
-        //Se carga los procesos que realiza el fragmento...
-        binding.logoutButn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                perfilViewModel.logoutButton(binding);
-            }
-        });
+        clickListenerObjectsView();
 
-        binding.editarPerfilBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //perfilViewModel.editarButton(binding);
-                Toast.makeText(getContext(), "Unimplemented", Toast.LENGTH_SHORT).show();
-                //TODO: Todavia hay que añadir pero es pruebastartActivity(new Intent(getActivity(), EditarPerfilActivity.class));
-            }
-        });
+        setTakeCameraPictureListener(mTakePictureButton);
 
+        recycleViewGrid();//Instancia del Recycle View(Grid) que contendrá las recetas
+        observerObjectsView();
 
-        final Observer<String> observerPerfil = new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                //perfilViewModel.cargarWindowProfile(userInformation, binding);
-            }
-        };
-
-        perfilViewModel.getText().observe(this.getViewLifecycleOwner(), observerPerfil );
         return root;
     }
 
-    public void cargarWindowProfile(DocumentReference userInformation){
+    private void clickListenerObjectsView() {
 
-        binding.progressBarPerfil.getIndeterminateDrawable()
-                .setColorFilter(getResources().getColor(R.color.orange), PorterDuff.Mode.SRC_IN);
+        //Se carga los procesos que realiza el fragmento...
+        binding.logoutButn.setOnClickListener(view-> {
+            mAuth.signOut();
+            binding.getRoot().getContext().startActivity(
+                    new Intent(binding.getRoot().getContext(), LoginActivity.class));
+        });
 
-        //Debo obtener la información del usuario del Cloud FireBase...
-        userInformation.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        binding.editarPerfilBtn.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity().getApplicationContext(), UserSettingsActivity.class));
+        });
+
+        binding.avatarusuario.setOnClickListener(v->{
+            initEditPerfilWindow();
+        });
+
+        /*-------------------------------------------------------------------------------------*/
+
+        //Si tenim un usuari logat, alashores pot tenir una foto de Perfil...
+
+        final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
-            /*Como parámetro recibe el Documento donde debería estar la información del usuario,
-            si es que existe*/
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    binding.nomusuari.setText(documentSnapshot.getString("Name"));
+            public void onChanged(String pictureUrl) {
+                Picasso.get()
+                        .load(pictureUrl).resize(200, 200)
+                        .into(mLoggedPictureUser);
+                User.getInstance().setProfilePictureURL(pictureUrl);
+            }
+        };
+        perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
+    }
+
+    private void observerObjectsView() {
+        // Observer a Perfil per veure si la llista de Receta (observable MutableLiveData)
+        // a PerfilViewModel ha canviat.
+        final Observer<ArrayList<Recipe>> observerRecetes= new Observer<ArrayList<Recipe>>() {
+            @Override
+            public void onChanged(ArrayList<Recipe> recetas) {
+                mCardRecetaRVAdapter.notifyDataSetChanged();
+            }
+        };
+        perfilViewModel.getRecetes().observe(this.getViewLifecycleOwner(), observerRecetes);
+
+    }
+
+    private void recycleViewGrid() {
+        mRecetaCardsRV = binding.getRoot().findViewById(R.id.fotosperfil_RV);
+
+        //Ahora le definimos un Manager Grid
+        GridLayoutManager manager = new GridLayoutManager(
+                this.getContext(), GridLayoutManager.VERTICAL);
+        manager.setSpanCount(3); //Number of columns.
+        mRecetaCardsRV.setLayoutManager(manager);
+
+        //Luego instanciamos el Adapter de las fotos
+        mCardRecetaRVAdapter = new RecetaPerfilAdapter(
+                perfilViewModel.getRecetes().getValue() );
+
+        //Para las operaciones de las imagenes en el perfil...
+        mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
+            @Override
+            public void OnClickDetail(int position) {
+                //Al clicar se abrirá un nuevo Fragment
+                initScrollViewRecipes(position);
+            }
+        });
+
+        mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
+    }
+
+    private void cargarObjectsView() {
+        mLoggedPictureUser = binding.avatarusuario;
+        mTakePictureButton = binding.photobuttomPerfil;
+    }
+
+    private void initScrollViewRecipes(int position) {
+
+        //Se carga los procesos que realiza el fragmento...
+        binding.logoutButn.setOnClickListener(view-> {
+            mAuth.signOut();
+            User.logOutUser(); // Vaciamos la clase para volver a llenarla en el LoginAcivity
+            binding.getRoot().getContext().startActivity(
+                    new Intent(binding.getRoot().getContext(), LoginActivity.class));
+        });
+        Bundle bundle = new Bundle();
+        bundle.putInt("RecycleViewPosition", position);
+
+        // Create new fragment and transaction
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setReorderingAllowed(true)
+                .addToBackStack("PerfilFragChange") ;
+        // Replace whatever is in the fragment_container view with this fragment
+        transaction.replace(R.id.perfilFragment, ScrollPerfil.class, bundle);
+        // Commit the transaction
+        transaction.commit();
+
+    }
+    /**
+     * Por ahora este método sólo carga el nombre, email y la descripción del Usuario, si queremos
+     * guardar más datos del usuario, ya sea su edad, hobbies, o gustos culinarios, lo guardaríamos
+     * en la base de datos y lo cargaríamos con este método...
+     */
+    private void cargarUsuarioDeBaseDatos() {
+        User userInfo = User.getInstance();
+        binding.nomusuari.setText(userInfo.getUserName());
+        binding.emailPerfil.setText(userInfo.getEmail());
+        binding.decripcionPerfil.setText(userInfo.getDescripcion());
+
+        perfilViewModel.loadPictureOfUser(userInfo.getEmail());
+        if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+            perfilViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas());
+    }
+
+
+    private void setTakeCameraPictureListener(@NonNull View takePictureView) {
+        // Codi que s'encarrega de rebre el resultat de l'intent de fer foto des de càmera
+        // i que es llençarà des del listener que definirem a baix.
+        ActivityResultLauncher<Intent> takePictureLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            perfilViewModel.setPictureUrlOfUser(
+                                    userFirebase.getEmail(), mPhotoUri
+                            );
+                        }
+                    }
                 }
+        );
+        // Listener del botó de fer foto, que llençarà l'intent amb l'ActivityResultLauncher.
+        takePictureView.setOnClickListener(view -> {
+            // Crearem un nom de fitxer d'imatge temporal amb una data i hora i format JPEG
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            // Anem a buscar el directori extern (del sistema) especificat per la variable
+            // d'entorn Environment.DIRECTORY_PICTURES (pren per valor "Pictures").
+            // Se li afageix, com a sufix, el directori del sistema on es guarden els fitxers.
+
+            File storageDir = this.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+            // Creem el fitxer
+            File image = null;
+            try {
+                image = File.createTempFile(
+                        imageFileName,  /* Prefix */
+                        ".jpg",         /* Sufix */
+                        storageDir      /* Directori on es guarda la imatge */
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding Document", e);
-            }
+
+            // Recuperem la Uri definitiva del fitxer amb FileProvider (obligatori per seguretat)
+            // Per a fer-ho:
+            // 1. Especifiquem a res>xml>paths.xml el directori on es guardarà la imatge
+            //    de manera definitiva.
+            // 2. Afegir al manifest un provider que apunti a paths.xml del pas 1
+            Uri photoUri = FileProvider.getUriForFile(this.getContext(),
+                    "Food4One.app.fileprovider",
+                    image);
+
+            // Per tenir accés a la URI de la foto quan es llenci l'intent de la camara.
+            // Perquè encara que li passem la photoUri com a dades extra a l'intent, aquestes
+            // no tornen com a resultat de l'Intent.
+            mPhotoUri = photoUri;
+
+            // Llancem l'intent amb el launcher declarat al començament d'aquest mateix mètode
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mPhotoUri);
+            takePictureLauncher.launch(intent);
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        binding.progressBarPerfil.setVisibility(View.VISIBLE);
-        //cargarWindowProfile(userInformation);
+
+    private void initEditPerfilWindow() {
+        // Create new fragment and transaction
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setReorderingAllowed(true)
+                .addToBackStack("PerfilFragChange") ;
+        // Replace whatever is in the fragment_container view with this fragment
+        transaction.replace(R.id.perfilFragment, new EditarPerfilScreen());
+        // Commit the transaction
+        transaction.commit();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-
-        try{
-            Thread.sleep(600);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        //Pequeño tiempo antes de borrar la barra de Cargando...
+        try { Thread.sleep(700); } catch (InterruptedException e) { throw new RuntimeException(e);}
         binding.progressBarPerfil.setVisibility(View.GONE);
-
     }
-
 
 }
