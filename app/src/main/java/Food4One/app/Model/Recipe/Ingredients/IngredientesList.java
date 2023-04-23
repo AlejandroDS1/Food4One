@@ -1,4 +1,4 @@
-package Food4One.app.Model.Recipie.Ingredients;
+package Food4One.app.Model.Recipe.Ingredients;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import Food4One.app.R;
+import Food4One.app.databinding.FragmentShoppingListBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +28,8 @@ public class ShoppingListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private FragmentShoppingListBinding binding;
+
     public ShoppingListFragment() {
         // Required empty public constructor
     }
@@ -34,33 +38,32 @@ public class ShoppingListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ShoppingListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ShoppingListFragment newInstance(String param1, String param2) {
+    public static ShoppingListFragment newInstance() {
         ShoppingListFragment fragment = new ShoppingListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopping_list, container, false);
+        binding = FragmentShoppingListBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+
+
+        binding.listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //binding.listView.rem
+                return false;
+            }
+        });
+        return root; //inflater.inflate(R.layout.fragment_shopping_list, container, false);
     }
 }

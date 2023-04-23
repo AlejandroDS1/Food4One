@@ -53,9 +53,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         //Observer del userName
         final Observer<String> userNameObserver = new Observer<String>() {
             @Override
-            public void onChanged(String s) {
-                binding.userNameSettings.setText(s);
-            }
+            public void onChanged(String s) { binding.userNameSettings.setText(s); }
         };
         userSettingsViewModel.getUserName().observe(this, userNameObserver);
 

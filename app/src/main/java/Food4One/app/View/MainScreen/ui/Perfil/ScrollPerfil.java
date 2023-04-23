@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import Food4One.app.Model.Recipie.Recipie.Recipe;
+import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.databinding.FragmentScrollPerfilBinding;
 
 public class ScrollPerfil extends Fragment {

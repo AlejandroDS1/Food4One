@@ -46,7 +46,7 @@ public class EditarPerfilScreen extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        binding= FragmentEditarPerfilScreenBinding.inflate(inflater, container, false);
+        binding = FragmentEditarPerfilScreenBinding.inflate(inflater, container, false);
 
         perfilViewModel = PerfilViewModel.getInstance();
 

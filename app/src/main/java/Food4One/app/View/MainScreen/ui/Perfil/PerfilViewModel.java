@@ -24,9 +24,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
-import Food4One.app.Model.Recipie.Recipie.Recipe;
-import Food4One.app.Model.Recipie.Recipie.RecipeRepository;
-import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
+import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
@@ -36,7 +36,7 @@ public class PerfilViewModel extends ViewModel {
     private FirebaseStorage mStorage;
 
     /* Elements observables del ViewModel */
-    private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Els usuaris que la RecyclerView mostra al home
+    private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Les receptes que la RecyclerView mostra al perfil
 
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
@@ -165,6 +165,7 @@ public class PerfilViewModel extends ViewModel {
     public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){
          mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
     }
+
     public void setPictureUrlOfUser(String userId, Uri imageUri) {
 
         StorageReference storageRef = mStorage.getReference();

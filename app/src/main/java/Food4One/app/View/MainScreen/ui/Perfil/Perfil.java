@@ -34,8 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import Food4One.app.Model.Recipie.Recipie.Recipe;
-import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
+import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
