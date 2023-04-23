@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="28dp"
     android:paddingBottom="15dp"
-    tools:context=".View.MainScreen.ui.home.HomeFragment">
+    tools:context=".View.MainScreen.MainScreenFragments.home.HomeFragment">
 
     <ScrollView
         android:layout_width="match_parent"

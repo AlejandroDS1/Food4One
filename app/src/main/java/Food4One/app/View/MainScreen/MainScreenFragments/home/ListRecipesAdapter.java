@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.home;
+package Food4One.app.View.MainScreen.MainScreenFragments.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -66,6 +66,15 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
 
             imageViewRecipe.setImageResource(item.getImagen());
             nameViewRecipe.setText(item.getNameRecipeCard());
+            // TODO: ESTA PARTE DE CODIGO ES SOLO PARA PROBAR LA RULETA DE JULIA
+            if (item.getNameRecipeCard().equalsIgnoreCase("Surprise me")) {
+                totalCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listenerHomeSelection.onClickHomeSelection(item.getNameRecipeCard());
+                    }
+                });
+            }
             totalCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

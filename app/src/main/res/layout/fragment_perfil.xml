@@ -6,7 +6,7 @@
     android:id="@+id/perfilFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.ui.Perfil.Perfil">
+    tools:context=".View.MainScreen.MainScreenFragments.Perfil.Perfil">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -94,10 +94,11 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="15dp"
                         android:text="Your User Name"
-                        android:textColor="@color/naranjaclaro"
-                        android:textSize="18sp"
+                        android:textColor="@color/orange"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
+                    <!--
                     <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,13 +106,13 @@
                     android:text="Descripcion"
                     android:textSize="15sp"
                     android:textColor="@color/white"/>
-
+                    -->
 
                 <TextView
                     android:id="@+id/descripcionPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="15dp"
                     android:gravity="left"
                     android:layout_gravity="left"
@@ -165,7 +166,7 @@
                 android:id="@+id/fotosperfil_RV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="5dp">
+                android:layout_marginHorizontal="5dp">
 
             </androidx.recyclerview.widget.RecyclerView>
 

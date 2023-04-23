@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.home;
+package Food4One.app.View.MainScreen.MainScreenFragments.home;
 
 public class ListRecipes {
     private int imagen;

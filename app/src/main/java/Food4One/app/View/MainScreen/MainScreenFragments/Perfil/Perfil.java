@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.Perfil;
+package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -112,8 +112,6 @@ public class Perfil extends Fragment {
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
-
-
     }
 
     private void observerObjectsView() {

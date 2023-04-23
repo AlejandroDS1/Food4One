@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.Perfil;
+package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,7 +107,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
         public static class ViewHolder extends RecyclerView.ViewHolder {
             private final ImageView mCardRecetaPictureUrl;
             private final TextView mCardNumberLikes;
-
             private final ImageView mCorazon;
             FrameLayout recipeCard;
 

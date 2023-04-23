@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.Coleccion;
+package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

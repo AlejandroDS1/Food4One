@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.Explore;
+package Food4One.app.View.MainScreen.MainScreenFragments.Explore;
 
 import androidx.lifecycle.ViewModel;
 

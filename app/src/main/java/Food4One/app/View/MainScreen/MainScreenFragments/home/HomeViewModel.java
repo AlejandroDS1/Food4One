@@ -1,4 +1,4 @@
-package Food4One.app.View.MainScreen.ui.home;
+package Food4One.app.View.MainScreen.MainScreenFragments.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipie.Recipie.Recipe;
 import Food4One.app.Model.Recipie.Recipie.RecipeRepository;
-import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
-import Food4One.app.View.MainScreen.ui.Perfil.PerfilViewModel;
 
 public class HomeViewModel extends ViewModel {
 
@@ -21,8 +19,6 @@ public class HomeViewModel extends ViewModel {
     private RecipeRepository mRecetasRepository;
 
     private FirebaseStorage mStorage;
-
-
     private static HomeViewModel perfilViewModel;
 
     public static HomeViewModel getInstance(){
@@ -43,7 +39,7 @@ public class HomeViewModel extends ViewModel {
         mRecetasRepository.addOnLoadRecetaListener(new RecipeRepository.OnLoadRecetaListener() {
             @Override
             public void onLoadRecetas(ArrayList<Recipe> recetas) {
-                HomeViewModel.this.setRecetes(recetas);
+                setRecetes(recetas);
             }
         });
     }
