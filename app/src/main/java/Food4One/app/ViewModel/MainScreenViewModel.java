@@ -17,6 +17,8 @@ public class MainScreenViewModel extends ViewModel{
 
     private MutableLiveData<ArrayList<User>> allUsers;
 
+
+
     public MainScreenViewModel(){
 
         this.user = new MutableLiveData<>();

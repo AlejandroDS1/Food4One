@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".View.MainScreen.MainScreenFragments.NewRecipe.NewRecipeFragment">
 
+    <!-- Mar ->     tools:context=".View.MainScreen.ui.NewRecipe.NewRecipeFragment">
+-->
+
     <TextView
         android:id="@+id/text_notifications"
         android:layout_width="match_parent"

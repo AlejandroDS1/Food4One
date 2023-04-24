@@ -1,4 +1,4 @@
-package Food4One.app.Model.Recipie.Recipie;
+package Food4One.app.Model.Recipe.Recipe;
 
 
 import android.util.Log;
@@ -15,29 +15,33 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import Food4One.app.Model.Recipie.Ingredients.Ingrediente;
-import Food4One.app.Model.Recipie.Ingredients.IngredientesList;
+import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
  */
 public class RecipeRepository {
+
     private static final String TAG = "Repository";
+
     /**
      * Autoinstància, pel patró singleton
      */
     private static final RecipeRepository mInstance = new RecipeRepository();
+
     /**
      * Referència a la Base de Dades
      */
     private FirebaseFirestore mDb;
 
+
 //----------------------------------------------------------------------------------------------
 
     /**
      * Definició de listener (interficie),
-     * per escoltar quan s'hagin acabat de llegir les recetes de la BBDD
+     * per escoltar quan s'hagin acabat de llegir les receptes de la BBDD
      */
     public interface OnLoadRecetaListener {
         void onLoadRecetas(ArrayList<Recipe> recetas);
@@ -146,12 +150,12 @@ public class RecipeRepository {
                 }
             });
         }
-
     }
 
 
     public void loadRecetas(ArrayList<Recipe> recetaUsers) {
         recetaUsers.clear();
+
         //Se cargan todas las recetas de la base de datos...
         mDb.collection(Recipe.TAG).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -183,11 +187,14 @@ public class RecipeRepository {
     private IngredientesList cargarIngredientes(ArrayList<String> IdIngredientes ) {
 
         ArrayList<Ingrediente> ingredientesList = new ArrayList<>();
+
         for(String ingredienteId : IdIngredientes){
             Ingrediente ingrediente = new Ingrediente(ingredienteId);
             ingredientesList.add(ingrediente);
         }
+
         return new IngredientesList(ingredientesList);
+
     }
 
     public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection) {

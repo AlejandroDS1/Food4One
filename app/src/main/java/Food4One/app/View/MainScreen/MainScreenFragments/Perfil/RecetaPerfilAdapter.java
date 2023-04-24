@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import Food4One.app.Model.Recipie.Recipie.Recipe;
+import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.R;
 
 public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapter.ViewHolder> {
