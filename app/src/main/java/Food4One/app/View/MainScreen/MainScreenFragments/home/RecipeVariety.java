@@ -13,7 +13,6 @@ import Food4One.app.databinding.FragmentRecipeVarietyBinding;
 public class RecipeVariety extends Fragment {
     private FragmentRecipeVarietyBinding binding;
     HomeViewModel homeViewModel;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -57,8 +57,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void openSelectionHome(String position) {
+
         if (position.equalsIgnoreCase("Surprise me")){
             startActivity(new Intent(getContext(), RotateActivity.class));
+            return;
         }
 
         Bundle bundle = new Bundle();

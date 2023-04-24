@@ -1,13 +1,20 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
+import android.app.Activity;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -30,11 +37,18 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
 
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
     private OnClickDetailListener mOnClickHideListener; // Qui hagi de repintar la ReciclerView
+    public static int screenWidth = 10;
 
     // quan s'amagui
     // Constructor
-    public RecetaPerfilAdapter(ArrayList<Recipe> recetaList) {
+    public RecetaPerfilAdapter(ArrayList<Recipe> recetaList, Activity activity) {
         this.mRecetes = recetaList; // no fa new (La llista la manté el ViewModel)
+
+        // Conseguimos el grosor de la pantalla para determinar automaticamente el tamaño de la imagen (CardsViews)
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenWidth = displayMetrics.widthPixels/3 - 8; // -3 para dejar pixeles de espaciado entre imagenes
 
     }
 
@@ -57,6 +71,7 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
     /* Mètode cridat per cada ViewHolder de la RecyclerView */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         // El ViewHolder té el mètode que s'encarrega de llegir els atributs del User (1r parametre),
         // i assignar-los a les variables del ViewHolder.
         // Qualsevol listener que volguem posar a un item, ha d'entrar com a paràmetre extra (2n).
@@ -109,6 +124,7 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
             private final TextView mCardNumberLikes;
             private final ImageView mCorazon;
             FrameLayout recipeCard;
+            private final CardView recipieCardView;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -117,6 +133,7 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 this.mCardNumberLikes = itemView.findViewById(R.id.likesPicture);
                 this.mCorazon = itemView.findViewById(R.id.corazonCard);
                 this.recipeCard  = itemView.findViewById(R.id.recipephotoProfile);
+                this.recipieCardView = itemView.findViewById(R.id.cardRecetas);
 
             }
 
@@ -125,11 +142,22 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 //mCorazon.setVisibility(View.VISIBLE);
                 mCorazon.setImageResource(R.drawable.heart_24);
 
+                // Modificamos el cardView para que tenga el tamaño que queremos.
+                GridLayoutManager.LayoutParams layoutParams= (GridLayoutManager.LayoutParams) recipieCardView.getLayoutParams();
+                layoutParams.width = RecetaPerfilAdapter.screenWidth;
+                layoutParams.height = RecetaPerfilAdapter.screenWidth;
+
+
+                int resize = (int) (RecetaPerfilAdapter.screenWidth - (RecetaPerfilAdapter.screenWidth / 3));
+
+                recipieCardView.setLayoutParams(layoutParams);
+
                 mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
                 // Carrega foto de l'usuari de la llista directament des d'una Url
                 // d'Internet.
                 Picasso.get().load(recetaUser.getPictureURL())
-                        .resize(200, 200)
+                        // El resize lo hacemos a la screenWidth -
+                        .resize(resize, resize)
                         .centerCrop().into(mCardRecetaPictureUrl);
                 // Seteja el listener onClick del botó d'amagar (hide), que alhora
                 // cridi el mètode OnClickHide que implementen els nostres propis

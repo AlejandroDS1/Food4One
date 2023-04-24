@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,7 +153,7 @@ public class Perfil extends Fragment {
 
         //Luego instanciamos el Adapter de las fotos
         mCardRecetaRVAdapter = new RecetaPerfilAdapter(
-                perfilViewModel.getRecetes().getValue());
+                perfilViewModel.getRecetes().getValue(), getActivity());
 
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
