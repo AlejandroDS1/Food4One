@@ -30,6 +30,13 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src\\main\\res', 'src\\main\\res\\layout\\coleccion', 'src\\main\\res\\coleccions', 'src\\main\\res\\layouts\\coleccions', 'src\\main\\res\\colecciones\\colecciones'
+            }
+        }
+    }
 }
 
 dependencies {

@@ -1,16 +1,15 @@
-package Food4One.app.View.MainScreen.ui.Coleccion;
+package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
@@ -22,9 +21,9 @@ import Food4One.app.databinding.FragmentShoppingListBinding;
  */
 public class ShoppingListFragment extends Fragment {
 
-   private TextView BtnSaved;
-   private TextView BtnList;
-
+    public static final String TAG = "ShoppingListFragment";
+    private TextView BtnSaved;
+    private TextView BtnList;
     private FragmentShoppingListBinding binding;
 
     public ShoppingListFragment() {
@@ -57,13 +56,6 @@ public class ShoppingListFragment extends Fragment {
 
         clickListenerObjectsView();
 
-        binding.listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //binding.listView.remove
-                return false;
-            }
-        });
         return root;
     }
 

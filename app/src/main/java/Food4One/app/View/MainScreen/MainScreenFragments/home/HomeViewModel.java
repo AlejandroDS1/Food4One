@@ -8,8 +8,8 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
-import Food4One.app.Model.Recipie.Recipie.Recipe;
-import Food4One.app.Model.Recipie.Recipie.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 
 public class HomeViewModel extends ViewModel {
 

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,16 +66,15 @@ public class Perfil extends Fragment {
         View root = binding.getRoot();
         perfilViewModel = PerfilViewModel.getInstance();
 
+        clickListenerObjectsView();
+        observerObjectsView();
         cargarObjectsView();
         //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
         cargarUsuarioDeBaseDatos();
 
         recycleViewGrid();//Instancia del Recycle View(Grid) que contendrá las recetas
 
-        clickListenerObjectsView();
         setTakeCameraPictureListener(mTakePictureButton);
-
-        observerObjectsView();
 
         return root;
     }

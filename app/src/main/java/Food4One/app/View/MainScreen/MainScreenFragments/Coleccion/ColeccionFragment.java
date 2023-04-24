@@ -73,7 +73,7 @@ public class ColeccionFragment extends Fragment {
                 //Nova instància del fragment a iniciar
                 FragmentManager fM = getActivity().getSupportFragmentManager();
                 FragmentTransaction fT = fM.beginTransaction();
-                fT.setReorderingAllowed(true).addToBackStack("ShoppingListFragment"); //Permet tirar enrere
+                fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
                 fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
                 fT.commit();
             }

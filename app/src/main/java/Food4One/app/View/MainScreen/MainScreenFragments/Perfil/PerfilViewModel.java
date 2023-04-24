@@ -3,6 +3,7 @@ package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;

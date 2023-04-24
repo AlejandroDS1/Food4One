@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.ui.Coleccion.ShoppingListFragment"
-    android:background="@color/orange">
+    tools:context=".View.MainScreen.MainScreenFragments.Coleccion.ShoppingListFragment"
+    android:background="@color/GrisOscuro">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView">
+        android:layout_height="match_parent"
+        android:id="@+id/shooping_recyclerView"/>
 
-    </ListView>
 
 </RelativeLayout>
