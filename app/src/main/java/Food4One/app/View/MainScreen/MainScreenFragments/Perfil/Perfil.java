@@ -66,14 +66,14 @@ public class Perfil extends Fragment {
         View root = binding.getRoot();
         perfilViewModel = PerfilViewModel.getInstance();
 
-        clickListenerObjectsView();
-        observerObjectsView();
-        cargarObjectsView();
-        //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
         cargarUsuarioDeBaseDatos();
+        cargarObjectsView();
 
         recycleViewGrid();//Instancia del Recycle View(Grid) que contendrá las recetas
+        observerObjectsView();
+        //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
 
+        clickListenerObjectsView();
         setTakeCameraPictureListener(mTakePictureButton);
 
         return root;
