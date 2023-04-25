@@ -56,21 +56,22 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void openSelectionHome(String position) {
+    private void openSelectionHome(String seleccion) {
 
-        if (position.equalsIgnoreCase("Surprise me")){
+        if (seleccion.equalsIgnoreCase("Surprise me")){
             startActivity(new Intent(getContext(), RotateActivity.class));
         }
-
-        homeViewModel.loadRecetasApp(position);
-
+        Bundle bundle = new Bundle();
+        bundle.putString("HomeSelection", seleccion);
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setReorderingAllowed(true)
                 .addToBackStack("HomeFragChange") ;
-        // Replace whatever is in the fragment_container view with this fragment
-        transaction.replace(R.id.homeViewLayout, new RecipeVariety());
+
+        //Remplazamos el fragmento del Home con la Selección que se ha cargado
+        //También le pasamos al nuevo fragmento la selección para que sepa su camino por BBD
+        transaction.replace(R.id.homeViewLayout, RecipeVarietyFragment.class, bundle);
         // Commit the transaction
         transaction.commit();
     }
@@ -79,7 +80,6 @@ public class HomeFragment extends Fragment {
         String [] recetasName = getResources().getStringArray(R.array.nombreRecetasHome);
         int [] recetasImage = {R.drawable.barbacoa_photo, R.drawable.pasta_image,R.drawable.bocatas_photo, R.drawable.arroz_photo,
         R.drawable.cakes_photo, R.drawable.bebidas_photo, R.drawable.surpriseme};
-
         for (int i=0; i < recetasName.length; i++){
             recetasHome.add(new ListRecipes(recetasName[i], recetasImage[i]));
         }

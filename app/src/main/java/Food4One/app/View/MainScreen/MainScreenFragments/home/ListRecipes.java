@@ -8,20 +8,19 @@ public class ListRecipes {
         this.imagen = imagen;
         this.nameRecipeCard = nameRecipeCard;
     }
+    public ListRecipes(){}
 
     public int getImagen() {
         return imagen;
     }
-
-    public void setImagen(int imagen) {
-        this.imagen = imagen;
-    }
-
     public String getNameRecipeCard() {
         return nameRecipeCard;
     }
 
     public void setNameRecipeCard(String nameRecipeCard) {
         this.nameRecipeCard = nameRecipeCard;
+    }
+    public void setImagen(int imagen) {
+        this.imagen = imagen;
     }
 }

@@ -25,6 +25,7 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
         this.context = context;
         this.mData = mData;
     }
+
     public interface OnClickListenerHomeSelection{
         void onClickHomeSelection(String position);
     }

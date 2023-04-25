@@ -8,15 +8,11 @@ import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
 public class Recipe {
 
-<<<<<<< HEAD:app/src/main/java/Food4One/app/Model/Recipie/Recipie/Recipe.java
     public static final String TAG = "Recetas";
     public static final String PICTURE_APP_TAG = "PictureURL";
     public static final String DESCRIPTION_APP_TAG = "Description";
     public static final String PASOS_APP_TAG = "Pasos";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
-
-=======
->>>>>>> Mar:app/src/main/java/Food4One/app/Model/Recipe/Recipe/Recipe.java
     private String idUser;
     private String nombre;
     private IngredientesList ingredientes;

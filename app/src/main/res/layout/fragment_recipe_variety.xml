@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.MainScreenFragments.home.RecipeVariety"
-    android:paddingTop="20dp">
+    tools:context=".View.MainScreen.MainScreenFragments.home.RecipeVarietyFragment"
+    android:paddingTop="20dp"
+    android:background="@color/black">
 
 
     <ScrollView
@@ -17,13 +18,15 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/titleTypes"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:textSize="24dp"
-                android:text="Selecciona Una Barbacoa" />
+                android:text=" "
+                android:textColor="@color/orange"
+                android:textSize="24dp" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleViewVariety"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

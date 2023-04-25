@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,18 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Food4One"
         tools:targetApi="31">
-
-        tools:targetApi="31" >
-
+        <activity
+            android:name=".DoRecipe"
+            android:exported="false" />
         <activity
             android:name=".View.MainScreen.MainScreenFragments.Perfil.UserSettingsActivity"
             android:exported="false"
             android:label="UserSettingsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".View.MainScreen.MainScreenFragments.home.RotateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.MainScreen.MainScreenFragments.home.RotateActivity"
             android:exported="false"
             android:label="RotateActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".View.MainScreen.MainScreen"
             android:exported="false"
@@ -43,9 +44,9 @@
         <activity
             android:name=".View.Authentification.LoginActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".View.Authentification.AccessActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.Authentification.AccessActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,7 +59,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="Food4One.app.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/paths" /> <!-- Reemplaza con el nombre de tu archivo XML de recursos -->

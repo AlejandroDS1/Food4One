@@ -19,6 +19,14 @@ import Food4One.app.R;
 
 public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapter.ViewHolder> {
 
+    private OnClickDetailListener mOnClickHideListener; // Qui hagi de repintar la ReciclerView
+    private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
+
+    // quan s'amagui
+    // Constructor
+    public RecetaPerfilAdapter(ArrayList<Recipe> recetaList) {
+        this.mRecetes = recetaList; // no fa new (La llista la manté el ViewModel)
+    }
     /**
      * Definició de listener (interficie)
      * per a quan algú vulgui escoltar un event de OnClickHide, és a dir,
@@ -26,16 +34,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
      */
     public interface OnClickDetailListener {
         void OnClickDetail(int position);
-    }
-
-    private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
-    private OnClickDetailListener mOnClickHideListener; // Qui hagi de repintar la ReciclerView
-
-    // quan s'amagui
-    // Constructor
-    public RecetaPerfilAdapter(ArrayList<Recipe> recetaList) {
-        this.mRecetes = recetaList; // no fa new (La llista la manté el ViewModel)
-
     }
 
     public void setOnClickDetailListener(OnClickDetailListener listener) {
@@ -117,7 +115,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 this.mCardNumberLikes = itemView.findViewById(R.id.likesPicture);
                 this.mCorazon = itemView.findViewById(R.id.corazonCard);
                 this.recipeCard  = itemView.findViewById(R.id.recipephotoProfile);
-
             }
 
             public void bind(final Recipe recetaUser, OnClickDetailListener listener) {

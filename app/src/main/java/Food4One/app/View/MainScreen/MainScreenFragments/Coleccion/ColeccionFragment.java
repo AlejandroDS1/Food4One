@@ -60,12 +60,21 @@ public class ColeccionFragment extends Fragment {
         binding.BtnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.BtnList.setElevation(10);                binding.BtnSaved.setElevation(0);
                 //Nova instància del fragment a iniciar
                 FragmentManager fM = getActivity().getSupportFragmentManager();
                 FragmentTransaction fT = fM.beginTransaction();
                 fT.setReorderingAllowed(true).addToBackStack("ShoppingListFragment"); //Permet tirar enrere
                 fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
                 fT.commit();
+            }
+        });
+        
+        binding.BtnSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.BtnSaved.setElevation(20);  binding.BtnList.setElevation(0);
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
             }
         });
     }

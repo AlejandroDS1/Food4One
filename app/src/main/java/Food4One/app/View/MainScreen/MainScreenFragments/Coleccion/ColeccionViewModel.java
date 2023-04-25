@@ -26,9 +26,9 @@ public class ColeccionViewModel extends ViewModel {
     }
 
     private void receptesListener() {
-        mRecetaRepository.addOnLoadRecetaListener(new RecipeRepository.OnLoadRecetaListener() {
+        mRecetaRepository.addOnLoadRecetaAppListener(new RecipeRepository.OnLoadRecetaAppListener() {
             @Override
-            public void onLoadRecetas(ArrayList<Recipe> recetas) {
+            public void OnLoadRecetaApp(ArrayList<Recipe> recetas) {
                 ColeccionViewModel.this.setRecipes(recetas);
             }
         });

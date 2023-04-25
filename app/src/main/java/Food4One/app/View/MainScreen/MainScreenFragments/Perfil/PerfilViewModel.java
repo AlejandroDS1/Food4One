@@ -1,6 +1,5 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
-
 import android.net.Uri;
 import android.util.Log;
 
@@ -31,27 +30,18 @@ import Food4One.app.Model.User.UserRepository;
 public class PerfilViewModel extends ViewModel {
 
     private final String TAG = "FotosmeActivityViewModel";
-<<<<<<< HEAD:app/src/main/java/Food4One/app/View/MainScreen/MainScreenFragments/Perfil/PerfilViewModel.java
     private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Els usuaris que la RecyclerView mostra al home
-=======
-    private FirebaseStorage mStorage;
-
-    /* Elements observables del ViewModel */
-    private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Les receptes que la RecyclerView mostra al perfil
-
->>>>>>> Mar:app/src/main/java/Food4One/app/View/MainScreen/ui/Perfil/PerfilViewModel.java
     private final MutableLiveData<ArrayList<User>> mUsers;
+    private final MutableLiveData<String> mDescription;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
     private final MutableLiveData<String> mUserName;
-    private final MutableLiveData<String> mDescription;
+    private static PerfilViewModel perfilViewModel;
     private final MutableLiveData<String> mText;
 
     /*Repositori (base de dades) de les recetes-Details*/
     private RecipeRepository mRecetaRepository;
     private UserRepository mUserRepository;
     private FirebaseStorage mStorage;
-
-    private static PerfilViewModel perfilViewModel;
 
     public static PerfilViewModel getInstance(){
         if (perfilViewModel == null) perfilViewModel = new PerfilViewModel();

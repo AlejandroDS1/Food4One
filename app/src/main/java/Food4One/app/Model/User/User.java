@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Food4One.app.Model.Recipie.Recipie.RecipesUserApp;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
+
 
 public class User implements Serializable {
 

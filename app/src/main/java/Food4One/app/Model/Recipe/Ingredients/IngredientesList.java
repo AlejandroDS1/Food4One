@@ -80,6 +80,14 @@ public class IngredientesList implements Serializable {
         return this;
     }
 
+    public ArrayList<String> getArrayString(){
+        ArrayList<String> stringIngredientes = new ArrayList<>();
+
+        for (Ingrediente ing: ingredientes)
+            stringIngredientes.add(ing.toString());
+        return stringIngredientes;
+    }
+
     @Override
     public String toString(){
         return this.ingredientes.toString();

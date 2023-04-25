@@ -165,12 +165,10 @@ public class Perfil extends Fragment {
 
         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
     }
-
     private void cargarObjectsView() {
         mLoggedPictureUser = binding.avatarusuario;
         mTakePictureButton = binding.photobuttomPerfil;
     }
-
     private void initScrollViewRecipes(int position) {
 
         Bundle bundle = new Bundle();
@@ -186,7 +184,6 @@ public class Perfil extends Fragment {
                          );
         transaction.setReorderingAllowed(true)
                 .addToBackStack("PerfilFragChange") ;
-
 
         // Replace whatever is in the fragment_container view with this fragment
         transaction.replace(R.id.perfilFragment, ScrollPerfil.class, bundle);
