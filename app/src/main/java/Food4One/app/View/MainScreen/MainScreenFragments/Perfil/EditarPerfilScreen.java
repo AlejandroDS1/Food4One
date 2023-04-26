@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.databinding.FragmentEditarPerfilScreenBinding;
 
 public class EditarPerfilScreen extends Fragment {
@@ -49,7 +50,7 @@ public class EditarPerfilScreen extends Fragment {
         perfilViewModel = PerfilViewModel.getInstance();
         initObjectsOnTheView();
         initListenersOfTheViews();
-        perfilViewModel.loadPictureOfUser(User.getInstance().getEmail());
+        perfilViewModel.loadPictureOfUser(UserRepository.getUser().getEmail());
 
         return binding.getRoot();
     }
@@ -68,7 +69,7 @@ public class EditarPerfilScreen extends Fragment {
                 Picasso.get()
                         .load(pictureUrl).resize(1000, 1000)
                         .into(mLoggedPictureUser);
-                User.getInstance().setProfilePictureURL(pictureUrl);
+                UserRepository.getUser().setProfilePictureURL(pictureUrl);
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
@@ -92,7 +93,7 @@ public class EditarPerfilScreen extends Fragment {
                         Uri contentUri = data.getData(); // En aquest intent, sí que hi arriba la URI
 
                         perfilViewModel.setPictureUrlOfUser(
-                                User.getInstance().getEmail(), contentUri);
+                                UserRepository.getUser().getEmail(), contentUri);
                     }
                 });
 
@@ -118,7 +119,7 @@ public class EditarPerfilScreen extends Fragment {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             perfilViewModel.setPictureUrlOfUser(
-                                    User.getInstance().getEmail(), mPhotoUri
+                                    UserRepository.getUser().getEmail(), mPhotoUri
                             );
                         }
                     }

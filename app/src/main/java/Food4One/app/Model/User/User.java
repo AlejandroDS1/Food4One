@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
-
 
 public class User implements Serializable {
 
@@ -18,6 +16,7 @@ public class User implements Serializable {
     public final static String PICTUREURL_TAG = "PictureURL";
     public final static String IDCOLLECTIONS_TAG = "idCollections";
     public final static String IDRECETAS_TAG = "idRecetas";
+    public final static String IDINGREDIENTES_LIST_TAG = "IngredientesList";
 
     private static User user;
     public String userName;
@@ -46,22 +45,6 @@ public class User implements Serializable {
         this.idRecetas = idRecetas;
         this.alergias = new ArrayList<>(); // Dejamos alegias a null
         this.idCollections = new ArrayList<>();
-    }
-
-
-    public static User getInstance(String userName, String email){
-        if (user == null) user = new User(userName, email);
-        return user;
-    }
-    public static User getInstance(){
-        if (user == null) user = new User();
-        return user;
-    }
-
-    // Este metodo es utiliza para vaciar la clase si cerramos sesion.
-    public static void logOutUser(){
-        user = null;
-        RecipesUserApp.removeSingleton();
     }
 
     public void addIdReceta(String idreceta){

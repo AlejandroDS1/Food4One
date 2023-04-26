@@ -25,7 +25,7 @@ public class UserSettingsViewModel extends ViewModel {
 
     public UserSettingsViewModel(){
 
-        User user = User.getInstance();
+        User user = UserRepository.getUser();
         String _alergias = user.getAlergias().toString();
 
         this.alergiasText = new MutableLiveData<>();
@@ -66,13 +66,13 @@ public class UserSettingsViewModel extends ViewModel {
                     if (selectedAlergies[i]) alergias.add(alergias_arr[i]);
 
                 // Cambiamos las alergias por las nuevas y las añadimos a la base de datos.
-                UserRepository.getInstance().setUserAlergiasDDB(User.getInstance().getEmail(), alergias, alergiasText);
+                UserRepository.getInstance().setUserAlergiasDDB(UserRepository.getUser().getEmail(), alergias, alergiasText);
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
 
-                ArrayList<String> alergias = User.getInstance().getAlergias();
+                ArrayList<String> alergias = UserRepository.getUser().getAlergias();
 
                 for (int i = 0; i < alergias_arr.length; i++)
                     selectedAlergies[i] = alergias.contains(alergias_arr[i]);
@@ -92,7 +92,7 @@ public class UserSettingsViewModel extends ViewModel {
 
         EditText input = new EditText(context);
 
-        input.setText(User.getInstance().getUserName());
+        input.setText(UserRepository.getUser().getUserName());
 
         build.setView(input);
 
@@ -100,10 +100,10 @@ public class UserSettingsViewModel extends ViewModel {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                if (User.getInstance().userName.equals(input.getText().toString())) return;
+                if (UserRepository.getUser().userName.equals(input.getText().toString())) return;
 
                 // Actualizamos el userName en la base de datos.
-                boolean succes = UserRepository.getInstance().setUserNameDDB(User.getInstance().getEmail(),
+                boolean succes = UserRepository.getInstance().setUserNameDDB(UserRepository.getUser().getEmail(),
                         input.getText().toString());
 
                 // Si el anterior metodo a dado como resultado true, esque se a cambiado el userName correctamente
@@ -129,7 +129,7 @@ public class UserSettingsViewModel extends ViewModel {
         EditText input = new EditText(context);
         input.setMaxLines(10);
         input.setSingleLine(false);
-        input.setText(User.getInstance().getDescripcion());
+        input.setText(UserRepository.getUser().getDescripcion());
         build.setView(input);
 
         build.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
@@ -139,7 +139,7 @@ public class UserSettingsViewModel extends ViewModel {
 
                 if (description.getValue().equals(input.getText().toString())) return;
 
-                UserRepository.getInstance().setUserDescriptionDDB(User.getInstance().getEmail(), input.getText().toString(), description);
+                UserRepository.getInstance().setUserDescriptionDDB(UserRepository.getUser().getEmail(), input.getText().toString(), description);
             }
         });
 

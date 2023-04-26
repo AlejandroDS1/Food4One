@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 
 public class ScrollPerfilAdapter extends RecyclerView.Adapter<ScrollPerfilAdapter.ViewHolder> {
@@ -128,7 +129,7 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
         mCorazon.setImageResource(R.drawable.heart_24);
         mrecipeName.setText(recetaUser.getNombre());
         mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
-        mCardDescription.setText(User.getInstance().getUserName() +"  "+ recetaUser.getDescription());
+        mCardDescription.setText(UserRepository.getUser().getUserName() +"  "+ recetaUser.getDescription());
 
         cargarPhotoUserAndRecipe(recetaUser);
         mrecipeName.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +146,7 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
                 .resize(450, 250)
                 .centerCrop().into(mCardRecetaPictureUrl);
 
-        Picasso.get().load(User.getInstance().getProfilePictureURL())
+        Picasso.get().load(UserRepository.getUser().getProfilePictureURL())
                 .resize(200, 200)
                 .centerCrop().into(mCardUserPictureURL);
 

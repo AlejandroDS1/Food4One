@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentColeccionBinding;
 
@@ -53,7 +54,7 @@ public class ColeccionFragment extends Fragment {
     private void cargarReceptesUsuari() {
         // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrá
         if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas()); // Internament pobla les receptes de la BBDD
+            coleccionViewModel.loadRecetasOfUserFromRepository(UserRepository.getUser().getIdRecetas()); // Internament pobla les receptes de la BBDD
     }
 
     private void clickListenerObjectsView() {

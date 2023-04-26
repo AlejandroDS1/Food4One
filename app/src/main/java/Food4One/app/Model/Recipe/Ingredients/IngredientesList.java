@@ -2,6 +2,7 @@ package Food4One.app.Model.Recipe.Ingredients;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class IngredientesList implements Serializable {
 
@@ -52,6 +53,20 @@ public class IngredientesList implements Serializable {
         this.ingredientes = ingredientes;
     }
 
+    /**
+     * Dados los id de los ingredientes, se crean los ingredientes y se llena el
+     * array de ingredientes
+     * @param ingredientes_id array que contiene los id de ingredientes ( ver formato de id en Ingredientes.java)
+     */
+    public void setIngredientes(List<String> ingredientes_id){
+        for (String _ingrediente : ingredientes_id){
+            this.ingredientes.add(new Ingrediente(_ingrediente));
+        }
+    }
+
+    public Ingrediente get(final int pos){
+        return this.ingredientes.get(pos);
+    }
     public Ingrediente getIngrediente(Ingrediente ingrediente){
 
         for (Ingrediente _ingrediente: this.ingredientes){

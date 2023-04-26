@@ -9,17 +9,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
+import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ShoppingListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+///**
+// * A simple {@link Fragment} subclass.
+// * Use the {@link ShoppingListFragment#newInstance} factory method to
+// * create an instance of this fragment.
+// */
 public class ShoppingListFragment extends Fragment {
 
     public static final String TAG = "ShoppingListFragment";
@@ -27,24 +36,25 @@ public class ShoppingListFragment extends Fragment {
     private TextView BtnList;
     private FragmentShoppingListBinding binding;
 
-    public ShoppingListFragment() {
-        // Required empty public constructor
-    }
+//    public ShoppingListFragment() {
+//        // Required empty public constructor
+//    }
+//
+//    /**
+//     * Use this factory method to create a new instance of
+//     * this fragment using the provided parameters.
+//     *
+//     * @return A new instance of fragment ShoppingListFragment.
+//     */
+//    // TODO: Rename and change types and number of parameters
+//    public static ShoppingListFragment newInstance() {
+//        ShoppingListFragment fragment = new ShoppingListFragment();
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ShoppingListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ShoppingListFragment newInstance() {
-        ShoppingListFragment fragment = new ShoppingListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    private ShoppingListViewModel shoppingListViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,12 +62,54 @@ public class ShoppingListFragment extends Fragment {
         binding = FragmentShoppingListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        shoppingListViewModel = new ViewModelProvider(this).get(ShoppingListViewModel.class);
+
         BtnList = getActivity().findViewById(R.id.BtnList);
         BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
         clickListenerObjectsView();
+        initPruebaLista();
 
         return root;
+    }
+
+    private void initPruebaLista(){
+
+        ArrayList<Ingrediente> in = new ArrayList<>();
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Mi puta madre|300|Gr|1"));
+        in.add(new Ingrediente("La tuya|200|Gr|1"));
+        in.add(new Ingrediente("Ahora la mia|200|Gr|1"));
+        in.add(new Ingrediente("Tonto quien lo lea|200|Gr|1"));
+        in.add(new Ingrediente("Un litro de gilipollas|1|L|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+
+
+        IngredientesList ingredientesList = new IngredientesList(in);
+
+        UserRepository.getInstance().loadUserIngredientesList(UserRepository.getUser().getEmail(), ingredientesList);
+
+        ShoppingListAdapter listAdapter = new ShoppingListAdapter(ingredientesList);
+
+        binding.shoopingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.shoopingRecyclerView.setAdapter(listAdapter);
     }
 
     private void clickListenerObjectsView() {

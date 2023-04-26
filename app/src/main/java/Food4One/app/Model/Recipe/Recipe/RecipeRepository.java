@@ -17,7 +17,7 @@ import java.util.Iterator;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
-import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
@@ -137,7 +137,7 @@ public class RecipeRepository {
         //Se cargan todas las recetas de la base de datos...
 
         Iterator iterator = idRecetasUser.iterator();
-        String userID = User.getInstance().getEmail();
+        String userID = UserRepository.getUser().getEmail();
         while (iterator.hasNext()) {
 
             String idReceta = (String) iterator.next();

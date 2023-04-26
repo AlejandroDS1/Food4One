@@ -1,48 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView_shoppingList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:layout_marginVertical="3dp"
+    android:layout_marginHorizontal="3dp"
+    app:cardCornerRadius="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
         android:orientation="horizontal">
 
 
 
             <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="Prueba ingredient"
-                android:textSize="16dp"
-                android:paddingStart="10dp"
-                android:paddingVertical="5dp"
-                android:layout_marginStart="10dp">
+                android:id="@+id/ingrediente_CB"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:text="Arroz con patatas"
+                android:textSize="18dp"
+                android:clickable="false"
+                android:paddingStart="5dp">
 
             </CheckBox>
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/cantidad_txt"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:paddingHorizontal="5dp"
                 android:text="100 Gr"
                 android:textSize="16dp">
 
             </TextView>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/multiplicador_txt"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:paddingHorizontal="10dp"
                 android:singleLine="true"
                 android:text="x1"
                 android:textColor="@color/black"

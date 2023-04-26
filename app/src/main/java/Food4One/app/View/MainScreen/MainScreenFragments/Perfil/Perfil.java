@@ -37,6 +37,7 @@ import java.util.Date;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
 import Food4One.app.databinding.FragmentPerfilBinding;
@@ -84,7 +85,7 @@ public class Perfil extends Fragment {
         //Se carga los procesos que realiza el fragmento...
         binding.logoutButn.setOnClickListener(view-> {
             mAuth.signOut();
-            User.logOutUser();
+            UserRepository.logOutUser();
             binding.getRoot().getContext().startActivity(
                     new Intent(binding.getRoot().getContext(), LoginActivity.class));
         });
@@ -107,7 +108,7 @@ public class Perfil extends Fragment {
                 Picasso.get()
                         .load(pictureUrl).resize(200, 200)
                         .into(mLoggedPictureUser);
-                User.getInstance().setProfilePictureURL(pictureUrl);
+                UserRepository.getUser().setProfilePictureURL(pictureUrl);
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
@@ -196,12 +197,12 @@ public class Perfil extends Fragment {
      * en la base de datos y lo cargaríamos con este método...
      */
     private void cargarUsuarioDeBaseDatos() {
-        User userInfo = User.getInstance();
+        User userInfo = UserRepository.getUser();
         binding.nomusuari.setText(userInfo.getUserName());
         binding.descripcionPerfil.setText(userInfo.getDescripcion());
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
         if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            perfilViewModel.loadRecetasOfUserFromRepository(User.getInstance().getIdRecetas());
+            perfilViewModel.loadRecetasOfUserFromRepository(userInfo.getIdRecetas());
     }
 
 

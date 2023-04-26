@@ -1,13 +1,16 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.os.Bundle;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.ActivityUserSettingsBinding;
 
@@ -73,13 +76,24 @@ public class UserSettingsActivity extends AppCompatActivity {
     }
 
     private void initLayout(){
+
+        // Prueba
+        binding.themeModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        });
+
         // Iniciamos todos los textos a su respectivo nombre.
 
         // Descripcion del usuario
-        binding.descripcionSettings.setText(User.getInstance().getDescripcion());
+        binding.descripcionSettings.setText(UserRepository.getUser().getDescripcion());
 
         // UserName
-        binding.userNameSettings.setText(User.getInstance().getUserName());
+        binding.userNameSettings.setText(UserRepository.getUser().getUserName());
 
         // ClickListener al Layout de UserName para tener AlertDialog que cambie el username
         binding.layoutUseNameSettings.setOnClickListener(v -> {
@@ -94,11 +108,11 @@ public class UserSettingsActivity extends AppCompatActivity {
     private void configAlergias() {
 
         // Config text view de las alergias del usuario
-        binding.arrUsrAlergiasSettings.setText(User.getInstance().getAlergias().toString());
+        binding.arrUsrAlergiasSettings.setText(UserRepository.getUser().getAlergias().toString());
 
         alergias_arr = getResources().getStringArray(R.array.Alergias);
 
-        selectedAlergies = User.getInstance().getBooleanArrayAlergias(alergias_arr);
+        selectedAlergies = UserRepository.getUser().getBooleanArrayAlergias(alergias_arr);
 
         linearLayout = binding.layoutAlergiasSettings;
 

@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreen;
@@ -77,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                             // Añadimos el usuario a la base de datos, de momento solo el username y el email.
                                             mUserRespository.addUser(userName, email);
-                                            User.getInstance(userName, email); // Creamos el objeto user.
+                                            UserRepository.getUser(userName, email); // Creamos el objeto user.
                                         }
 
                                         else mUserRespository.loadUserFromDDB(email);

@@ -1,12 +1,14 @@
 package Food4One.app.Model.User;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -16,9 +18,12 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
+import io.grpc.Context;
 
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -32,6 +37,8 @@ public class UserRepository {
 
     /** Referència a la Base de Dades */
     private FirebaseFirestore mDb;
+
+    private static User user;
 
     /** Definició de listener (interficie),
      *  per escoltar quan s'hagin acabat de llegir els usuaris de la BBDD */
@@ -75,6 +82,22 @@ public class UserRepository {
     public static UserRepository getInstance() {
         return mInstance;
     }
+
+
+    // Getters para conseguir el usuario de la APP.
+    public static User getUser(String userName, String email){
+        if (user == null) user = new User(userName, email);
+        return user;
+    }
+    public static User getUser(){
+        return user;
+    }
+
+    // Para el logout tenemos que elimiar el usuario
+    public static void logOutUser(){
+        user = null;
+    }
+
 
     /**
      * Afegir un listener de la operació OnLoadUsersListener.
@@ -165,10 +188,9 @@ public class UserRepository {
      * @param email
      * @param firstName
      */
-    public void addUser(
-            String firstName,
-            String email
-    ) {
+    public void addUser(String firstName,
+                        String email)
+    {
         // Obtenir informació personal de l'usuari
         Map<String, Object> signedUpUser = new HashMap<>();
         signedUpUser.put(User.ALERGIAS_TAG, new ArrayList<String>());
@@ -191,6 +213,24 @@ public class UserRepository {
                         }
                     }
                 });
+    }
+
+    /**
+     * Este metodo devuelve un objeto IngredientesList extraido de los ingredientes guardados en la base de datos.
+     * @param userId email del usuario ID
+     * @param ingredientesList objeto ingredientesList que se llenara con los datos extraidos de la base de datos.
+     * @return IngredientesList objeto que contiene los ingredientes guardados.
+     */
+    public void loadUserIngredientesList(String userId, @NonNull IngredientesList ingredientesList){
+        mDb.collection(User.TAG).document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task){
+
+                if (task.isSuccessful()) {
+                    ingredientesList.setIngredientes((List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG));
+                }
+            }
+        });
     }
 
     /**
@@ -220,12 +260,12 @@ public class UserRepository {
         store.put(User.NAME_TAG, userName);
 
         mDb.collection(User.TAG).document(email).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
-                    User.getInstance().setUserName(userName); //Lo cambiamos en el User Global
+                    UserRepository.getUser().setUserName(userName); //Lo cambiamos en el User Global
                     PerfilViewModel.getInstance().getOnLoadUserListener().OnLoadUserName(userName); //Y en la ventana Perfil
         });
 
         // Comprovamos si ha entrado en el OnSucces, si retorna falso es porque no se ha subido a base de datos.
-        return !User.getInstance().userName.equals(userName);
+        return !UserRepository.getUser().userName.equals(userName);
     }
 
 
@@ -243,7 +283,7 @@ public class UserRepository {
                     if (mdescription != null)
                         mdescription.setValue(description);
 
-                    User.getInstance().setDescripcion(description);
+                    UserRepository.getUser().setDescripcion(description);
                     PerfilViewModel.getInstance().getOnLoadUserDescrptionListener().OnLoadUserDescription(description);
                 });
     }
@@ -262,7 +302,7 @@ public class UserRepository {
                         String _alergias = alergias.toString().substring(1, alergias.toString().length()-1);
                         alergiasTxt.setValue(_alergias);
                     }
-                    User.getInstance().setAlergias(alergias);
+                    UserRepository.getUser().setAlergias(alergias);
                 });
     }
 
@@ -273,7 +313,7 @@ public class UserRepository {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
 
-                    User user = User.getInstance(document.getString(User.NAME_TAG), email);
+                    User user = UserRepository.getUser(document.getString(User.NAME_TAG), email);
 
                     user.setAlergias((ArrayList<String>) document.get(User.ALERGIAS_TAG));
 

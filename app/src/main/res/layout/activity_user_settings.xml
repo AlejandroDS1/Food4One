@@ -158,6 +158,15 @@
         android:layout_height="1dp"
         android:background="@color/GrisOscuro" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/themeModeSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:text="     Light Mode"
+        android:textColor="@color/white"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

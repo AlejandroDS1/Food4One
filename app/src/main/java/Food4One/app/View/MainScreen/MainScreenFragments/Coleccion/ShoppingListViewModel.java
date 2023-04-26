@@ -13,6 +13,7 @@ public class ShoppingListViewModel extends ViewModel {
     public ShoppingListViewModel(MutableLiveData<ArrayList<Ingrediente>> mIngredients) {
         this.mIngredients = mIngredients;
 
-
     }
+
+
 }
