@@ -40,19 +40,15 @@ public class EditarPerfilScreen extends Fragment {
     private LinearLayout camaraAccess;
     private TextView backButton;
     private Uri mPhotoUri;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         binding = FragmentEditarPerfilScreenBinding.inflate(inflater, container, false);
-
         perfilViewModel = PerfilViewModel.getInstance();
-
         initObjectsOnTheView();
         initListenersOfTheViews();
-
         perfilViewModel.loadPictureOfUser(User.getInstance().getEmail());
 
         return binding.getRoot();

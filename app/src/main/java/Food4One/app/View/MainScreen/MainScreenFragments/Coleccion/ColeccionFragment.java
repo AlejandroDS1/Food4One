@@ -61,7 +61,6 @@ public class ColeccionFragment extends Fragment {
         binding.BtnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 binding.BtnSaved.setElevation(0);
                 Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
                 binding.BtnSaved.setBackground(myDrawable1);
@@ -76,6 +75,14 @@ public class ColeccionFragment extends Fragment {
                 fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
                 fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
                 fT.commit();
+            }
+        });
+        
+        binding.BtnSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.BtnSaved.setElevation(20);  binding.BtnList.setElevation(0);
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
             }
         });
     }

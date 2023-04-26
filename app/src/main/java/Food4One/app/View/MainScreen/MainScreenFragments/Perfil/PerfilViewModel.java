@@ -1,10 +1,7 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
-
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -39,18 +36,15 @@ public class PerfilViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Les receptes que la RecyclerView mostra al perfil
 
     private final MutableLiveData<ArrayList<User>> mUsers;
-    private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
-
-    private final MutableLiveData<String> mUserName;
     private final MutableLiveData<String> mDescription;
+    private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
+    private final MutableLiveData<String> mUserName;
+    private static PerfilViewModel perfilViewModel;
     private final MutableLiveData<String> mText;
 
     /*Repositori (base de dades) de les recetes-Details*/
     private RecipeRepository mRecetaRepository;
     private UserRepository mUserRepository;
-    private ProgressBar progressBar;
-
-    private static PerfilViewModel perfilViewModel;
 
     public static PerfilViewModel getInstance(){
         if (perfilViewModel == null) perfilViewModel = new PerfilViewModel();
@@ -152,17 +146,9 @@ public class PerfilViewModel extends ViewModel {
      * Retorna el LiveData de la URL de la foto per a què PerfilFragment
      * pugui subscriure-hi l'observable.
      */
-    public LiveData<String> getPictureProfileUrl() {
-        return mPictureUrl;
-    }
-
-    public MutableLiveData<String> getmUserName() {
-        return mUserName;
-    }
-
-    public MutableLiveData<String> getmDescription() {
-        return mDescription;
-    }
+    public LiveData<String> getPictureProfileUrl() { return mPictureUrl;  }
+    public MutableLiveData<String> getmUserName() { return mUserName;  }
+    public MutableLiveData<String> getmDescription() { return mDescription;  }
 
     public void loadIDRecetasUser(String email, User user){
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -216,7 +202,6 @@ public class PerfilViewModel extends ViewModel {
                 Log.d(TAG, "Upload is " + progress + "% done");
             }
         });
-
         // La tasca en si: ves fent-la (pujant) i fins que s'hagi completat (onCompleteListener).
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
@@ -241,7 +226,6 @@ public class PerfilViewModel extends ViewModel {
                 }
             }
         });
-
     }
     public UserRepository.OnLoadUserNameListener getOnLoadUserListener(){
         return mUserRepository.mOnLoadUserNameListener;
@@ -250,14 +234,4 @@ public class PerfilViewModel extends ViewModel {
         return mUserRepository.mOnLoadUserDescritionListener;
     }
 
-    public void setProgressBar(ProgressBar p){
-        progressBar =p;
-    }
-
-    public void initProgressBar(){
-        progressBar.setVisibility(View.VISIBLE);
-    }
-    public void endProgressBar(){
-        progressBar.setVisibility(View.GONE);
-    }
 }

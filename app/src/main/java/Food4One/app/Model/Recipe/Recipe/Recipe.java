@@ -13,8 +13,6 @@ public class Recipe {
     public static final String DESCRIPTION_APP_TAG = "Description";
     public static final String PASOS_APP_TAG = "Pasos";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
-
-
     private String idUser;
     private String nombre;
     private String Description;

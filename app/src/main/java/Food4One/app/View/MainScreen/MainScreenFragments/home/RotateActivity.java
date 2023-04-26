@@ -19,7 +19,6 @@ public class RotateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wheel);
         imageView = findViewById(R.id.imageViewWheel);
 
-
     }
 
     public void spin(View view){

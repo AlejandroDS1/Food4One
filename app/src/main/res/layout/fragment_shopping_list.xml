@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.MainScreen.MainScreenFragments.Coleccion.ShoppingListFragment"
+
     android:background="@color/GrisOscuro">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/shooping_recyclerView"/>
-
 
 </RelativeLayout>

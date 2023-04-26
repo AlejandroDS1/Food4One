@@ -48,6 +48,7 @@ public class RecipeRepository {
     }
 
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
+
 //-----------------------------------------------------------------------------------------------
 
     /**
@@ -59,7 +60,16 @@ public class RecipeRepository {
         void OnLoadRecetaPictureUrl(String pictureUrl);
     }
 
-    public OnLoadRecetaPictureUrlListener mOnLoadRecetaPictureUrlListener;
+    public interface OnLoadRecetaAppListener{
+        void OnLoadRecetaApp(ArrayList<Recipe> recetas);
+    }
+    public interface  OnLoadRecipeToMake{
+        void OnLoadRecipe(Recipe recipeToDo);
+    }
+    public ArrayList<OnLoadRecipeToMake> mOnLoadRecipeToMake = new ArrayList<>();
+    public ArrayList<OnLoadRecetaAppListener> monLoadRecetaAppListener = new ArrayList<>();
+
+    public OnLoadRecetaPictureUrlListener mOnLoadRecetaPictureUrlListener ;
 //-------------------------------------------------------------------------------------------------
 
     /**
@@ -92,9 +102,13 @@ public class RecipeRepository {
     public void addOnLoadRecetaListener(OnLoadRecetaListener listener) {
         mOnloadRecetaListeners.add(listener);
     }
-//-------------------------------------------------------------------------------------------------
 
-    /**
+    public void addOnLoadRecetaAppListener(OnLoadRecetaAppListener listenr){
+        this.monLoadRecetaAppListener.add(listenr);
+    }
+    public void addOnLoadRecipeToMake(OnLoadRecipeToMake listener){
+        this.mOnLoadRecipeToMake.add(listener);
+    }    /**
      * Setejem un listener de la operació OnLoadUserPictureUrlListener.
      * En aquest cas, no és una llista de listeners. Només deixem haver-n'hi un,
      * també a tall d'exemple.
@@ -105,6 +119,14 @@ public class RecipeRepository {
         mOnLoadRecetaPictureUrlListener = listener;
     }
 
+//-------------------------------------------------------------------------------------------------
+
+
+    public void loadRecipeToMake(Recipe recipe){
+    //Avisamos a los listeners que se ha cambiado la receta a hacer...
+    for(OnLoadRecipeToMake listener: mOnLoadRecipeToMake)
+        listener.OnLoadRecipe(recipe);
+    }
 
     /**
      * Mètode que llegeix les recetes. Vindrà cridat des de fora i quan acabi,
@@ -124,8 +146,11 @@ public class RecipeRepository {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
+
                     cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG));
                     recetaUser.setNombre(documentSnapshot.getId());
+                    cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
+                    recetaUser.setNombre(documentSnapshot.getId().split("@")[0]);
                     recetaUser.setIdUser(userID);
                     //---------------------------------------------------------------------------
 
@@ -140,8 +165,8 @@ public class RecipeRepository {
 
                 private void  onLoadRecetasListenerMethod() {
                     /*Llamamos a sus listeners*/
-                    for (OnLoadRecetaListener l : mOnloadRecetaListeners)
-                        l.onLoadRecetas(recetaUsers);
+                    for (OnLoadRecetaAppListener l : monLoadRecetaAppListener)
+                        l.OnLoadRecetaApp(recetaUsers);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -198,27 +223,32 @@ public class RecipeRepository {
     }
 
     public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection) {
-        mDb.collection("RecetasApp").document(selection)
-                .collection(selection + "Types").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        recetaUsers.clear();
+
+        mDb.collection("RecetasApp/Barbarcoa/BarbacoaTypes/").get().
+                addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-
                             Log.d(TAG, document.getId() + " => " + document.getData());
                             Recipe recetaUser = new Recipe(document.getId(),
                                     document.getString(Recipe.PICTURE_APP_TAG),0,
                                     cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)),
                                     (ArrayList<String>) document.get(Recipe.PASOS_APP_TAG)
                             );
-
                             recetaUsers.add(recetaUser);
                         }
                         /*Luego llamamos a sus listeners*/
-                        for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
-                            l.onLoadRecetas(recetaUsers);
+                        for (OnLoadRecetaAppListener l : monLoadRecetaAppListener) {
+                            l.OnLoadRecetaApp(recetaUsers);
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println();
+            }
+        });
     }
 
 }
