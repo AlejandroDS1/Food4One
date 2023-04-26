@@ -69,13 +69,12 @@ public class Perfil extends Fragment {
         cargarObjectsView();
         //El usuario tiene sus datos en la pantalla de Perfil, hay que cargarlos de la BDD
         cargarUsuarioDeBaseDatos();
+        clickListenerObjectsView();
+        observerObjectsView();
 
         recycleViewGrid();//Instancia del Recycle View(Grid) que contendrá las recetas
 
-        clickListenerObjectsView();
         setTakeCameraPictureListener(mTakePictureButton);
-
-        observerObjectsView();
 
         return root;
     }

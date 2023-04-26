@@ -1,11 +1,13 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,7 +32,6 @@ public class ColeccionFragment extends Fragment {
     private RecyclerViewAdapter mRecipeCardAdapter;
     private ColeccionViewModel coleccionViewModel;
 
-    private ShoppingListFragment shoppingListFragment;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         coleccionViewModel =
@@ -60,7 +61,14 @@ public class ColeccionFragment extends Fragment {
         binding.BtnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.BtnList.setElevation(10);                binding.BtnSaved.setElevation(0);
+                binding.BtnSaved.setElevation(0);
+                Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
+                binding.BtnSaved.setBackground(myDrawable1);
+
+                binding.BtnList.setElevation(15);
+                Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
+                binding.BtnList.setBackground(myDrawable2);
+
                 //Nova instància del fragment a iniciar
                 FragmentManager fM = getActivity().getSupportFragmentManager();
                 FragmentTransaction fT = fM.beginTransaction();

@@ -34,11 +34,10 @@ public class RecipeVarietyFragment extends Fragment {
         TextView title = binding.titleTypes;
         String selection = requireArguments().getString("HomeSelection");
         title.setText("Sección de "+ selection);
+        homeViewModel.loadRecetasApp(selection);
 
         instanciaRecycleView();
         observerAdapterToChange();
-
-        homeViewModel.loadRecetasApp(selection);
 
         return binding.getRoot();
 
@@ -53,7 +52,7 @@ public class RecipeVarietyFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         };
-        homeViewModel.getRecetes().observe(this.getViewLifecycleOwner(), observerRecetes);
+        homeViewModel.getRecetes().observe(getActivity(), observerRecetes);
     }
 
     private void instanciaRecycleView() {
@@ -67,7 +66,6 @@ public class RecipeVarietyFragment extends Fragment {
         //Luego instanciamos el Adapter de los tipos de recetas-------------------------------------
         adapter = new RecipeTypeAdapter(this.getContext(),
                 homeViewModel.getRecetes().getValue() );
-
         adapter.setmOnClickListenerHomeSelection(new RecipeTypeAdapter.OnClickListenerTypeSelection() {
             @Override
             public void onClickTypeSelection(Recipe recipe) {

@@ -1,13 +1,17 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
+import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
 
 /**
@@ -17,14 +21,8 @@ import Food4One.app.databinding.FragmentShoppingListBinding;
  */
 public class ShoppingListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+   private TextView BtnSaved;
+   private TextView BtnList;
 
     private FragmentShoppingListBinding binding;
 
@@ -53,15 +51,35 @@ public class ShoppingListFragment extends Fragment {
         binding = FragmentShoppingListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        BtnList = getActivity().findViewById(R.id.BtnList);
+        BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
+        clickListenerObjectsView();
 
         binding.listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //binding.listView.rem
+                //binding.listView.remove
                 return false;
             }
         });
-        return root; //inflater.inflate(R.layout.fragment_shopping_list, container, false);
+        return root;
+    }
+
+    private void clickListenerObjectsView() {
+        BtnSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BtnSaved.setElevation(15);
+                Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
+                BtnSaved.setBackground(myDrawable1);
+
+                BtnList.setElevation(0);
+                Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
+                BtnList.setBackground(myDrawable2);
+
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
+            }
+        });
     }
 }
