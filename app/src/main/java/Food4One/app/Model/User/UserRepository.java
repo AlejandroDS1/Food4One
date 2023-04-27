@@ -1,14 +1,12 @@
 package Food4One.app.Model.User;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,10 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
-import io.grpc.Context;
 
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -67,7 +63,7 @@ public class UserRepository {
      * Listener para escuchar cuando se cargan la lista de ingredientes de DDB
      */
     public interface OnLoadIngredientesListListener{
-        void OnLoadIngredientesList(IngredientesList IngredientesList);
+        void onLoadIngredientesList(IngredientesList IngredientesList);
     }
 
     public OnLoadIngredientesListListener mOnLoadIngredientesListListener;
@@ -240,7 +236,7 @@ public class UserRepository {
 
                 if (task.isSuccessful()) {
                     ingredientesList.setIngredientes((List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG));
-                    mOnLoadIngredientesListListener.OnLoadIngredientesList(ingredientesList);
+                    mOnLoadIngredientesListListener.onLoadIngredientesList(ingredientesList);
                 }
             }
         });

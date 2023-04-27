@@ -30,7 +30,7 @@ public class ShoppingListViewModel extends ViewModel {
     public void setIngredientesListeners(){
         userRepository.setmOnLoadIngredientesListListener(new UserRepository.OnLoadIngredientesListListener() {
             @Override
-            public void OnLoadIngredientesList(IngredientesList ingredientesList) {
+            public void onLoadIngredientesList(IngredientesList ingredientesList) {
                 setmIngredients(ingredientesList);
             }
         });

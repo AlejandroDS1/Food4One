@@ -1,74 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.MainScreenFragments.NewRecipe.NewRecipeFragment">
+    tools:context=".View.MainScreen.MainScreenFragments.NewRecipe.NewRecipeFragment"
+    android:background="@color/black"
+    android:layout_marginBottom="55dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/backText"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/flechag"
-            />
-
-        <TextView
-            android:id="@+id/newRecipe"
+         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Recipe"
-            android:textColor="@color/black"
-            android:textSize="30dp" />
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/backbutton"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center|left"
+                android:paddingStart="8dp"
+                android:background="@drawable/flecha_orange" />
+
+             <TextView
+                 android:id="@+id/newRecipe"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:layout_marginEnd="40dp"
+                 android:gravity="center"
+                 android:text="New Recipe"
+                 android:textColor="@color/orange"
+                 android:textSize="30dp"
+                 android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_height="300dp"
+                android:layout_width="300dp"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:src="@drawable/camara"/>
+
+        </LinearLayout>
+
+        <!--
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/GrisOscuro">
+
+        </View>
+
+        -->
 
         <EditText
-            android:id="@+id/editTextTextNomRecipe"
-            android:layout_marginTop="20dp"
-            android:textSize="20dp"
+            android:id="@+id/newRecipieName"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:ems="10"
-            android:textColor="@color/black"
-            android:text="Nombre de la receta" />
+            android:background="@null"
+            android:layout_marginVertical="5dp"
+            android:paddingHorizontal="10dp"
+            android:gravity="center"
+            mu
+            android:hint="Titulo de la receta"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textColorHint="@color/naranjaclaro"
+            android:textSize="20dp" />
 
-        <EditText
-            android:id="@+id/editTextListIngredients"
-            android:layout_marginTop="20dp"
-            android:textSize="20dp"
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:textColor="@color/black"
-            android:text="Indica los ingredientes uno a uno" />
+            android:layout_height="1dp"
+            android:layout_marginVertical="3dp"
+            android:background="@color/GrisOscuro"/>
 
         <TextView
-            android:id="@+id/textFoto"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añade ingredientes"
             android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:text="Inserta la imagen de la receta" />
+            android:textColor="@color/orange"
+            android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:paddingStart="10dp"/>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/NegroClaroMain">
+
+            <EditText
+                android:id="@+id/IngredienteName_newRecipe"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:hint="Nombre del ingrediente"
+                android:paddingVertical="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:autoSizeTextType="uniform"
+
+                android:textColorHint="@color/naranjaclaro"
+                android:textSize="18dp">
+
+            </EditText>
+
+
+            <EditText
+                android:id="@+id/cantidad_newRecipe"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingVertical="10dp"
+                android:maxLength="6"
+                android:layout_gravity="center_vertical"
+                android:inputType="numberDecimal"
+                android:textColor="@color/orange"
+                android:textSize="18dp"
+                android:hint="441.41"
+                android:textColorHint="@color/naranjaclaro"/>
+
+            <Spinner
+                android:id="@+id/spinner_magnitud_newRecipe"
+                android:layout_width="55dp"
+                android:layout_height="match_parent">
+            </Spinner>
+
+            <TextView
+                android:id="@+id/addIngredienteBtn_newRecipe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:paddingEnd="2dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:gravity="center">
+            </TextView>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/orange">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/GrisOscuro"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añade Alergias"
+            android:textSize="20dp"
+            android:textColor="@color/orange"
+            android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:paddingStart="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/orange">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
 
         <Button
-            android:id="@+id/guardarRecipe"
+            android:id="@+id/uploadRecipeBtn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:textSize="20dp"
             android:layout_marginTop="20dp"
-            android:text="Guardar receta" />
-
+            android:layout_marginVertical="10dp"
+            android:text="Publicar Receta"
+            android:textSize="20dp" />
 
     </LinearLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -149,7 +149,7 @@ public class RecipeRepository {
 
                     cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG));
                     recetaUser.setNombre(documentSnapshot.getId());
-                    cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
+                    recetaUser.setIngredientes(cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes")));
                     recetaUser.setNombre(documentSnapshot.getId().split("@")[0]);
                     recetaUser.setIdUser(userID);
                     //---------------------------------------------------------------------------

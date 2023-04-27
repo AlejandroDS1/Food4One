@@ -3,6 +3,7 @@ package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -77,15 +78,22 @@ public class UserSettingsActivity extends AppCompatActivity {
 
     private void initLayout(){
 
-        // Prueba
         binding.themeModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                Toast.makeText(getApplicationContext(), "Unimplemented", Toast.LENGTH_SHORT).show();
             }
         });
+
+//        // Prueba
+//        binding.themeModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (b)
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//            }
+//        });
 
         // Iniciamos todos los textos a su respectivo nombre.
 

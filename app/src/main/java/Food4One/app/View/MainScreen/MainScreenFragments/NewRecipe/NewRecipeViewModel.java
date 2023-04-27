@@ -4,16 +4,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
+import Food4One.app.Model.User.UserRepository;
+
 public class NewRecipeViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
-
+    private final MutableLiveData<IngredientesList> ingredientesList;
     public NewRecipeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
-    }
+        this.ingredientesList = new MutableLiveData<>();
 
-    public LiveData<String> getText() {
-        return mText;
     }
 }

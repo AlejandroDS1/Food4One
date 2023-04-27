@@ -14,6 +14,7 @@
 
     <color name="Gris">#DCDCDC</color>
     <color name="GrisOscuro">#4A4A4A</color>
+    <color name="NegroClaroMain">#201F1F</color>
 
     <color name="yellow" >#EFDC30</color>
 </resources>
