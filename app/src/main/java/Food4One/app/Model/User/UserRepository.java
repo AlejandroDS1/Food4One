@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 import io.grpc.Context;
@@ -61,6 +62,16 @@ public class UserRepository {
     public interface OnLoadUserDescriptionListener{
         void OnLoadUserDescription(String description);
     }
+
+    /**
+     * Listener para escuchar cuando se cargan la lista de ingredientes de DDB
+     */
+    public interface OnLoadIngredientesListListener{
+        void OnLoadIngredientesList(IngredientesList IngredientesList);
+    }
+
+    public OnLoadIngredientesListListener mOnLoadIngredientesListListener;
+
     public OnLoadUserNameListener mOnLoadUserNameListener;
 
     public OnLoadUserPictureUrlListener mOnLoadUserPictureUrlListener;
@@ -125,6 +136,7 @@ public class UserRepository {
         this.mOnLoadUserDescritionListener = listener;
     }
 
+    public void setmOnLoadIngredientesListListener(OnLoadIngredientesListListener listener){ this.mOnLoadIngredientesListListener = listener; }
     /**
      * Mètode que llegeix els usuaris. Vindrà cridat des de fora i quan acabi,
      * avisarà sempre als listeners, invocant el seu OnLoadUsers.
@@ -218,16 +230,17 @@ public class UserRepository {
     /**
      * Este metodo devuelve un objeto IngredientesList extraido de los ingredientes guardados en la base de datos.
      * @param userId email del usuario ID
-     * @param ingredientesList objeto ingredientesList que se llenara con los datos extraidos de la base de datos.
      * @return IngredientesList objeto que contiene los ingredientes guardados.
      */
-    public void loadUserIngredientesList(String userId, @NonNull IngredientesList ingredientesList){
+    public void loadUserIngredientesList(String userId){
+        IngredientesList ingredientesList = new IngredientesList();
         mDb.collection(User.TAG).document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task){
 
                 if (task.isSuccessful()) {
                     ingredientesList.setIngredientes((List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG));
+                    mOnLoadIngredientesListListener.OnLoadIngredientesList(ingredientesList);
                 }
             }
         });

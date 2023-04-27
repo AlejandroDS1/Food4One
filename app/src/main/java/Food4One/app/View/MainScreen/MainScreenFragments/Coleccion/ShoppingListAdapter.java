@@ -24,6 +24,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         this.ingredientesList = ingredientesList;
     }
 
+    public void setList(IngredientesList ingredientesList){
+        this.ingredientesList = ingredientesList;
+        this.notifyDataSetChanged(); // Notificamos que se ha canviado el dataSet
+    }
     @NonNull
     @Override
     public ShoppingListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

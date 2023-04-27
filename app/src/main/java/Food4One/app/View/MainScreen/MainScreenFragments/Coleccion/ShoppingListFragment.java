@@ -9,16 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
-import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
@@ -35,6 +29,8 @@ public class ShoppingListFragment extends Fragment {
     private TextView BtnSaved;
     private TextView BtnList;
     private FragmentShoppingListBinding binding;
+    private ShoppingListAdapter shoppingListAdapter;
+    private IngredientesList ingredientesList;
 
 //    public ShoppingListFragment() {
 //        // Required empty public constructor
@@ -67,49 +63,35 @@ public class ShoppingListFragment extends Fragment {
         BtnList = getActivity().findViewById(R.id.BtnList);
         BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
-        clickListenerObjectsView();
-        initPruebaLista();
+        initAdapterList();
+        initLayout();
 
+        clickListenerObjectsView();
+
+        shoppingListAdapter.notifyDataSetChanged();
         return root;
     }
 
-    private void initPruebaLista(){
-
-        ArrayList<Ingrediente> in = new ArrayList<>();
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Mi puta madre|300|Gr|1"));
-        in.add(new Ingrediente("La tuya|200|Gr|1"));
-        in.add(new Ingrediente("Ahora la mia|200|Gr|1"));
-        in.add(new Ingrediente("Tonto quien lo lea|200|Gr|1"));
-        in.add(new Ingrediente("Un litro de gilipollas|1|L|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
-        in.add(new Ingrediente("Arroz con patatas|200|Gr|1"));
+    private void initLayout() {
+        // Iniciamos los observers
+        final Observer<IngredientesList> ingredientesListObserver = new Observer<IngredientesList>() {
+            @Override
+            public void onChanged(IngredientesList ingredientesList) {
+                shoppingListAdapter.setList(ingredientesList);
+            }
+        };
+        shoppingListViewModel.getIngredientesList().observe(this.getActivity(), ingredientesListObserver);
+    }
 
 
-        IngredientesList ingredientesList = new IngredientesList(in);
+    private void initAdapterList(){
 
-        UserRepository.getInstance().loadUserIngredientesList(UserRepository.getUser().getEmail(), ingredientesList);
+        UserRepository.getInstance().loadUserIngredientesList(UserRepository.getUser().getEmail());
 
-        ShoppingListAdapter listAdapter = new ShoppingListAdapter(ingredientesList);
+        shoppingListAdapter = new ShoppingListAdapter(shoppingListViewModel.getIngredientesList().getValue());
 
         binding.shoopingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.shoopingRecyclerView.setAdapter(listAdapter);
+        binding.shoopingRecyclerView.setAdapter(shoppingListAdapter);
     }
 
     private void clickListenerObjectsView() {

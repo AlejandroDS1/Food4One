@@ -43,7 +43,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-
     // Bloque añadido por error duplicate class Kotlin stdlib-jdk7
     constraints {
 

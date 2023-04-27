@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Food4One"
         tools:targetApi="31">
         <activity
-            android:name=".DoRecipe"
+            android:name=".View.MainScreen.MainScreenFragments.home.DoRecipeActivity"
             android:exported="false" />
         <activity
             android:name=".View.MainScreen.MainScreenFragments.Perfil.UserSettingsActivity"

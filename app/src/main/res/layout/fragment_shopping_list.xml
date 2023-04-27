@@ -6,9 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="55dp"
-    tools:context=".View.MainScreen.MainScreenFragments.Coleccion.ShoppingListFragment"
-
-    android:background="@color/GrisOscuro">
+    android:background="@color/white"
+    tools:context=".View.MainScreen.MainScreenFragments.Coleccion.ShoppingListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shooping_recyclerView"
