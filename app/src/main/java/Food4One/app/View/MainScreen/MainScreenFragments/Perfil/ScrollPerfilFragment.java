@@ -24,7 +24,7 @@ import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentScrollPerfilBinding;
 
-public class ScrollPerfil extends Fragment {
+public class ScrollPerfilFragment extends Fragment {
 
     private FragmentScrollPerfilBinding binding;
     private PerfilViewModel perfilViewModel;
@@ -33,7 +33,7 @@ public class ScrollPerfil extends Fragment {
     private TextView backBottom;
     private int focusSelection;
 
-    public ScrollPerfil() {
+    public ScrollPerfilFragment() {
         // Required empty public constructor
     }
 

@@ -151,10 +151,8 @@ public class RecipeRepository {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
-
                     recetaUser.setIngredientes(cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG)));
                     recetaUser.setNombre(documentSnapshot.getId());
-                    recetaUser.setIdUser(userID);
                     //---------------------------------------------------------------------------
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
@@ -189,16 +187,12 @@ public class RecipeRepository {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot document: queryDocumentSnapshots) {
                     //Se tiene que cargar el String ID de los ingredientes...
-
-
                     Log.d(TAG, document.getId() + " => " + document.getData());
-                    Recipe recetaUser = new Recipe(document.getId(),
-                            document.getString("pictureURL"),
-                            Integer.parseInt(document.getString("likes")),
-                            cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)),
-                            (ArrayList<String>) document.get("pasos")
-                    );
-                    recetaUsers.add(recetaUser);
+                    Recipe receta = document.toObject(Recipe.class);
+                    receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
+                    receta.setPasos((ArrayList<String>) document.get("pasos"));
+                    receta.setNombre(document.getId());
+                    recetaUsers.add(receta);
                 }
                 /*Luego llamamos a sus listeners*/
                 for (OnLoadRecetaListener l: mOnloadRecetaListeners){

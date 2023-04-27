@@ -31,13 +31,22 @@ public class DoRecipeActivity extends AppCompatActivity {
 
         homeViewModel = HomeViewModel.getInstance();
         recipeToMake = homeViewModel.getDoRecipe().getValue();
+        cargarDatosRecipeToMake();
 
+        TextView back = findViewById(R.id.backButtonDoRecipe);
+        back.setOnClickListener(view-> {
+                getSupportFragmentManager().popBackStackImmediate();
+            });
+    }
+
+    private void cargarDatosRecipeToMake() {
         //Se cargan los ingredientes y los pasos de la receta que se ha seleccionado antes
         ingredientsAdapter = new ArrayAdapter<String>(this,R.layout.list_ingredients_layout,
-                                    recipeToMake.getIngredientes().getArrayString());
+                recipeToMake.getIngredientes().getArrayString());
         pasosAdapter = new ArrayAdapter<>(this, R.layout.list_ingredients_layout,
-                                            recipeToMake.getPasos());
+                recipeToMake.getPasos());
 
+        //Imagen, Descripción y Nombre de la Receta
         ListView ingredientesView = findViewById(R.id.ingredientsList);
         ingredientesView.setAdapter(ingredientsAdapter);
         ListView pasosView = findViewById(R.id.pasosList);
@@ -48,15 +57,6 @@ public class DoRecipeActivity extends AppCompatActivity {
         Picasso.get().load(recipeToMake.getPictureURL()).resize(790, 600).centerCrop().into(recipePhoto);
         TextView nameRecipe = findViewById(R.id.recetToDoName);
         nameRecipe.setText(recipeToMake.getNombre().split("@")[0]);
-
-
-        TextView back = findViewById(R.id.backButtonDoRecipe);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-        });
 
     }
 }

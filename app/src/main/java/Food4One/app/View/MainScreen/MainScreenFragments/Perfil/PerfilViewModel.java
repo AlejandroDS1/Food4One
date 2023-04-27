@@ -33,8 +33,8 @@ public class PerfilViewModel extends ViewModel {
     private FirebaseStorage mStorage;
 
     /* Elements observables del ViewModel */
-    private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Les receptes que la RecyclerView mostra al perfil
-
+    // Les receptes que la RecyclerView mostra al perfil
+    private final MutableLiveData<ArrayList<Recipe>> mRecetas;
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mDescription;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat

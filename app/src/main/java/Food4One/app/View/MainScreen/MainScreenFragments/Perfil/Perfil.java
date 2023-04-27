@@ -185,7 +185,7 @@ public class Perfil extends Fragment {
                 .addToBackStack("PerfilFragChange") ;
 
         // Replace whatever is in the fragment_container view with this fragment
-        transaction.replace(R.id.perfilFragment, ScrollPerfil.class, bundle);
+        transaction.replace(R.id.perfilFragment, ScrollPerfilFragment.class, bundle);
         // Commit the transaction
         transaction.commit();
 
@@ -267,16 +267,7 @@ public class Perfil extends Fragment {
 
 
     private void initEditPerfilWindow() {
-        // Create new fragment and transaction
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction()
-                ;
-        transaction.setReorderingAllowed(true)
-                .addToBackStack("PerfilFragChange") ;
-        // Replace whatever is in the fragment_container view with this fragment
-        transaction.replace(R.id.perfilFragment, new EditarPerfilScreen());
-        // Commit the transaction
-        transaction.commit();
+        startActivity(new Intent(this.getContext(), EditProfileScreen.class));
     }
 
 

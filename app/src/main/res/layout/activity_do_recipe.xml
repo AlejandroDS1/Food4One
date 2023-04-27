@@ -15,13 +15,32 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/black">
-        <TextView
-            android:id="@+id/backButtonDoRecipe"
-            android:paddingLeft="5dp"
-            android:layout_width="40dp"
-            android:layout_height="45dp"
-            android:background="@drawable/flechag"
-            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="5dp"
+            android:background="@color/black">
+            <TextView
+                android:id="@+id/backButtonDoRecipe"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:background="@drawable/flecha_orange"
+                android:layout_marginLeft="8dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:text="Receta"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                />
+        </LinearLayout>
     </LinearLayout>
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

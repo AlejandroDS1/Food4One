@@ -62,7 +62,8 @@ public class Recipe {
     public IngredientesList getIngredientes() { return ingredientes; }
     public String getPictureURL() {  return pictureURL; }
     public int getLikes() { return likes; }
-    public String getIdUser(){return idUser;}
+    public String getIdUser() { return idUser; }
+
     public String getDescription(){ return Description; }
 
     //---------------SETTERS----------------------------------------

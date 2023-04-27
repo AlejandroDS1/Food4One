@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/orange"
-    tools:context=".View.MainScreen.MainScreenFragments.Perfil.ScrollPerfil">
+    tools:context=".View.MainScreen.MainScreenFragments.Perfil.ScrollPerfilFragment">
 
 
     <ScrollView
@@ -21,14 +21,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
+                android:paddingVertical="5dp"
                 android:background="@color/black">
 
                 <TextView
                     android:id="@+id/backflecha"
                     android:layout_width="40dp"
                     android:layout_height="45dp"
-                    android:background="@drawable/flecha_back"
+                    android:layout_gravity="center"
+                    android:background="@drawable/flecha_orange"
                     android:layout_marginLeft="5dp"/>
                 <TextView
                     android:layout_width="match_parent"
