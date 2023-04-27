@@ -40,13 +40,11 @@ public class HomeFragment extends Fragment {
         adapter = new ListRecipesAdapter(getContext(), recetasHome);
         viewRV.setAdapter(adapter);
         viewRV.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        agregarListeners();
+        agregarListener();
         return root;
     }
 
-    private void agregarListeners() {
+    private void agregarListener() {
 
         adapter.setmOnClickListenerHomeSelection(new ListRecipesAdapter.OnClickListenerHomeSelection() {
             @Override
@@ -69,6 +67,8 @@ public class HomeFragment extends Fragment {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setReorderingAllowed(true)
                 .addToBackStack("HomeFragChange") ;
+
+        homeViewModel.loadRecetasApp(seleccion);
 
         //Remplazamos el fragmento del Home con la Selección que se ha cargado
         //También le pasamos al nuevo fragmento la selección para que sepa su camino por BBD

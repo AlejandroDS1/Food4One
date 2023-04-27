@@ -1,6 +1,7 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentScrollPerfilBinding;
 
 public class ScrollPerfil extends Fragment {
@@ -93,6 +96,14 @@ public class ScrollPerfil extends Fragment {
                         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
                         mRecetaCardsRV.scrollToPosition((recetas.size() - focusSelection)-1);
 
+                        mCardRecetaRVAdapter.setOnClickDetailListener(new ScrollPerfilAdapter.OnClickDoRecipeUser() {
+                            @Override
+                            public void OnClickDoRecipe(Recipe recipeToDo) {
+                                HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
+                                startActivity(new Intent(getContext(), DoRecipeActivity.class));
+                            }
+                        });
+
                         // Start the transition once all views have been
                         // measured and laid out
                         parentView.getViewTreeObserver()
@@ -107,7 +118,6 @@ public class ScrollPerfil extends Fragment {
                         });
                     }
                 });
-
 
     }
 

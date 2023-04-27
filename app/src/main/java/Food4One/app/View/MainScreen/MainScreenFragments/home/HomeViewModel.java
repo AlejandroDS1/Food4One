@@ -56,7 +56,7 @@ public class HomeViewModel extends ViewModel {
         });
     }
     //------------------GETTERS--------------------------------------------------------
-    public LiveData<ArrayList<Recipe>> getRecetes() {  return mRecetasApp; }
+    public MutableLiveData<ArrayList<Recipe>> getRecetes() {  return mRecetasApp; }
     public MutableLiveData<Recipe> getDoRecipe() { return mdoRecipe; }
     //-------------------SETTERS-------------------------------------------------------
     public void setRecetesApp(ArrayList<Recipe> recetas) { mRecetasApp.setValue(recetas); }

@@ -25,7 +25,7 @@ public class ScrollPerfilAdapter extends RecyclerView.Adapter<ScrollPerfilAdapte
  * quan l'usuari faci clic en la creu (amagar) algún dels items de la RecyclerView
  */
 public interface OnClickDoRecipeUser {
-    void OnClickDoRecipe(int position);
+    void OnClickDoRecipe(Recipe position);
 }
 
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
@@ -134,15 +134,16 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
         mrecipeName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.OnClickDoRecipe(getAdapterPosition());
+                listener.OnClickDoRecipe(recetaUser);
             }
         });
+
     }
 
     private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
         //Es carrega l'imatge de la receta i del User d'internet
         Picasso.get().load(recetaUser.getPictureURL())
-                .resize(450, 250)
+                .resize(980, 700)
                 .centerCrop().into(mCardRecetaPictureUrl);
 
         Picasso.get().load(User.getInstance().getProfilePictureURL())

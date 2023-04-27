@@ -20,7 +20,7 @@
             android:paddingLeft="5dp"
             android:layout_width="40dp"
             android:layout_height="45dp"
-            android:background="@drawable/flecha_back"
+            android:background="@drawable/flechag"
             />
     </LinearLayout>
         <androidx.core.widget.NestedScrollView
@@ -34,12 +34,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
                 <ImageView
-                    android:id="@+id/recipeImage"
+                    android:id="@+id/recipeToDoImage"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     />
                 <TextView
-                    android:id="@+id/recteName"
+                    android:id="@+id/recetToDoName"
                     android:paddingVertical="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,6 +47,12 @@
                     android:text="Receta Name"
                     android:textSize="35dp"
                     android:textColor="@color/orange"/>
+                <TextView
+                    android:id="@+id/descriptionRecipeToDo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/Gris"/>
 
                 <TextView
                     android:layout_width="match_parent"

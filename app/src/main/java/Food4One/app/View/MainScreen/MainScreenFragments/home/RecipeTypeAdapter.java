@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.R;
 
 public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.ViewHolder> {
@@ -23,6 +24,7 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Vi
     private ArrayList<Recipe> mData;
     private OnClickListenerTypeSelection mOnClickListenerTypeSelection;
 
+    private RecipeRepository.OnLoadRecetaApp listener;
 
     public RecipeTypeAdapter(Context context, ArrayList<Recipe> mData) {
         this.context = context;
@@ -33,7 +35,7 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Vi
         void onClickTypeSelection(Recipe position);
     }
 
-    public void setmOnClickListenerHomeSelection(RecipeTypeAdapter.OnClickListenerTypeSelection mOnClickListenerHomeSelection) {
+    public void setmOnClickListenerHomeSelection(OnClickListenerTypeSelection mOnClickListenerHomeSelection) {
         this.mOnClickListenerTypeSelection = mOnClickListenerHomeSelection;
     }
 

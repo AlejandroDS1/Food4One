@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,12 +36,18 @@ public class RecipeVarietyFragment extends Fragment {
         TextView title = binding.titleTypes;
         String selection = requireArguments().getString("HomeSelection");
         title.setText("Sección de "+ selection);
-        homeViewModel.loadRecetasApp(selection);
+
+        return binding.getRoot();
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
 
         instanciaRecycleView();
         observerAdapterToChange();
-
-        return binding.getRoot();
 
     }
 

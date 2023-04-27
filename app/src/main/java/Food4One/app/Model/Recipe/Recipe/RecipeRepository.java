@@ -18,6 +18,7 @@ import java.util.Iterator;
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.RecipeTypeAdapter;
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
@@ -48,6 +49,10 @@ public class RecipeRepository {
     }
 
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
+
+    public interface OnLoadRecetaApp{
+        void onLoadRecipeApp(ArrayList<Recipe> recetas);
+    }
 
 //-----------------------------------------------------------------------------------------------
 
@@ -147,13 +152,10 @@ public class RecipeRepository {
                     //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
 
-                    cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG));
+                    recetaUser.setIngredientes(cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG)));
                     recetaUser.setNombre(documentSnapshot.getId());
-                    cargarIngredientes((ArrayList<String>) documentSnapshot.get("Ingredientes"));
-                    recetaUser.setNombre(documentSnapshot.getId().split("@")[0]);
                     recetaUser.setIdUser(userID);
                     //---------------------------------------------------------------------------
-
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
 
@@ -165,8 +167,8 @@ public class RecipeRepository {
 
                 private void  onLoadRecetasListenerMethod() {
                     /*Llamamos a sus listeners*/
-                    for (OnLoadRecetaAppListener l : monLoadRecetaAppListener)
-                        l.OnLoadRecetaApp(recetaUsers);
+                    for (OnLoadRecetaListener l : mOnloadRecetaListeners)
+                        l.onLoadRecetas(recetaUsers);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -236,6 +238,7 @@ public class RecipeRepository {
                                     cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)),
                                     (ArrayList<String>) document.get(Recipe.PASOS_APP_TAG)
                             );
+                            recetaUser.setDescription(document.getString(Recipe.DESCRIPTION_APP_TAG));
                             recetaUsers.add(recetaUser);
                         }
                         /*Luego llamamos a sus listeners*/

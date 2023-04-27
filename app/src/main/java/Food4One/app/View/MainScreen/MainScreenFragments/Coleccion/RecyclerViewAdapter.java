@@ -1,9 +1,11 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,16 +16,27 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.R;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.RecipeTypeAdapter;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Recipe> mRecipes; //Referència a la llista de receptes
 
+    private RecipeRepository.OnLoadRecipeToMake recipeToMakeListener;
+
+    public void setRecipeToMakeListener(RecipeRepository.OnLoadRecipeToMake listener) {
+        this.recipeToMakeListener = listener;
+    }
+
 
     public RecyclerViewAdapter(ArrayList<Recipe> mRecipes) {
         this.mRecipes = mRecipes;
     }
+
 
     @NonNull
     @Override
@@ -39,7 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     /* Mètode cridat per cada ViewHolder de la RecyclerView */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(mRecipes.get(position)); //Haure de passar l'usuari per entrar en la seva col·lecció i agafar les IDs
+        holder.bind(mRecipes.get(position), recipeToMakeListener); //Haure de passar l'usuari per entrar en la seva col·lecció i agafar les IDs
     }
 
     /**
@@ -59,14 +72,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final ImageView mCardPictureUrl;
         private final TextView mCardNameRecipe;
+        private final LinearLayout mCardRecipe;
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);
             mCardPictureUrl = itemView.findViewById(R.id.imgRecipe);
             mCardNameRecipe = itemView.findViewById(R.id.txtRecipe);
+            mCardRecipe = itemView.findViewById(R.id.collectionCard);
         }
 
-        public void bind(final Recipe recipe) {
+        public void bind(final Recipe recipe, RecipeRepository.OnLoadRecipeToMake listener) {
             mCardNameRecipe.setText(recipe.getNombre());
 
             // Carrega foto de l'usuari de la llista directament des d'una Url
@@ -74,6 +89,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Picasso.get().load(recipe.getPictureURL()).into(mCardPictureUrl);
 
             // TODO: Falta posar OnClickListener per portar directament al detall de la recepte
+            mCardRecipe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.OnLoadRecipe(recipe);
+                }
+            });
 
         }
     }
