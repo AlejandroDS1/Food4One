@@ -4,9 +4,12 @@ package Food4One.app.Model.Recipe.Recipe;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -18,6 +21,7 @@ import java.util.Iterator;
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
+import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.RecipeTypeAdapter;
 
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -71,6 +75,11 @@ public class RecipeRepository {
     public interface  OnLoadRecipeToMake{
         void OnLoadRecipe(Recipe recipeToDo);
     }
+
+    public interface  OnLoadURLUserFromRecipe{
+        void OnLoadURLUserRecipe(String URL);
+    }
+    public OnLoadURLUserFromRecipe mOnLoadURLfromRecipe;
     public ArrayList<OnLoadRecipeToMake> mOnLoadRecipeToMake = new ArrayList<>();
     public ArrayList<OnLoadRecetaAppListener> monLoadRecetaAppListener = new ArrayList<>();
 
@@ -123,6 +132,9 @@ public class RecipeRepository {
     public void setOnLoadUserPictureListener(OnLoadRecetaPictureUrlListener listener) {
         mOnLoadRecetaPictureUrlListener = listener;
     }
+    public void setmOnLoadURLfromRecipe(OnLoadURLUserFromRecipe listener){
+        mOnLoadURLfromRecipe = listener;
+    }
 
 //-------------------------------------------------------------------------------------------------
 
@@ -131,6 +143,16 @@ public class RecipeRepository {
     //Avisamos a los listeners que se ha cambiado la receta a hacer...
     for(OnLoadRecipeToMake listener: mOnLoadRecipeToMake)
         listener.OnLoadRecipe(recipe);
+    }
+
+    public void loadpictureURLUserRecipe( String idUser){
+        Task<DocumentSnapshot> task = mDb.collection("Users").document(idUser).get().
+                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                mOnLoadURLfromRecipe.OnLoadURLUserRecipe(task.getResult().getString(User.PICTUREURL_TAG));
+            }
+        });
     }
 
     /**

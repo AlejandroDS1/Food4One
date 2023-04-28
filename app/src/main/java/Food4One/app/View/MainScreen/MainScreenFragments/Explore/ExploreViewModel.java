@@ -3,19 +3,15 @@ package Food4One.app.View.MainScreen.MainScreenFragments.Explore;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.checkerframework.checker.units.qual.A;
-
-import java.net.HttpCookie;
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
-import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 
 public class ExploreViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Recipe>> mRecetas;
+    private final MutableLiveData<String> userURLFromRecipe;
     static ExploreViewModel exploreViewModel;
     private final RecipeRepository mRecipeRepository;
 
@@ -27,6 +23,7 @@ public class ExploreViewModel extends ViewModel {
 
     public ExploreViewModel() {
         mRecetas = new MutableLiveData<>(new ArrayList<>());
+        userURLFromRecipe = new MutableLiveData<>();
         mRecipeRepository = RecipeRepository.getInstance();
 
         recetasListeners();
@@ -40,6 +37,12 @@ public class ExploreViewModel extends ViewModel {
                 ExploreViewModel.this.setmRecetas(recetas);
             }
         });
+        mRecipeRepository.setmOnLoadURLfromRecipe(new RecipeRepository.OnLoadURLUserFromRecipe() {
+            @Override
+            public void OnLoadURLUserRecipe(String URL) {
+                userURLFromRecipe.setValue(URL);
+            }
+        });
     }
 
     public void loadRecetasExplorer(){ mRecipeRepository.loadRecetas(mRecetas.getValue());}
@@ -47,4 +50,6 @@ public class ExploreViewModel extends ViewModel {
     public void setmRecetas(ArrayList<Recipe> recetas){ this.mRecetas.setValue(recetas);    }
 
     public MutableLiveData<ArrayList<Recipe>> getRecetas() { return mRecetas;  }
+
+    public MutableLiveData<String> getUserURLFromRecipe(){return userURLFromRecipe;}
 }

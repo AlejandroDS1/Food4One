@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.Model.User.User;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.ScrollPerfilAdapter;
@@ -28,7 +30,6 @@ public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAd
     public interface OnClickDoRecipeUser {
         void OnClickDoRecipe(Recipe recipe);
     }
-
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
     private ExplorerScrollAdapter.OnClickDoRecipeUser mOnClickDoRecipeListener; // Qui hagi de repintar la ReciclerView
 
@@ -38,7 +39,6 @@ public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAd
     public void setOnClickDetailListener(ExplorerScrollAdapter.OnClickDoRecipeUser listener) {
         this.mOnClickDoRecipeListener = listener;
     }
-
     @NonNull
     @Override
     public ExplorerScrollAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -120,33 +120,34 @@ notifyItemRemoved(position);
 
         }
 
-        public void bind(final Recipe recetaUser,ExplorerScrollAdapter.OnClickDoRecipeUser listener) {
+        public void bind(final Recipe recetaUser, ExplorerScrollAdapter.OnClickDoRecipeUser listener) {
 
+            RecipeRepository.getInstance().loadpictureURLUserRecipe(recetaUser.getIdUser());
             mCorazon.setImageResource(R.drawable.heart_24);
             mrecipeName.setText(recetaUser.getNombre());
             mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
             mCardDescription.setText(User.getInstance().getUserName() +"  "+ recetaUser.getDescription());
-
             cargarPhotoUserAndRecipe(recetaUser);
-            mrecipeName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.OnClickDoRecipe(recetaUser);
-                }
-            });
+            mrecipeName.setOnClickListener(view-> { listener.OnClickDoRecipe(recetaUser); });
+
+            mCardRecetaPictureUrl.setOnClickListener(view-> { listener.OnClickDoRecipe(recetaUser);});
         }
 
+
         private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
+
+            
             //Es carrega l'imatge de la receta i del User d'internet
             Picasso.get().load(recetaUser.getPictureURL())
                     .resize(980, 700)
                     .centerCrop().into(mCardRecetaPictureUrl);
 
-            Picasso.get().load(User.getInstance().getProfilePictureURL())
+            Picasso.get().load(ExploreViewModel.getInstance().getUserURLFromRecipe().getValue())
                     .resize(200, 200)
                     .centerCrop().into(mCardUserPictureURL);
 
         }
+
     }
 
 }

@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,12 +38,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Food4One.app.Model.User.User;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 
 public class EditProfileScreen extends AppCompatActivity {
     private PerfilViewModel perfilViewModel;
     private ImageView mLoggedPictureUser;
-    private LinearLayout galeryAccess, camaraAccess;
+    private LinearLayout galeryAccess, camaraAccess, eliminarAccess;
     private FrameLayout frameEditProfile;
     private CardView cardCameraGalery;
     private TextView backButton, editButton;
@@ -58,26 +60,34 @@ public class EditProfileScreen extends AppCompatActivity {
         initListenersOfTheViews();
         perfilViewModel.loadPictureOfUser(User.getInstance().getEmail());
         getSupportActionBar().hide();
-
     }
 
 
 
     private void initListenersOfTheViews() {
+        //Abrir la actividad para tomar la foto con la cámara
         setTakeCameraPictureListener(camaraAccess);
+        //Abrir la galerìa para poder escoger una foto y subirla
         setChoosePictureListener(galeryAccess);
-        backButton.setOnClickListener(v -> {//Regresamos manualmente al Fragment anterior
-            getSupportFragmentManager().popBackStackImmediate();
+        //Borrar la imagen del Usuario y colocar una por predeterminada
+        setErasePictureListener(eliminarAccess);
+
+        //Regresamos manualmente al Fragment anterior
+        backButton.setOnClickListener(v -> {
+            finish();
         });
 
         //Tenemos que escuchar cuando el usuario haya cambiado su photo de perfil
         final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
             public void onChanged(String pictureUrl) {
+                if(! pictureUrl.equals(" ")){
                 Picasso.get()
                         .load(pictureUrl).resize(1000, 1000)
                         .into(mLoggedPictureUser);
                 User.getInstance().setProfilePictureURL(pictureUrl);
+                }else
+                    mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this, observerPictureUrl);
@@ -90,10 +100,19 @@ public class EditProfileScreen extends AppCompatActivity {
         });
 
         frameEditProfile.setOnClickListener(view->{
-            Animation a = AnimationUtils.loadAnimation(this, R.anim.slide_out);
-            cardCameraGalery.startAnimation(a);
-            cardCameraGalery.setVisibility(View.GONE);
-            editButton.setVisibility(View.VISIBLE);
+            if(editButton.getVisibility() == View.GONE) {
+                Animation a = AnimationUtils.loadAnimation(this, R.anim.slide_out);
+                cardCameraGalery.startAnimation(a);
+                cardCameraGalery.setVisibility(View.GONE);
+                editButton.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void setErasePictureListener(LinearLayout eliminarAccess) {
+        eliminarAccess.setOnClickListener(view ->{
+            UserRepository.getInstance().setPictureUrlOfUser(User.getInstance().getEmail(), " ");
+            perfilViewModel.setmPictureUrl(" ");
         });
     }
 
@@ -101,6 +120,7 @@ public class EditProfileScreen extends AppCompatActivity {
 
         camaraAccess = findViewById(R.id.camaraSelection);
         galeryAccess = findViewById(R.id.galerySelection);
+        eliminarAccess = findViewById(R.id.eliminarSelection);
         backButton = findViewById(R.id.backflecha);
         editButton = findViewById(R.id.editPictureButton);
         mLoggedPictureUser = findViewById(R.id.photoAvatarFullScreen);

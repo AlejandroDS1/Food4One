@@ -174,6 +174,7 @@ public class PerfilViewModel extends ViewModel {
     public void setUsers(ArrayList<User> users){
         mUsers.setValue(users);
     }
+    public void setmPictureUrl(String url){ mPictureUrl.setValue(url);}
 
     public void loadPictureOfUser(String email){ mUserRepository.loadPictureOfUser(email);}
 

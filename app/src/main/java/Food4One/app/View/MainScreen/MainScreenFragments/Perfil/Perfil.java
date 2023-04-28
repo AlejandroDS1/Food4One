@@ -104,10 +104,13 @@ public class Perfil extends Fragment {
         final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
             public void onChanged(String pictureUrl) {
-                Picasso.get()
-                        .load(pictureUrl).resize(200, 200)
-                        .into(mLoggedPictureUser);
-                User.getInstance().setProfilePictureURL(pictureUrl);
+                if(! pictureUrl.equals(" ")){
+                    Picasso.get()
+                            .load(pictureUrl).resize(200, 200)
+                            .into(mLoggedPictureUser);
+                    User.getInstance().setProfilePictureURL(pictureUrl);
+                }else
+                    mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
@@ -156,9 +159,9 @@ public class Perfil extends Fragment {
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
             @Override
-            public void OnClickDetail(int position) {
+            public void OnClickDetail(int positionX, int positionY) {
                 //Al clicar se abrirá un nuevo Fragment
-                initScrollViewRecipes(position);
+                initScrollViewRecipes(positionX, positionY);
             }
         });
 
@@ -168,10 +171,12 @@ public class Perfil extends Fragment {
         mLoggedPictureUser = binding.avatarusuario;
         mTakePictureButton = binding.photobuttomPerfil;
     }
-    private void initScrollViewRecipes(int position) {
+    private void initScrollViewRecipes(int position, int positionY) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("RecycleViewPosition", position);
+        bundle.putInt("X", position);
+        bundle.putInt("Y", positionY);
 
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

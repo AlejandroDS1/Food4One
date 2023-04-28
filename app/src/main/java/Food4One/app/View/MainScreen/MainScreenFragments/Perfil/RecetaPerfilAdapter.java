@@ -37,7 +37,7 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
      * quan l'usuari faci clic en la creu (amagar) algún dels items de la RecyclerView
      */
     public interface OnClickDetailListener {
-        void OnClickDetail(int position);
+        void OnClickDetail(int positionX, int positionY);
     }
 
     public static int screenWidth = 10;
@@ -167,9 +167,8 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
 
                 recipeCard.setOnClickListener(new View.OnClickListener() {
                    @Override
-                   public void onClick(View view) {
-                       view.requestFocus();
-                       listener.OnClickDetail(getAdapterPosition());
+                   public void onClick(View view){
+                       listener.OnClickDetail(getAdapterPosition(), view.getScrollY());
                    }
                 });
             }

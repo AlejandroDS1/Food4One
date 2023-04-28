@@ -62,7 +62,6 @@ public class ScrollPerfilFragment extends Fragment {
         //Obtenemos el elemento que se ha seleccionado en el Grid del Perfil
         focusSelection = requireArguments().getInt("RecycleViewPosition");
 
-
         backBottom.setOnClickListener(v-> { //Regresamos manualmente al Fragment anterior
                 getActivity().getSupportFragmentManager().popBackStackImmediate();
             });
@@ -91,11 +90,12 @@ public class ScrollPerfilFragment extends Fragment {
 
                         // Set the data on the RecyclerView adapter
                         //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles
-
                         mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas);
+
                         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
                         mRecetaCardsRV.scrollToPosition((recetas.size() - focusSelection)-1);
-
+                        //mRecetaCardsRV.scrollTo(requireArguments().getInt("X"), requireArguments().getInt("Y"));
+                        //mRecetaCardsRV.requestFocus(focusSelection);
                         mCardRecetaRVAdapter.setOnClickDetailListener(new ScrollPerfilAdapter.OnClickDoRecipeUser() {
                             @Override
                             public void OnClickDoRecipe(Recipe recipeToDo) {
