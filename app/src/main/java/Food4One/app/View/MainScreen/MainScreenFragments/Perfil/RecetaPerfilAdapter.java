@@ -26,6 +26,8 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
     private OnClickDetailListener mOnClickHideListener; // Qui hagi de repintar la ReciclerView
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
 
+    public static int screenWidth = 10;
+
     // quan s'amagui
     // Constructor
     public RecetaPerfilAdapter(ArrayList<Recipe> recetaList) {
@@ -40,7 +42,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
         void OnClickDetail(int position);
     }
 
-    public static int screenWidth = 10;
 
     // quan s'amagui
     // Constructor

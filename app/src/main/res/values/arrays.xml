@@ -22,4 +22,12 @@
         <item>Pescado</item>
         <item>Frutos Secos</item>
     </string-array>
+
+    <string-array name="Magnitudes">
+        <item>Gr</item>
+        <item>Kg</item>
+        <item>L</item>
+        <item>ml</item>
+        <item>Ud</item>
+    </string-array>
 </resources>

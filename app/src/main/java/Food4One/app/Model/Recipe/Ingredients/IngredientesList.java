@@ -7,6 +7,7 @@ import java.util.List;
 public class IngredientesList implements Serializable {
 
     private String id; // ID para receta o nombre.
+
     private ArrayList<Ingrediente> ingredientes;
 
     public IngredientesList(final ArrayList<Ingrediente> ingredientes) {
@@ -102,6 +103,18 @@ public class IngredientesList implements Serializable {
         for (Ingrediente ing: ingredientes)
             stringIngredientes.add(ing.toString());
         return stringIngredientes;
+    }
+
+    public ArrayList<String> getArrayStringId(){
+        ArrayList<String> stringIngredientes = new ArrayList<>();
+
+        for (Ingrediente ing: ingredientes)
+            stringIngredientes.add(ing.getId());
+        return stringIngredientes;
+    }
+
+    public ArrayList<Ingrediente> getIngredientes() {
+        return ingredientes;
     }
 
     @Override
