@@ -261,7 +261,9 @@ public class RecipeRepository {
     public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection) {
         recetaUsers.clear();
 
-        mDb.collection("RecetasApp/Barbarcoa/BarbacoaTypes/").get().
+        String path = "RecetasApp/"+selection+"/"+selection+"Types/";
+
+        mDb.collection(path).get().
                 addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
