@@ -23,6 +23,14 @@
         <item>Frutos Secos</item>
     </string-array>
 
+    <string-array name="MagnitudesLong">
+        <item>Gramos</item>
+        <item>Kilogramos</item>
+        <item>Litros</item>
+        <item>Mililitros</item>
+        <item>Unidades</item>
+    </string-array>
+
     <string-array name="Magnitudes">
         <item>Gr</item>
         <item>Kg</item>

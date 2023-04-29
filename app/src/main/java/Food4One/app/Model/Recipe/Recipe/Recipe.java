@@ -3,7 +3,6 @@ package Food4One.app.Model.Recipe.Recipe;
 
 import java.util.ArrayList;
 
-import Food4One.app.Model.Alergias;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
 public class Recipe {
@@ -18,12 +17,9 @@ public class Recipe {
     private String Description;
     private ArrayList<String> pasos;
     private IngredientesList ingredientes;
-    private ArrayList<Alergias> alergias; // TODO: HASMAP CON NOMBRES -> POSIBLE OPTIMIZACION EN UN FUTURO.
+    private ArrayList<String> alergias;
     private String pictureURL;
     private int likes;
-    // TODO: COMO IMPLEMENTAR LOS PASOS. NOTES
-    // ATRIBUTOS OPCIONALES E IDEAS A IMPLEMETNTAR
-    // Nivel
 
     public Recipe(){} //Para la base de Datos se necesita un constructor sin argumentos...
     //Constructor
@@ -75,7 +71,7 @@ public class Recipe {
     public void setDescription(String description){ Description = description; }
 
     //REMOVE
-    public boolean removeAlergias(Alergias alergia){
+    public boolean removeAlergias(String alergia){
         return this.alergias.remove(alergia);
     }
 }

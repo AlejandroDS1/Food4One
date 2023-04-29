@@ -6,11 +6,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.ActivityUserSettingsBinding;
@@ -127,7 +125,5 @@ public class UserSettingsActivity extends AppCompatActivity {
         linearLayout.setOnClickListener(v -> {
             userSettingsViewModel.configAlergias(alergias_arr, selectedAlergies, UserSettingsActivity.this);
         });
-
     }
-
 }

@@ -11,6 +11,7 @@
     <color name="mostaza">#FFCE27</color>
     <color name="hintColor">#E8E5CF</color>
     <color name="naranjaclaro">#FFBA6A</color>
+    <color name="naranjaclaroHint">#E9F8B261</color>
 
     <color name="Gris">#DCDCDC</color>
     <color name="GrisOscuro">#4A4A4A</color>

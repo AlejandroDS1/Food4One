@@ -2,13 +2,13 @@ package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,24 +31,6 @@ public class ShoppingListFragment extends Fragment {
     private FragmentShoppingListBinding binding;
     private ShoppingListAdapter shoppingListAdapter;
     private IngredientesList ingredientesList;
-
-//    public ShoppingListFragment() {
-//        // Required empty public constructor
-//    }
-//
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @return A new instance of fragment ShoppingListFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static ShoppingListFragment newInstance() {
-//        ShoppingListFragment fragment = new ShoppingListFragment();
-//        Bundle args = new Bundle();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     private ShoppingListViewModel shoppingListViewModel;
     @Override

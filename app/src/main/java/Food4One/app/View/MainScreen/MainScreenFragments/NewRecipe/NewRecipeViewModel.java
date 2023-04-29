@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
-import Food4One.app.Model.User.UserRepository;
 
 public class NewRecipeViewModel extends ViewModel {
 

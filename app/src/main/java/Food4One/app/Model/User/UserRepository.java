@@ -277,8 +277,6 @@ public class UserRepository {
         return !UserRepository.getUser().userName.equals(userName);
     }
 
-
-
     // TODO: Si podemos mejorar el paso por parametro de un MutableLiveData mejor
     // Se puede utilizar pasandole un null sino se utiliza para actualizar el texto de UserSettings
     public void setUserDescriptionDDB(String email, String description, @Nullable MutableLiveData<String> mdescription){
