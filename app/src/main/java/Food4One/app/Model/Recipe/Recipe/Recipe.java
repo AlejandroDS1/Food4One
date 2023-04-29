@@ -21,6 +21,8 @@ public class Recipe {
     private ArrayList<Alergias> alergias; // TODO: HASMAP CON NOMBRES -> POSIBLE OPTIMIZACION EN UN FUTURO.
     private String pictureURL;
     private int likes;
+
+    private String userPhoto;
     // TODO: COMO IMPLEMENTAR LOS PASOS. NOTES
     // ATRIBUTOS OPCIONALES E IDEAS A IMPLEMETNTAR
     // Nivel
@@ -65,6 +67,7 @@ public class Recipe {
     public String getIdUser() { return idUser; }
 
     public String getDescription(){ return Description; }
+    public String getUserPhoto(){ return userPhoto; }
 
     //---------------SETTERS----------------------------------------
     public void setNombre(String nombre) { this.nombre = nombre;  }
@@ -78,5 +81,9 @@ public class Recipe {
     //REMOVE
     public boolean removeAlergias(Alergias alergia){
         return this.alergias.remove(alergia);
+    }
+
+    public void setPhotoUser(String string) {
+        this.userPhoto = string;
     }
 }

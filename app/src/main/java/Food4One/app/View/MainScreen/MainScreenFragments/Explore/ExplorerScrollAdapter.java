@@ -121,8 +121,6 @@ notifyItemRemoved(position);
         }
 
         public void bind(final Recipe recetaUser, ExplorerScrollAdapter.OnClickDoRecipeUser listener) {
-
-            RecipeRepository.getInstance().loadpictureURLUserRecipe(recetaUser.getIdUser());
             mCorazon.setImageResource(R.drawable.heart_24);
             mrecipeName.setText(recetaUser.getNombre());
             mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
@@ -136,17 +134,23 @@ notifyItemRemoved(position);
 
         private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
 
-            
             //Es carrega l'imatge de la receta i del User d'internet
             Picasso.get().load(recetaUser.getPictureURL())
                     .resize(980, 700)
                     .centerCrop().into(mCardRecetaPictureUrl);
 
-            Picasso.get().load(ExploreViewModel.getInstance().getUserURLFromRecipe().getValue())
+            if( ! recetaUser.getUserPhoto().equals(" "))
+            Picasso.get().load(recetaUser.getUserPhoto())
                     .resize(200, 200)
                     .centerCrop().into(mCardUserPictureURL);
+            else
+                mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
 
         }
+
+
+    }
+    public static void getT(){
 
     }
 

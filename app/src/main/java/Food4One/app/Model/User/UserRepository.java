@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 
@@ -208,10 +211,18 @@ public class UserRepository {
                 .set(userEntry, SetOptions.merge())
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "Photo upload succeeded: " + pictureUrl);
+                    RecipeRepository.getInstance().setURLUserToRecipes(User.getInstance().getIdRecetas(), pictureUrl);
                 })
                 .addOnFailureListener(exception -> {
                     Log.d(TAG, "Photo upload failed: " + pictureUrl);
                 });
+
+    }
+
+    public void addIDRecipeUser(String idRecipe, String userID){
+        Map<String, Object> userEntry = new HashMap<>();
+
+
     }
 
     public boolean setUserNameDDB(String email, String userName){

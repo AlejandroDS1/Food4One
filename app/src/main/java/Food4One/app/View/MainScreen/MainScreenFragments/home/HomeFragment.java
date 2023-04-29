@@ -30,17 +30,18 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         homeViewModel =HomeViewModel.getInstance();
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        viewRV = binding.recycleHomeRecetas;
+        //Recetas principales de la App /BARB/PAST/BEBID/ARROZ...
         setupModelRecetasHome();
 
+        viewRV = binding.recycleHomeRecetas;
+        viewRV.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adapter = new ListRecipesAdapter(getContext(), recetasHome);
         viewRV.setAdapter(adapter);
-        viewRV.setLayoutManager(new LinearLayoutManager(getContext()));
         agregarListener();
+
         return root;
     }
 
@@ -68,7 +69,7 @@ public class HomeFragment extends Fragment {
         transaction.setReorderingAllowed(true)
                 .addToBackStack("HomeFragChange") ;
 
-        homeViewModel.loadRecetasApp(seleccion);
+//        homeViewModel.loadRecetasApp(seleccion);
 
         //Remplazamos el fragmento del Home con la Selección que se ha cargado
         //También le pasamos al nuevo fragmento la selección para que sepa su camino por BBD

@@ -29,25 +29,23 @@ import Food4One.app.databinding.FragmentExploreBinding;
 public class ExploreFragment extends Fragment {
 
     private ExploreViewModel mViewModel;
-    private RecyclerView recyclerViewExplorer;
+    private static RecyclerView recyclerViewExplorer;
     private FragmentExploreBinding binding;
     private ExplorerScrollAdapter adapter;
+
+    public ExplorerScrollAdapter getAdapter() {
+        return adapter;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         mViewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
+        ExplorerScrollAdapter.getT();
 
-        binding =  FragmentExploreBinding.inflate(inflater, container, false);
+        binding = FragmentExploreBinding.inflate(inflater, container, false);
         mViewModel = ExploreViewModel.getInstance();
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
 
         final Observer<String> observerURLUser = new Observer<String>() {
             @Override
@@ -58,7 +56,7 @@ public class ExploreFragment extends Fragment {
         ExploreViewModel.getInstance().getUserURLFromRecipe().observe(this.getActivity(), observerURLUser);
 
         adapter = new ExplorerScrollAdapter(mViewModel.getRecetas().getValue());
-        adapter.setOnClickDetailListener(new ExplorerScrollAdapter.OnClickDoRecipeUser(){
+        adapter.setOnClickDetailListener(new ExplorerScrollAdapter.OnClickDoRecipeUser() {
             @Override
             public void OnClickDoRecipe(Recipe recipe) {
                 HomeViewModel.getInstance().loadRecipeToMake(recipe);
@@ -74,7 +72,7 @@ public class ExploreFragment extends Fragment {
         recyclerViewExplorer.setLayoutManager(manager);
         recyclerViewExplorer.setAdapter(adapter);
 
-        final Observer<ArrayList<Recipe>> observerRecetes= new Observer<ArrayList<Recipe>>() {
+        final Observer<ArrayList<Recipe>> observerRecetes = new Observer<ArrayList<Recipe>>() {
             @Override
             public void onChanged(ArrayList<Recipe> recetas) {
                 adapter.notifyDataSetChanged();
@@ -83,5 +81,8 @@ public class ExploreFragment extends Fragment {
         mViewModel.getRecetas().observe(this.getViewLifecycleOwner(), observerRecetes);
 
         mViewModel.loadRecetasExplorer();
+
+        return binding.getRoot();
     }
+
 }

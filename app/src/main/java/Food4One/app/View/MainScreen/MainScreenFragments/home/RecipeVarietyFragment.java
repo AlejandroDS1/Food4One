@@ -30,24 +30,17 @@ public class RecipeVarietyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding=  FragmentRecipeVarietyBinding.inflate(inflater, container, false);
-
         homeViewModel = HomeViewModel.getInstance();
-
-        TextView title = binding.titleTypes;
         String selection = requireArguments().getString("HomeSelection");
-        title.setText("Sección de "+ selection);
+        homeViewModel.loadRecetasApp(selection);
 
-        return binding.getRoot();
-
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+        //Le ponemos al Título del Fragment el Nombre que corresponde
+        binding.titleTypes.setText("Sección de "+ selection);
 
         instanciaRecycleView();
         observerAdapterToChange();
+
+        return binding.getRoot();
 
     }
 
@@ -60,20 +53,20 @@ public class RecipeVarietyFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         };
-        homeViewModel.getRecetes().observe(getActivity(), observerRecetes);
+        homeViewModel.getRecetes().observe(this.getViewLifecycleOwner(), observerRecetes);
     }
 
     private void instanciaRecycleView() {
+
         recyclerViewTypes = binding.recycleViewVariety;
-        //Ahora le definimos un Manager Grid
+        //Ahora le definimos un Manager Linear Vertical
         LinearLayoutManager manager = new LinearLayoutManager(
                 this.getContext(), LinearLayoutManager.VERTICAL, false);
-
         recyclerViewTypes.setLayoutManager(manager);
 
-        //Luego instanciamos el Adapter de los tipos de recetas-------------------------------------
-        adapter = new RecipeTypeAdapter(this.getContext(),
-                homeViewModel.getRecetes().getValue() );
+        //Luego instanciamos el Adapter de los tipos de recetas
+        adapter = new RecipeTypeAdapter(homeViewModel.getRecetes().getValue());
+
         adapter.setmOnClickListenerHomeSelection(new RecipeTypeAdapter.OnClickListenerTypeSelection() {
             @Override
             public void onClickTypeSelection(Recipe recipe) {
@@ -81,6 +74,8 @@ public class RecipeVarietyFragment extends Fragment {
                 startActivity(new Intent(getContext(), DoRecipeActivity.class));
             }
         });
+
+        recyclerViewTypes.setAdapter(adapter);
 
     }
 }

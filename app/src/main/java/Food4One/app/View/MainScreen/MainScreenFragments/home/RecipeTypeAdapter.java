@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,14 +21,10 @@ import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.R;
 
 public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.ViewHolder> {
-    private Context context;
     private ArrayList<Recipe> mData;
     private OnClickListenerTypeSelection mOnClickListenerTypeSelection;
 
-    private RecipeRepository.OnLoadRecetaApp listener;
-
-    public RecipeTypeAdapter(Context context, ArrayList<Recipe> mData) {
-        this.context = context;
+    public RecipeTypeAdapter( ArrayList<Recipe> mData) {
         this.mData = mData;
     }
 
@@ -42,13 +39,13 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Vi
     @NonNull
     @Override
     public RecipeTypeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.list_homerecetes_card, null);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.seccion_receta_typescard, null);
         return new RecipeTypeAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeTypeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bindData(mData.get(position), this.mOnClickListenerTypeSelection);
     }
 
@@ -57,33 +54,33 @@ public class RecipeTypeAdapter extends RecyclerView.Adapter<RecipeTypeAdapter.Vi
         return mData.size();
     }
 
-public static class ViewHolder extends RecyclerView.ViewHolder{
-    private ImageView imageViewRecipe;
-    private TextView nameViewRecipe;
-    private CardView totalCard;
-    public ViewHolder(@NonNull View itemView) {
-        super(itemView);
-        this.imageViewRecipe = itemView.findViewById(R.id.imageOfRecipes);
-        this.nameViewRecipe = itemView.findViewById(R.id.nameOfRecipes);
-        this.totalCard = itemView.findViewById(R.id.homeSelection);
-    }
-
-    public void bindData(Recipe recipe, RecipeTypeAdapter.OnClickListenerTypeSelection listenerTypeSelection){
-
-        nameViewRecipe.setText(recipe.getNombre());
-
-        Picasso.get().load(recipe.getPictureURL())
-                .resize(200, 200)
-                .centerCrop().into(imageViewRecipe);
-
-        totalCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Pasamos la receta que se ha seleccionado
-                listenerTypeSelection.onClickTypeSelection(recipe);
+        public static class ViewHolder extends RecyclerView.ViewHolder{
+            private ImageView imageViewRecipe;
+            private TextView nameViewRecipe;
+            private FrameLayout totalCard;
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                this.imageViewRecipe = itemView.findViewById(R.id.imageRecipe_TypesCard);
+                this.nameViewRecipe = itemView.findViewById(R.id.nameRecipe_typeCard);
+                this.totalCard = itemView.findViewById(R.id.typeCardSelection);
             }
-        });
 
-    }
-}
+            public void bindData(Recipe recipe, RecipeTypeAdapter.OnClickListenerTypeSelection listenerTypeSelection){
+
+                nameViewRecipe.setText(recipe.getNombre());
+
+                Picasso.get().load(recipe.getPictureURL())
+                        .resize(200, 200)
+                        .centerCrop().into(imageViewRecipe);
+
+                totalCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Pasamos la receta que se ha seleccionado
+                        listenerTypeSelection.onClickTypeSelection(recipe);
+                    }
+                });
+
+            }
+        }
 }

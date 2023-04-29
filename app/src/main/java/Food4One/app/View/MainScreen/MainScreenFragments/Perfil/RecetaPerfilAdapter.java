@@ -91,33 +91,9 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
         return mRecetes.size();
     }
 
-    /**
-     * Mètode que seteja de nou la llista d'usuaris si s'hi han fet canvis de manera externa.
-     *
-     * @param recetes
-     */
-    public void setRecetes(ArrayList<Recipe> recetes) {
-        this.mRecetes = recetes; // no recicla/repinta res
-    }
 
         /**
-         * Mètode que repinta la RecyclerView sencera.
-
-         public void updateUsers() {------------------------------------------------------------------
-         notifyDataSetChanged();
-         }
-         */
-
-        /**
-         * Mètode que repinta només posició indicada
-         * @param position
-
-        public void hideUser(int position) {-------------------------------------------------
-        notifyItemRemoved(position);
-        }*/
-
-        /**
-         * Classe ViewHolder. No és més que un placeholder de la vista (user_card_list.xml)
+         * Classe ViewHolder. No és més que un placeholder de la vista (recetaview_card.xml)
          * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
          * però es pot fer dins.
          */
@@ -148,7 +124,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 GridLayoutManager.LayoutParams layoutParams= (GridLayoutManager.LayoutParams) recipieCardView.getLayoutParams();
                 layoutParams.width = RecetaPerfilAdapter.screenWidth;
                 layoutParams.height = RecetaPerfilAdapter.screenWidth;
-
 
                 int resize = (int) (RecetaPerfilAdapter.screenWidth - (RecetaPerfilAdapter.screenWidth / 3));
 

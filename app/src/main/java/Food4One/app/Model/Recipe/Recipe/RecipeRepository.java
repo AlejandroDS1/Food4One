@@ -14,8 +14,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
@@ -40,6 +42,20 @@ public class RecipeRepository {
      * Referència a la Base de Dades
      */
     private FirebaseFirestore mDb;
+
+    public void setURLUserToRecipes(ArrayList<String> recetasIdUser, String pictureUrl) {
+        HashMap<String, String> store = new HashMap<>();
+        for(String idReceta: recetasIdUser){
+            store.put(User.PICTUREURL_TAG+"user", pictureUrl);
+            mDb.collection(Recipe.TAG).document(idReceta)
+                .set(store, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "Photo upload to Recipes succeeded: " + pictureUrl);
+                    }
+            });
+        }
+    }
 
 
 //----------------------------------------------------------------------------------------------
@@ -144,7 +160,7 @@ public class RecipeRepository {
     for(OnLoadRecipeToMake listener: mOnLoadRecipeToMake)
         listener.OnLoadRecipe(recipe);
     }
-
+/*----------------------------------------------------------------------------------------------------------------------------------
     public void loadpictureURLUserRecipe( String idUser){
         Task<DocumentSnapshot> task = mDb.collection("Users").document(idUser).get().
                 addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -153,7 +169,7 @@ public class RecipeRepository {
                 mOnLoadURLfromRecipe.OnLoadURLUserRecipe(task.getResult().getString(User.PICTUREURL_TAG));
             }
         });
-    }
+    }*/
 
     /**
      * Mètode que llegeix les recetes. Vindrà cridat des de fora i quan acabi,
@@ -175,6 +191,7 @@ public class RecipeRepository {
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
                     recetaUser.setIngredientes(cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG)));
                     recetaUser.setNombre(documentSnapshot.getId());
+                    recetaUser.setPhotoUser(documentSnapshot.getString(User.PICTUREURL_TAG+"user"));
                     //---------------------------------------------------------------------------
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
@@ -214,6 +231,7 @@ public class RecipeRepository {
                     receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
                     receta.setPasos((ArrayList<String>) document.get("pasos"));
                     receta.setNombre(document.getId());
+                    receta.setPhotoUser(document.getString(User.PICTUREURL_TAG+"user"));
                     recetaUsers.add(receta);
                 }
                 /*Luego llamamos a sus listeners*/
