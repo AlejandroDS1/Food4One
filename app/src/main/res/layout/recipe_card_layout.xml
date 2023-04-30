@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/collectionCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -21,8 +22,8 @@
                 android:id="@+id/imgRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="134dp"
-                android:scaleType="fitXY"
                 android:layout_gravity="center_horizontal"
+                android:scaleType="fitXY"
                 app:srcCompat="@drawable/paella" />
 
             <TextView

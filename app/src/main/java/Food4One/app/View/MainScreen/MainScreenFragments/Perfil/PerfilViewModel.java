@@ -33,8 +33,8 @@ public class PerfilViewModel extends ViewModel {
     private FirebaseStorage mStorage;
 
     /* Elements observables del ViewModel */
-    private final MutableLiveData<ArrayList<Recipe>> mRecetas; // Les receptes que la RecyclerView mostra al perfil
-
+    // Les receptes que la RecyclerView mostra al perfil
+    private final MutableLiveData<ArrayList<Recipe>> mRecetas;
     private final MutableLiveData<ArrayList<User>> mUsers;
     private final MutableLiveData<String> mDescription;
     private final MutableLiveData<String> mPictureUrl; // URL de la foto de l'usuari logat
@@ -174,6 +174,7 @@ public class PerfilViewModel extends ViewModel {
     public void setUsers(ArrayList<User> users){
         mUsers.setValue(users);
     }
+    public void setmPictureUrl(String url){ mPictureUrl.setValue(url);}
 
     public void loadPictureOfUser(String email){ mUserRepository.loadPictureOfUser(email);}
 

@@ -39,7 +39,7 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
      * quan l'usuari faci clic en la creu (amagar) algún dels items de la RecyclerView
      */
     public interface OnClickDetailListener {
-        void OnClickDetail(int position);
+        void OnClickDetail(int positionX, int positionY);
     }
 
 
@@ -92,33 +92,9 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
         return mRecetes.size();
     }
 
-    /**
-     * Mètode que seteja de nou la llista d'usuaris si s'hi han fet canvis de manera externa.
-     *
-     * @param recetes
-     */
-    public void setRecetes(ArrayList<Recipe> recetes) {
-        this.mRecetes = recetes; // no recicla/repinta res
-    }
 
         /**
-         * Mètode que repinta la RecyclerView sencera.
-
-         public void updateUsers() {------------------------------------------------------------------
-         notifyDataSetChanged();
-         }
-         */
-
-        /**
-         * Mètode que repinta només posició indicada
-         * @param position
-
-        public void hideUser(int position) {-------------------------------------------------
-        notifyItemRemoved(position);
-        }*/
-
-        /**
-         * Classe ViewHolder. No és més que un placeholder de la vista (user_card_list.xml)
+         * Classe ViewHolder. No és més que un placeholder de la vista (recetaview_card.xml)
          * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
          * però es pot fer dins.
          */
@@ -150,7 +126,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 layoutParams.width = RecetaPerfilAdapter.screenWidth;
                 layoutParams.height = RecetaPerfilAdapter.screenWidth;
 
-
                 int resize = (int) (RecetaPerfilAdapter.screenWidth - (RecetaPerfilAdapter.screenWidth / 3));
 
                 recipieCardView.setLayoutParams(layoutParams);
@@ -168,9 +143,8 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
 
                 recipeCard.setOnClickListener(new View.OnClickListener() {
                    @Override
-                   public void onClick(View view) {
-                       view.requestFocus();
-                       listener.OnClickDetail(getAdapterPosition());
+                   public void onClick(View view){
+                       listener.OnClickDetail(getAdapterPosition(), view.getScrollY());
                    }
                 });
             }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 
@@ -196,9 +197,10 @@ public class UserRepository {
      * @param email
      * @param firstName
      */
-    public void addUser(String firstName,
-                        String email)
-    {
+    public void addUser(
+            String firstName,
+            String email
+    ) {
         // Obtenir informació personal de l'usuari
         Map<String, Object> signedUpUser = new HashMap<>();
         signedUpUser.put(User.ALERGIAS_TAG, new ArrayList<String>());
@@ -257,10 +259,18 @@ public class UserRepository {
                 .set(userEntry, SetOptions.merge())
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "Photo upload succeeded: " + pictureUrl);
+                    RecipeRepository.getInstance().setURLUserToRecipes(UserRepository.getUser().getIdRecetas(), pictureUrl);
                 })
                 .addOnFailureListener(exception -> {
                     Log.d(TAG, "Photo upload failed: " + pictureUrl);
                 });
+
+    }
+
+    public void addIDRecipeUser(String idRecipe, String userID){
+        Map<String, Object> userEntry = new HashMap<>();
+
+
     }
 
     public boolean setUserNameDDB(String email, String userName){
@@ -276,6 +286,8 @@ public class UserRepository {
         // Comprovamos si ha entrado en el OnSucces, si retorna falso es porque no se ha subido a base de datos.
         return !UserRepository.getUser().userName.equals(userName);
     }
+
+
 
     // TODO: Si podemos mejorar el paso por parametro de un MutableLiveData mejor
     // Se puede utilizar pasandole un null sino se utiliza para actualizar el texto de UserSettings

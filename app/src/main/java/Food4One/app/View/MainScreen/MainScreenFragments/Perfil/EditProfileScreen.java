@@ -6,9 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,8 +19,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import com.squareup.picasso.Picasso;
@@ -29,57 +31,96 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
-import Food4One.app.databinding.FragmentEditarPerfilScreenBinding;
+import Food4One.app.R;
 
-public class EditarPerfilScreen extends Fragment {
-    private FragmentEditarPerfilScreenBinding binding;
+public class EditProfileScreen extends AppCompatActivity {
     private PerfilViewModel perfilViewModel;
     private ImageView mLoggedPictureUser;
-    private LinearLayout galeryAccess;
-    private LinearLayout camaraAccess;
-    private TextView backButton;
+    private LinearLayout galeryAccess, camaraAccess, eliminarAccess;
+    private FrameLayout frameEditProfile;
+    private CardView cardCameraGalery;
+    private TextView backButton, editButton;
     private Uri mPhotoUri;
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        binding = FragmentEditarPerfilScreenBinding.inflate(inflater, container, false);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_profile_screen);
+
         perfilViewModel = PerfilViewModel.getInstance();
         initObjectsOnTheView();
         initListenersOfTheViews();
         perfilViewModel.loadPictureOfUser(UserRepository.getUser().getEmail());
-
-        return binding.getRoot();
+        getSupportActionBar().hide();
     }
 
+
+
     private void initListenersOfTheViews() {
+        //Abrir la actividad para tomar la foto con la cámara
         setTakeCameraPictureListener(camaraAccess);
+        //Abrir la galerìa para poder escoger una foto y subirla
         setChoosePictureListener(galeryAccess);
-        backButton.setOnClickListener(v -> {//Regresamos manualmente al Fragment anterior
-            getActivity().getSupportFragmentManager().popBackStackImmediate();
+        //Borrar la imagen del Usuario y colocar una por predeterminada
+        setErasePictureListener(eliminarAccess);
+
+        //Regresamos manualmente al Fragment anterior
+        backButton.setOnClickListener(v -> {
+            finish();
         });
 
         //Tenemos que escuchar cuando el usuario haya cambiado su photo de perfil
         final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
             public void onChanged(String pictureUrl) {
+                if(! pictureUrl.equals(" ")){
                 Picasso.get()
                         .load(pictureUrl).resize(1000, 1000)
                         .into(mLoggedPictureUser);
                 UserRepository.getUser().setProfilePictureURL(pictureUrl);
+                }else
+                    mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
             }
         };
-        perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
+        perfilViewModel.getPictureProfileUrl().observe(this, observerPictureUrl);
+
+        editButton.setOnClickListener(view->{
+            cardCameraGalery.setVisibility(View.VISIBLE);
+            Animation a = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            cardCameraGalery.startAnimation(a);
+            editButton.setVisibility(View.GONE);
+        });
+
+        frameEditProfile.setOnClickListener(view->{
+            if(editButton.getVisibility() == View.GONE) {
+                Animation a = AnimationUtils.loadAnimation(this, R.anim.slide_out);
+                cardCameraGalery.startAnimation(a);
+                cardCameraGalery.setVisibility(View.GONE);
+                editButton.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void setErasePictureListener(LinearLayout eliminarAccess) {
+        eliminarAccess.setOnClickListener(view ->{
+            UserRepository.getInstance().setPictureUrlOfUser(UserRepository.getUser().getEmail(), " ");
+            perfilViewModel.setmPictureUrl(" ");
+        });
     }
 
     private void initObjectsOnTheView() {
-        camaraAccess = binding.camaraSelection;
-        galeryAccess = binding.galerySelection;
-        backButton = binding.backflecha;
-        mLoggedPictureUser = binding.photoAvatarFullScreen;
+
+        camaraAccess = findViewById(R.id.camaraSelection);
+        galeryAccess = findViewById(R.id.galerySelection);
+        eliminarAccess = findViewById(R.id.eliminarSelection);
+        backButton = findViewById(R.id.backflecha);
+        editButton = findViewById(R.id.editPictureButton);
+        mLoggedPictureUser = findViewById(R.id.photoAvatarFullScreen);
+
+        frameEditProfile = findViewById(R.id.photoFrameEditProfile);
+        cardCameraGalery = findViewById(R.id.cardEditCameraGalery);
+        cardCameraGalery.setVisibility(View.GONE);
     }
 
 
@@ -134,7 +175,7 @@ public class EditarPerfilScreen extends Fragment {
             // d'entorn Environment.DIRECTORY_PICTURES (pren per valor "Pictures").
             // Se li afageix, com a sufix, el directori del sistema on es guarden els fitxers.
 
-            File storageDir = this.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
             // Creem el fitxer
             File image = null;
@@ -153,7 +194,7 @@ public class EditarPerfilScreen extends Fragment {
             // 1. Especifiquem a res>xml>paths.xml el directori on es guardarà la imatge
             //    de manera definitiva.
             // 2. Afegir al manifest un provider que apunti a paths.xml del pas 1
-            Uri photoUri = FileProvider.getUriForFile(this.getContext(),
+            Uri photoUri = FileProvider.getUriForFile(this,
                     "Food4One.app.fileprovider",
                     image);
 
@@ -168,4 +209,5 @@ public class EditarPerfilScreen extends Fragment {
             takePictureLauncher.launch(intent);
         });
     }
+
 }

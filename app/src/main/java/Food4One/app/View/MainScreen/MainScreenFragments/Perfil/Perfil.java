@@ -105,10 +105,13 @@ public class Perfil extends Fragment {
         final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
             public void onChanged(String pictureUrl) {
-                Picasso.get()
-                        .load(pictureUrl).resize(200, 200)
-                        .into(mLoggedPictureUser);
-                UserRepository.getUser().setProfilePictureURL(pictureUrl);
+                if(! pictureUrl.equals(" ")){
+                    Picasso.get()
+                            .load(pictureUrl).resize(200, 200)
+                            .into(mLoggedPictureUser);
+                    UserRepository.getUser().setProfilePictureURL(pictureUrl);
+                }else
+                    mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this.getActivity(), observerPictureUrl);
@@ -157,9 +160,9 @@ public class Perfil extends Fragment {
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
             @Override
-            public void OnClickDetail(int position) {
+            public void OnClickDetail(int positionX, int positionY) {
                 //Al clicar se abrirá un nuevo Fragment
-                initScrollViewRecipes(position);
+                initScrollViewRecipes(positionX, positionY);
             }
         });
 
@@ -169,10 +172,12 @@ public class Perfil extends Fragment {
         mLoggedPictureUser = binding.avatarusuario;
         mTakePictureButton = binding.photobuttomPerfil;
     }
-    private void initScrollViewRecipes(int position) {
+    private void initScrollViewRecipes(int position, int positionY) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("RecycleViewPosition", position);
+        bundle.putInt("X", position);
+        bundle.putInt("Y", positionY);
 
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -186,7 +191,7 @@ public class Perfil extends Fragment {
                 .addToBackStack("PerfilFragChange") ;
 
         // Replace whatever is in the fragment_container view with this fragment
-        transaction.replace(R.id.perfilFragment, ScrollPerfil.class, bundle);
+        transaction.replace(R.id.perfilFragment, ScrollPerfilFragment.class, bundle);
         // Commit the transaction
         transaction.commit();
 
@@ -268,16 +273,7 @@ public class Perfil extends Fragment {
 
 
     private void initEditPerfilWindow() {
-        // Create new fragment and transaction
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction()
-                ;
-        transaction.setReorderingAllowed(true)
-                .addToBackStack("PerfilFragChange") ;
-        // Replace whatever is in the fragment_container view with this fragment
-        transaction.replace(R.id.perfilFragment, new EditarPerfilScreen());
-        // Commit the transaction
-        transaction.commit();
+        startActivity(new Intent(this.getContext(), EditProfileScreen.class));
     }
 
 

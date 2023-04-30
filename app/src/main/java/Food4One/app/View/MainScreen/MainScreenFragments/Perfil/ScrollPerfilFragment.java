@@ -1,6 +1,7 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentScrollPerfilBinding;
 
-public class ScrollPerfil extends Fragment {
+public class ScrollPerfilFragment extends Fragment {
 
     private FragmentScrollPerfilBinding binding;
     private PerfilViewModel perfilViewModel;
@@ -30,7 +33,7 @@ public class ScrollPerfil extends Fragment {
     private TextView backBottom;
     private int focusSelection;
 
-    public ScrollPerfil() {
+    public ScrollPerfilFragment() {
         // Required empty public constructor
     }
 
@@ -58,7 +61,6 @@ public class ScrollPerfil extends Fragment {
         mRecetaCardsRV.setLayoutManager(manager);
         //Obtenemos el elemento que se ha seleccionado en el Grid del Perfil
         focusSelection = requireArguments().getInt("RecycleViewPosition");
-
 
         backBottom.setOnClickListener(v-> { //Regresamos manualmente al Fragment anterior
                 getActivity().getSupportFragmentManager().popBackStackImmediate();
@@ -88,10 +90,19 @@ public class ScrollPerfil extends Fragment {
 
                         // Set the data on the RecyclerView adapter
                         //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles
-
                         mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas);
+
                         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
                         mRecetaCardsRV.scrollToPosition((recetas.size() - focusSelection)-1);
+                        //mRecetaCardsRV.scrollTo(requireArguments().getInt("X"), requireArguments().getInt("Y"));
+                        //mRecetaCardsRV.requestFocus(focusSelection);
+                        mCardRecetaRVAdapter.setOnClickDetailListener(new ScrollPerfilAdapter.OnClickDoRecipeUser() {
+                            @Override
+                            public void OnClickDoRecipe(Recipe recipeToDo) {
+                                HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
+                                startActivity(new Intent(getContext(), DoRecipeActivity.class));
+                            }
+                        });
 
                         // Start the transition once all views have been
                         // measured and laid out
@@ -107,7 +118,6 @@ public class ScrollPerfil extends Fragment {
                         });
                     }
                 });
-
 
     }
 

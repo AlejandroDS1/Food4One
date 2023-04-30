@@ -21,6 +21,8 @@ public class Recipe {
     private String pictureURL;
     private int likes;
 
+    private String userPhoto; // Foto del usuario
+
     public Recipe(){} //Para la base de Datos se necesita un constructor sin argumentos...
     //Constructor
     public Recipe(  final String nombre,
@@ -58,8 +60,10 @@ public class Recipe {
     public IngredientesList getIngredientes() { return ingredientes; }
     public String getPictureURL() {  return pictureURL; }
     public int getLikes() { return likes; }
-    public String getIdUser(){return idUser;}
+    public String getIdUser() { return idUser; }
+
     public String getDescription(){ return Description; }
+    public String getUserPhoto(){ return userPhoto; }
 
     //---------------SETTERS----------------------------------------
     public void setNombre(String nombre) { this.nombre = nombre;  }
@@ -73,5 +77,9 @@ public class Recipe {
     //REMOVE
     public boolean removeAlergias(String alergia){
         return this.alergias.remove(alergia);
+    }
+
+    public void setPhotoUser(String string) {
+        this.userPhoto = string;
     }
 }

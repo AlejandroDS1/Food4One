@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 
@@ -26,7 +25,7 @@ public class ScrollPerfilAdapter extends RecyclerView.Adapter<ScrollPerfilAdapte
  * quan l'usuari faci clic en la creu (amagar) algún dels items de la RecyclerView
  */
 public interface OnClickDoRecipeUser {
-    void OnClickDoRecipe(int position);
+    void OnClickDoRecipe(Recipe position);
 }
 
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
@@ -135,20 +134,26 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
         mrecipeName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.OnClickDoRecipe(getAdapterPosition());
+                listener.OnClickDoRecipe(recetaUser);
             }
         });
+
     }
 
     private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
         //Es carrega l'imatge de la receta i del User d'internet
         Picasso.get().load(recetaUser.getPictureURL())
-                .resize(450, 250)
+                .resize(980, 700)
                 .centerCrop().into(mCardRecetaPictureUrl);
 
-        Picasso.get().load(UserRepository.getUser().getProfilePictureURL())
-                .resize(200, 200)
-                .centerCrop().into(mCardUserPictureURL);
+        String url;
+        if (!(url = UserRepository.getUser().getProfilePictureURL()).equals(" "))
+
+            Picasso.get().load(url)
+                    .resize(200, 200)
+                    .centerCrop().into(mCardUserPictureURL);
+        else
+            mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
 
     }
 }

@@ -1,8 +1,8 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +16,19 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentColeccionBinding;
 
 public class ColeccionFragment extends Fragment {
-
     private FragmentColeccionBinding binding;
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private RecyclerViewAdapter mRecipeCardAdapter;
     private ColeccionViewModel coleccionViewModel;
 
@@ -105,6 +103,13 @@ public class ColeccionFragment extends Fragment {
     private void cargarRecycleView() {
         binding.recipeRV.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         mRecipeCardAdapter = new RecyclerViewAdapter(coleccionViewModel.getmRecipes().getValue());
+        mRecipeCardAdapter.setRecipeToMakeListener(new RecipeRepository.OnLoadRecipeToMake() {
+            @Override
+            public void OnLoadRecipe(Recipe recipeToDo) {
+                HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
+                startActivity(new Intent(getContext(), DoRecipeActivity.class));
+            }
+        });
         binding.recipeRV.setAdapter(mRecipeCardAdapter);
 
     }

@@ -52,7 +52,7 @@ public class IngredientesListAdapter extends RecyclerView.Adapter<IngredientesLi
     @Override
     public void onBindViewHolder(@NonNull IngredientesListAdapter.ViewHolder holder, int position) {
         Ingrediente _ingrediente = this.ingredientesList.getIngredientes().get(position);
-        holder.onBind(_ingrediente.getName(), _ingrediente.getCantidadStr(), this.listener, this.ingredientesList);
+        holder.onBind(_ingrediente.getName(), _ingrediente.getCantidadStr(), this.listener);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class IngredientesListAdapter extends RecyclerView.Adapter<IngredientesLi
             // hacemos un try catch que sirve para si le han dado dos veces muy rapido no hacer nada.
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView nombreIngrediente, cantidadIngrediente, trashCan;
         private final CardView cardView;
@@ -87,7 +87,7 @@ public class IngredientesListAdapter extends RecyclerView.Adapter<IngredientesLi
         }
 
 
-        public void onBind(final String _nameIngrediente, final String _cantidad, OnTrashCanClickListener listener, IngredientesList ingredientesList){
+        public void onBind(final String _nameIngrediente, final String _cantidad, OnTrashCanClickListener listener){
 
             Animation animation = AnimationUtils.loadAnimation(this.itemView.getContext(), R.anim.desplazar_abajo);
             animation.setDuration(300);
@@ -107,10 +107,10 @@ public class IngredientesListAdapter extends RecyclerView.Adapter<IngredientesLi
 
 
 
-            this.linearLayout.setOnClickListener(listen -> modifyIngredienteListener(ingredientesList));
+            this.linearLayout.setOnClickListener(listen -> modifyIngredienteListener());
         }
 
-        private void modifyIngredienteListener(IngredientesList ingredientesList) {
+        private void modifyIngredienteListener() {
 
             Ingrediente ingrediente = ingredientesList.get(getAdapterPosition());
             Context context = itemView.getContext();
@@ -162,9 +162,10 @@ public class IngredientesListAdapter extends RecyclerView.Adapter<IngredientesLi
             builder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    ingrediente.setCantidad(Float.parseFloat(cantidadIngrediente.getText().toString()));
+                    ingrediente.setCantidad(Float.parseFloat(cantidad.getText().toString()));
                     ingrediente.setMagnitud(spinner.getText().toString());
                     ingrediente.setName(_nombreIngrediente.getText().toString());
+                    IngredientesListAdapter.this.notifyItemChanged(getAdapterPosition());
                 }
             }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                 @Override

@@ -4,11 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
-
-import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
 public class ShoppingListViewModel extends ViewModel {
