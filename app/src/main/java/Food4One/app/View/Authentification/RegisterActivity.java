@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 public class RegisterActivity extends AppCompatActivity {
 
@@ -74,6 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
                                      * a que confirme su correo. Por lo tanto, aún no lo añadiremos a
                                      * la base de datos, sino que almacenaremos el nombre del usuario
                                      * en cuestión en el Intento, y se lo pasamos así al LOGIN*/
+
+                                    UserRepository.getInstance().addUser(nameUser,email);
+
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     intent.putExtra("nameUser", nameUser);
                                     startActivity(intent);    //Vamos al LOGIN a verificar al usuario.
