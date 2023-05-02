@@ -14,9 +14,7 @@ import Food4One.app.Model.User.User;
  */
 public class MainScreenViewModel extends ViewModel{
     private MutableLiveData<User> user;
-
     private MutableLiveData<ArrayList<User>> allUsers;
-
 
 
     public MainScreenViewModel(){

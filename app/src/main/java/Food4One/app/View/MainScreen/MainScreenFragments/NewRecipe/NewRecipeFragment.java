@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class NewRecipeFragment extends Fragment {
     private NewRecipeViewModel newRecipeViewModel;
     private IngredientesListAdapter ingredientesListAdapter;
     private MPopUpWindow _popUpWindow;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -48,8 +50,25 @@ public class NewRecipeFragment extends Fragment {
 
         initLists();
         initListeners();
+        prueba();
 
         return root;
+    }
+
+    // TODO eliminar metodo
+    private void prueba(){
+
+        newRecipeViewModel.addSteptoList("Cortar el pollo");
+        newRecipeViewModel.addSteptoList("Sazonar el pollo");
+        newRecipeViewModel.addSteptoList("Batir los huevos con sal y pimienta");
+        newRecipeViewModel.addSteptoList("Mojar el pollo en el huevo batido");
+
+        StepListAdapter adapter = new StepListAdapter();
+
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+
+        binding.stepsListNewRecipe.setLayoutManager(manager);
+        binding.stepsListNewRecipe.setAdapter(adapter);
     }
 
     private void initLists(){
@@ -181,7 +200,10 @@ public class NewRecipeFragment extends Fragment {
 
     }
 
-    // Esta clase hereda de PopUpWindow y su funcion es la de construir la ventana y aplicar cambios de configuracion
+    /**
+     * Esta clase hereda de PopUpWindow y su funcion es la de construir la ventana y aplicar cambios de configuracion
+     * De esta manera no tenemos que instanciarla constantemente, se instancia una vez y solo tenemos que aplicar la configuracion
+     */
     public static class MPopUpWindow extends PopupWindow {
         private final TextView textView;
 
@@ -202,6 +224,10 @@ public class NewRecipeFragment extends Fragment {
         }
     }
 
+    /**
+     * Clase interna TextWatcher para tener un listener de correccion de texto al introducir
+     * la cantidad de un ingrediente. Que cumpla el patron que queremos
+     */
     public static class MyTextWatcher implements TextWatcher{
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -225,15 +251,17 @@ public class NewRecipeFragment extends Fragment {
         }
     }
 
+    /**
+     * RecyclerViewAdapter para mostrar la lista de ingredientes en NewRecipe
+     */
     public class AlergiasListAdapter extends RecyclerView.Adapter<AlergiasListAdapter.ViewHolder> {
 
         private final List<String> alergias;
-
-        protected final ArrayList<String> selectedAlerigas;
+        private final List<String> selectedAlergias;
 
         public AlergiasListAdapter(List<String> alergias) {
             this.alergias = alergias;
-            this.selectedAlerigas = new ArrayList<>();
+            selectedAlergias = newRecipeViewModel.getAlergiasList().getValue();
         }
 
         @NonNull
@@ -258,7 +286,6 @@ public class NewRecipeFragment extends Fragment {
 
         // Getter
         // Conseguimos la lista de Alergias para crear la receta.
-        public final ArrayList<String> getSelectedAlerigas(){ return this.selectedAlerigas; }
 
         public final class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -281,12 +308,70 @@ public class NewRecipeFragment extends Fragment {
                     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                         String alergia = ViewHolder.this.alergiaCV.getText().toString();
                         if (checked)
-                            selectedAlerigas.add(alergia);
+                            selectedAlergias.add(alergia);
                         else
-                            selectedAlerigas.remove(alergia);
+                            selectedAlergias.remove(alergia);
                     }
                 });
             }
         }
     }
+
+    /**
+     * RecyclerViewAdapter para mostrar los pasos de la aplicación
+     */
+
+    public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.ViewHolder>{
+
+        private final List<String> stepsList;
+
+        public StepListAdapter(){
+            this.stepsList = newRecipeViewModel.getStepsList().getValue();
+        }
+
+        @NonNull
+        @Override
+        public StepListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+            View view = inflater.inflate(R.layout.item_steps_list_new_recipe, parent, false);
+
+            return new StepListAdapter.ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull StepListAdapter.ViewHolder holder, int position) {
+            holder.bind(position);
+        }
+        @Override
+        public int getItemCount() {
+            return this.stepsList.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            private final TextView stepTxt, numStep;
+            private final LinearLayout layout;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                layout = itemView.findViewById(R.id.steps_layout_newRecipe);
+                this.stepTxt = itemView.findViewById(R.id.stepTxt_newRecipe);
+                numStep = itemView.findViewById(R.id.numStep_newRecipe);
+            }
+
+            public void bind(final int position){
+
+                final String stepText = stepsList.get(position);
+
+                this.stepTxt.setText(stepText);
+                this.numStep.setText(position + ".-");
+
+                //TODO: AÑADIR CLICK LISTENER AL LAYOUT PARA PODER EDITAR EL STEP
+                // tambien añadir onLongClickListener para moverlos por ejemplo -- ideas...---
+            }
+
+        }
+
+    }
+
 }
