@@ -84,10 +84,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             // d'Internet.
             Picasso.get().load(recipe.getPictureURL()).into(mCardPictureUrl);
 
-            // TODO: Falta posar OnClickListener per portar directament al detall de la recepte
             mCardRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     listener.OnLoadRecipe(recipe);
                 }
             });

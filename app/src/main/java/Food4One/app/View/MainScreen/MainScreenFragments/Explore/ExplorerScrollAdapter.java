@@ -21,8 +21,8 @@ public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAd
 
     /**
      * Definició de listener (interficie)
-     * per a quan algú vulgui escoltar un event de OnClickHide, és a dir,
-     * quan l'usuari faci clic en la creu (amagar) algún dels items de la RecyclerView
+     * per a quan algú vulgui escoltar un event de OnClickDoRecipe, és a dir,
+     * quan l'usuari faci clic en algún dels items de la RecyclerView
      */
     public interface OnClickDoRecipeUser {
         void OnClickDoRecipe(Recipe recipe);

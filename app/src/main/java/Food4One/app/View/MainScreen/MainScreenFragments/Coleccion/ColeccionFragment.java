@@ -51,7 +51,7 @@ public class ColeccionFragment extends Fragment {
     }
 
     private void cargarReceptesUsuari() {
-        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrá
+        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
         if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
             coleccionViewModel.loadRecetasOfUserFromRepository(UserRepository.getUser().getIdRecetas()); // Internament pobla les receptes de la BBDD
     }
