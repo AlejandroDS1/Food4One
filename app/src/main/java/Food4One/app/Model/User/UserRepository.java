@@ -210,6 +210,7 @@ public class UserRepository {
         signedUpUser.put(User.IDRECETAS_TAG, new ArrayList<String>());
         signedUpUser.put(User.IDCOLLECTIONS_TAG, new ArrayList<String>());
         signedUpUser.put(User.PICTUREURL_TAG, null);
+        signedUpUser.put(User.IDINGREDIENTES_LIST_TAG, new ArrayList<String>());
 
         // Afegir-la a la base de dades
         mDb.collection(User.TAG).document(email).set(signedUpUser)
