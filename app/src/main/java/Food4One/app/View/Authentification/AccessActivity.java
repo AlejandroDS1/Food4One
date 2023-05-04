@@ -3,6 +3,8 @@ package Food4One.app.View.Authentification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,10 +27,9 @@ public class AccessActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //Animación entrada de App (Splash)----------------------------------------------------------
-        /*
+
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.desplazar_abajo);
-        FrameLayout logoApp = findViewById(R.id.logo_splashView);
-        logoApp.setAnimation(animation);*/
+        findViewById(R.id.logo_splashView).setAnimation(animation);
 
 
         new Handler().postDelayed(new Runnable() {

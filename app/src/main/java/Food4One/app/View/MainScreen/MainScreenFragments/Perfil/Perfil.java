@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -190,9 +192,13 @@ public class Perfil extends Fragment {
         transaction.setReorderingAllowed(true)
                 .addToBackStack("PerfilFragChange") ;
 
+//        NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_mainscreen);
+
+        //nav.navigate(R.id.action_navigation_perfil_to_scrollPerfilFragment, bundle);
+
         // Replace whatever is in the fragment_container view with this fragment
         transaction.replace(R.id.perfilFragment, ScrollPerfilFragment.class, bundle);
-        // Commit the transaction
+       //  Commit the transaction
         transaction.commit();
 
     }

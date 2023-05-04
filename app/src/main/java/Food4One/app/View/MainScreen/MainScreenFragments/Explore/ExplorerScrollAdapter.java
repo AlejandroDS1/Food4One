@@ -27,7 +27,6 @@ public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAd
     public interface OnClickDoRecipeUser {
         void OnClickDoRecipe(Recipe recipe);
     }
-
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
     private ExplorerScrollAdapter.OnClickDoRecipeUser mOnClickDoRecipeListener; // Qui hagi de repintar la ReciclerView
 
@@ -37,7 +36,6 @@ public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAd
     public void setOnClickDetailListener(ExplorerScrollAdapter.OnClickDoRecipeUser listener) {
         this.mOnClickDoRecipeListener = listener;
     }
-
     @NonNull
     @Override
     public ExplorerScrollAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -148,5 +146,6 @@ notifyItemRemoved(position);
                 mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
 
         }
+
     }
 }

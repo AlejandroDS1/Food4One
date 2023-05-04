@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -260,6 +261,7 @@ public class UserRepository {
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "Photo upload succeeded: " + pictureUrl);
                     RecipeRepository.getInstance().setURLUserToRecipes(UserRepository.getUser().getIdRecetas(), pictureUrl);
+
                 })
                 .addOnFailureListener(exception -> {
                     Log.d(TAG, "Photo upload failed: " + pictureUrl);

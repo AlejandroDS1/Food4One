@@ -20,7 +20,6 @@ public class Recipe {
     private ArrayList<String> alergias;
     private String pictureURL;
     private int likes;
-
     private String userPhoto; // Foto del usuario
 
     public Recipe(){} //Para la base de Datos se necesita un constructor sin argumentos...

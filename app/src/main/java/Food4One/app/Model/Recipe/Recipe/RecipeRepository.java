@@ -4,9 +4,12 @@ package Food4One.app.Model.Recipe.Recipe;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -156,6 +159,16 @@ public class RecipeRepository {
     for(OnLoadRecipeToMake listener: mOnLoadRecipeToMake)
         listener.OnLoadRecipe(recipe);
     }
+/*----------------------------------------------------------------------------------------------------------------------------------
+    public void loadpictureURLUserRecipe( String idUser){
+        Task<DocumentSnapshot> task = mDb.collection("Users").document(idUser).get().
+                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                mOnLoadURLfromRecipe.OnLoadURLUserRecipe(task.getResult().getString(User.PICTUREURL_TAG));
+            }
+        });
+    }*/
 
     /**
      * Mètode que llegeix les recetes. Vindrà cridat des de fora i quan acabi,
@@ -179,6 +192,7 @@ public class RecipeRepository {
                     recetaUser.setNombre(documentSnapshot.getId());
                     recetaUser.setPhotoUser(documentSnapshot.getString(User.PICTUREURL_TAG+"user"));
                     recetaUser.setIdUser(userID);
+
                     //---------------------------------------------------------------------------
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
