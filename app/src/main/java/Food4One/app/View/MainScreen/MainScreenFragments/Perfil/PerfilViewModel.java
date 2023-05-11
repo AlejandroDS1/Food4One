@@ -178,7 +178,7 @@ public class PerfilViewModel extends ViewModel {
         mRecetaRepository.loadRecetas(mRecetas.getValue(), "PERFIL");
     }
 
-    public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){
+    public void loadRecetasOfUserFromRepository(ArrayList<String> idRecetasUser){
          mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
     }
 

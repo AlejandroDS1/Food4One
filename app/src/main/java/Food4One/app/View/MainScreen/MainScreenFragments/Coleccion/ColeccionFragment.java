@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeList;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
@@ -33,14 +35,16 @@ public class ColeccionFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        /*coleccionViewModel =
-                new ViewModelProvider(this).get(ColeccionViewModel.class);*/
-        coleccionViewModel = ColeccionViewModel.getInstance();
+        coleccionViewModel =
+                new ViewModelProvider(this).get(ColeccionViewModel.class);
 
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         cargarReceptesUsuari();
+
         clickListenerObjectsView();
+
         cargarRecycleView();
         observerObjectsView();
 
@@ -48,11 +52,9 @@ public class ColeccionFragment extends Fragment {
     }
 
     private void cargarReceptesUsuari() {
-        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrá
+        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
         if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository( new ArrayList<String>(UserRepository.getUser().getIdCollections().keySet()));
-        // Internament pobla les receptes de la BBDD
-
+            coleccionViewModel.loadRecetasOfUserFromRepository(UserRepository.getUser().getIdCollections()/*getIdRecetas()*/); // Internament pobla les receptes de la BBDD
     }
 
     private void clickListenerObjectsView() {

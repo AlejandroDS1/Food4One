@@ -15,8 +15,6 @@
         android:paddingHorizontal="10dp"
         android:orientation="horizontal">
 
-
-
             <CheckBox
                 android:id="@+id/ingrediente_CB"
                 android:layout_width="300dp"
@@ -27,7 +25,6 @@
                 android:paddingStart="5dp">
 
             </CheckBox>
-
 
             <TextView
                 android:id="@+id/cantidad_txt"
