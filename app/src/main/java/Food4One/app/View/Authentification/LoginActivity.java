@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         currentUser = auth.getCurrentUser();// Obtenemos la instancia de FirebaseAuth
         mUserRespository = UserRepository.getInstance();
 
-        initLayout(); // Iniciamos comoponentes del layout
+        initLayout(); // Iniciamos componentes del layout
         initButtonsListeners(); // Iniciamos los listeners de los botones
 
     }

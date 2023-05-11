@@ -3,28 +3,21 @@ package Food4One.app.Model.Recipe.Recipe;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RecipeList implements Serializable {
+public class RecipeList {
 
 
-    private ArrayList<Recipe> recipes;
+    private static ArrayList<Recipe> recipesSaved;
 
-    public RecipeList(ArrayList<Recipe> recipes) {
-        this.recipes = recipes;
+    public static ArrayList<Recipe> getInstance() {
+        if (recipesSaved == null) recipesSaved = new ArrayList<>();
+        return recipesSaved;
     }
 
-    public RecipeList() { this.recipes = new ArrayList<>(); }
-
-
-    public void add(Recipe recipe){
-        this.recipes.add(recipe);
+    public static ArrayList<Recipe> getRecipesSaved() {
+        return recipesSaved;
     }
 
-    public void remove(Recipe recipe){
-        this.recipes.remove(recipe);
+    public static void setRecipesSaved(ArrayList<Recipe> recipesSaved) {
+        RecipeList.recipesSaved = recipesSaved;
     }
-
-    public void remove(int pos){
-        this.recipes.remove(pos);
-    }
-
 }
