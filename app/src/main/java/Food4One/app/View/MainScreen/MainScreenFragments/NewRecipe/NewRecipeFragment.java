@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,7 @@ public class NewRecipeFragment extends Fragment {
 
         return root;
     }
+
 
     // TODO eliminar metodo
     private void prueba(){
@@ -173,6 +175,40 @@ public class NewRecipeFragment extends Fragment {
 
         // Listener para los cambios del texto de cantidadNewRecipe para que cumplan con el regex que queremos
         binding.cantidadNewRecipe.addTextChangedListener(new MyTextWatcher());
+
+        // Listener para añadir step.
+        binding.addStepBtnNewRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String step = binding.stepTextNewRecipe.getText().toString();
+
+                if (step.isEmpty()) {
+                    Toast.makeText(NewRecipeFragment.this.getContext(), "El paso esta vacío", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                newRecipeViewModel.addSteptoList(step); // Añadimos el step a la lista del viewModel.
+                NewRecipeFragment.StepListAdapter stepAdapter = (NewRecipeFragment.StepListAdapter) binding.stepsListNewRecipe.getAdapter();
+                stepAdapter.notifyItemInserted(stepAdapter.getItemCount());
+            }
+        });
+
+        // Listener para arrastar y eliminar step
+        //Listener para eliminar un step arrastrando
+        ItemTouchHelper.SimpleCallback touchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT){
+
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                ((StepListAdapter)binding.stepsListNewRecipe.getAdapter()).deleteRow(viewHolder.getAdapterPosition());
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelper);
+        itemTouchHelper.attachToRecyclerView(binding.stepsListNewRecipe);
     }
 
     private void addIngrediente(){
@@ -339,9 +375,15 @@ public class NewRecipeFragment extends Fragment {
             return new StepListAdapter.ViewHolder(view);
         }
 
+        // Delete row
+        public void deleteRow(int position){
+            stepsList.remove(position);
+            notifyDataSetChanged();
+        }
+
         @Override
         public void onBindViewHolder(@NonNull StepListAdapter.ViewHolder holder, int position) {
-            holder.bind(position);
+            holder.bind(position, this);
         }
         @Override
         public int getItemCount() {
@@ -359,7 +401,7 @@ public class NewRecipeFragment extends Fragment {
                 numStep = itemView.findViewById(R.id.numStep_newRecipe);
             }
 
-            public void bind(final int position){
+            public void bind(final int position, StepListAdapter stepListAdapter){
 
                 final String stepText = stepsList.get(position);
 
@@ -368,6 +410,8 @@ public class NewRecipeFragment extends Fragment {
 
                 //TODO: AÑADIR CLICK LISTENER AL LAYOUT PARA PODER EDITAR EL STEP
                 // tambien añadir onLongClickListener para moverlos por ejemplo -- ideas...---
+
+
             }
 
         }
