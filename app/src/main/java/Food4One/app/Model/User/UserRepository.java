@@ -238,8 +238,13 @@ public class UserRepository {
             public void onComplete(@NonNull Task<DocumentSnapshot> task){
 
                 if (task.isSuccessful()) {
-                    ingredientesList.setIngredientes((List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG));
-                    mOnLoadIngredientesListListener.onLoadIngredientesList(ingredientesList);
+
+                    List<String> listaIngredientes = (List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG);
+
+                    if (listaIngredientes != null) {
+                        ingredientesList.setIngredientes(listaIngredientes);
+                        mOnLoadIngredientesListListener.onLoadIngredientesList(ingredientesList);
+                    }
                 }
             }
         });

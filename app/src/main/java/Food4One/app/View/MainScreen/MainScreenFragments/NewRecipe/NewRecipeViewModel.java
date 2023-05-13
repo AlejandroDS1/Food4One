@@ -1,5 +1,7 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.NewRecipe;
 
+import android.net.Uri;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,6 +16,7 @@ public class NewRecipeViewModel extends ViewModel {
     private final MutableLiveData<IngredientesList> ingredientesList;
     private final MutableLiveData<ArrayList<String>> alergiasList;
     private final MutableLiveData<ArrayList<String>> stepsList;
+    private final MutableLiveData<Uri> recipePhotoUri;
 
     public NewRecipeViewModel() {
         this.ingredientesList = new MutableLiveData<>();
@@ -24,6 +27,8 @@ public class NewRecipeViewModel extends ViewModel {
 
         this.stepsList = new MutableLiveData<>();
         this.stepsList.setValue(new ArrayList<>());
+
+        this.recipePhotoUri = new MutableLiveData<>();
     }
 
     public LiveData<IngredientesList> getIngredientesList() {
@@ -44,4 +49,11 @@ public class NewRecipeViewModel extends ViewModel {
 
     public void addAlergiatoList(String a){ this.alergiasList.getValue().add(a); }
     public void addSteptoList(String s){ this.stepsList.getValue().add(s); }
+
+    public final LiveData<Uri> getRecipePhotoUri() {
+        return recipePhotoUri;
+    }
+    public void setRecipePhotoUri(Uri foto){
+        this.recipePhotoUri.setValue(foto);
+    }
 }
