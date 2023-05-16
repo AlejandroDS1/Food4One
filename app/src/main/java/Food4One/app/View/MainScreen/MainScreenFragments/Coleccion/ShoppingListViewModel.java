@@ -30,7 +30,6 @@ public class ShoppingListViewModel extends ViewModel {
                 setmIngredients(ingredientesList);
             }
         });
-
     }
 
     public void setmIngredients(IngredientesList obj){

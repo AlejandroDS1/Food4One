@@ -21,6 +21,7 @@
         <item>Maiz</item>
         <item>Pescado</item>
         <item>Frutos Secos</item>
+        <item>Miel</item>
     </string-array>
 
     <string-array name="MagnitudesLong">

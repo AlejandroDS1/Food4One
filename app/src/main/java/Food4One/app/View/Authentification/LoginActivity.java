@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "LoginSuccess", Toast.LENGTH_SHORT).show();
 
                                         //Ahora que es seguro que el usuario existirá en la App,
-                                         //lo añadimos a los demás usuarios guardados en el Respository de la App
-                                        if(FirebaseFirestore.getInstance().collection(email).get() == null) {
+                                        //lo añadimos a los demás usuarios guardados en el Respository de la App
+                                        if (FirebaseFirestore.getInstance().collection(email).get() == null) {
                                             String userName = getIntent().getStringExtra("nameUser"); // Conseguimos el username
 
                                             // Añadimos el usuario a la base de datos, de momento solo el username y el email.
@@ -109,9 +109,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //Listener para poder registrarse
-        registrarse.setOnClickListener(view-> {
+        registrarse.setOnClickListener(view -> {
             //Inicio directamente la ventana para registrarse
-            startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
     }
 
@@ -120,27 +120,27 @@ public class LoginActivity extends AppCompatActivity {
 
         //Inicio de los componentes, tomando los valores dentro de la pantalla
         userName = findViewById(R.id.editTextTextEmailAddress);
-        passwordUser =  findViewById(R.id.editTextRegisterPassword);
+        passwordUser = findViewById(R.id.editTextRegisterPassword);
         registrarse = findViewById(R.id.registrarse);
         in = findViewById(R.id.entrarBtn);
 
     }
 
     /*Este método se llama después de haber pasado a otras ventanas, en nuestro caso sería el
-    * RegisterActivity. Si allí nos registramos, al regresar a este View, podemos llenar le corre
-    * para que el acceso del usuario sea más fácil y rápido...*/
+     * RegisterActivity. Si allí nos registramos, al regresar a este View, podemos llenar le corre
+     * para que el acceso del usuario sea más fácil y rápido...*/
     @Override
     protected void onRestart() {
         super.onRestart();
         entryUser();
-        if(currentUser != null)
-                userName.setText(currentUser.getEmail());
+        if (currentUser != null)
+            userName.setText(currentUser.getEmail());
     }
 
-    public void entryUser(){
+    public void entryUser() {
         /*EN el caso de que el usuario no haya hecho un SING OUT después de entrar a la app,
         el programa empezará directamente en el HomeFragment*/
-        if( currentUser != null && currentUser.isEmailVerified() )
+        if (currentUser != null && currentUser.isEmailVerified())
             startActivity(new Intent(LoginActivity.this, MainScreen.class));
     }
 }

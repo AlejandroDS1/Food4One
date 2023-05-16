@@ -57,6 +57,7 @@ public class ColeccionFragment extends Fragment {
         if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
             coleccionViewModel.loadRecetasOfUserFromRepository( new ArrayList<String>(UserRepository.getUser().getIdCollections().keySet()));
         // Internament pobla les receptes de la BBDD
+
     }
 
     private void clickListenerObjectsView() {
