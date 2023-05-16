@@ -39,11 +39,8 @@ public class ColeccionFragment extends Fragment {
 
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
         cargarReceptesUsuari();
-
         clickListenerObjectsView();
-
         cargarRecycleView();
         observerObjectsView();
 
