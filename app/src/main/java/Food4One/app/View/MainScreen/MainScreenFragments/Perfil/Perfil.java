@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
-import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
@@ -206,7 +205,7 @@ public class Perfil extends Fragment {
         binding.nomusuari.setText(userInfo.getUserName());
         binding.descripcionPerfil.setText(userInfo.getDescripcion());
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
-        if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+        //if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
             perfilViewModel.loadRecetasOfUserFromRepository(userInfo.getIdRecetas());
     }
 

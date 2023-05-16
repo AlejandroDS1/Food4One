@@ -218,12 +218,12 @@ public class PerfilViewModel extends ViewModel {
             @Override
             public void onComplete (@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    Uri uploadUrl = task.getResult();
+                    String uploadUrl = task.getResult().toString();
                     // un cop pujat, passa-li la URL de la imatge a l'adapter de
                     // la Base de Dades per a que l'associï a l'usuari
-                    Log.d(TAG, "DownloadTask: " + uploadUrl.toString());
-                    mUserRepository.setPictureUrlOfUser(userId, uploadUrl.toString());
-                    mPictureUrl.setValue(uploadUrl.toString());
+                    Log.d(TAG, "DownloadTask: " + uploadUrl);
+                    mUserRepository.setPictureUrlOfUser(userId, uploadUrl);
+                    mPictureUrl.setValue(uploadUrl);
                 }
             }
         });

@@ -273,11 +273,6 @@ public class UserRepository {
 
     }
 
-    public void addIDRecipeUser(String idRecipe, String userID){
-        Map<String, Object> userEntry = new HashMap<>();
-
-
-    }
 
     public boolean setUserNameDDB(String email, String userName){
 
@@ -329,6 +324,18 @@ public class UserRepository {
                     }
                     UserRepository.getUser().setAlergias(alergias);
                 });
+    }
+
+    public void setUserIdRecipe(){
+
+        final User user = UserRepository.getUser();
+
+        final Map<String, ArrayList<String>> toStore = new HashMap<>();
+        toStore.put(User.IDRECETAS_TAG, user.getIdRecetas());
+        // TODO: Alomejor retocar este metodo.
+        mDb.collection(User.TAG).document(user.getEmail())
+                .set(toStore, SetOptions.merge());
+
     }
 
     public void loadUserFromDDB(String email){

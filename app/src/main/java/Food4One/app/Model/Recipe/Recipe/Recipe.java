@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
 public class Recipe {
-
     public static final String TAG = "Recetas";
-    public static final String PICTURE_APP_TAG = "PictureURL";
+    public static final String PICTURE_APP_TAG = "pictureURL";
+    public static final String PICTURE_URL_USER_TAG = "PictureURLuser";
+    public static final String USER_ID_TAG = "idUser";
+    public static final String LIKES_TAG = "likes";
     public static final String DESCRIPTION_APP_TAG = "Description";
-    public static final String PASOS_APP_TAG = "Pasos";
+    public static final String PASOS_APP_TAG = "pasos";
+    public static final String ALERGIAS_APP_TAG = "Alergias";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
     private String idUser;
     private String nombre;
@@ -26,16 +29,20 @@ public class Recipe {
     public Recipe(){} //Para la base de Datos se necesita un constructor sin argumentos...
     //Constructor
     public Recipe(  final String nombre,
-                    final String pictureURL,
-                    int likes,
+                    final String description,
                     final IngredientesList ingredientes,
-                    final ArrayList<String> pasos
+                    final String pictureURL,
+                    final int likes,
+                    final ArrayList<String> pasos,
+                    final ArrayList<String> alergias
                   ){
         this.nombre = nombre;
+        this.Description = description;
         this.pictureURL = pictureURL;
         this.likes = likes;
         this.ingredientes = ingredientes;
         this.pasos = pasos;
+        this.alergias = alergias;
     }
 
 
@@ -61,7 +68,7 @@ public class Recipe {
     public String getPictureURL() {  return pictureURL; }
     public int getLikes() { return likes; }
     public String getIdUser() { return idUser; }
-
+    public ArrayList<String> getAlergias() { return this.alergias; }
     public String getDescription(){ return Description; }
     public String getUserPhoto(){ return userPhoto; }
 

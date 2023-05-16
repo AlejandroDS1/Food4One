@@ -3,6 +3,7 @@ package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
@@ -100,15 +101,24 @@ public class UserSettingsViewModel extends ViewModel {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                if (UserRepository.getUser().userName.equals(input.getText().toString())) return;
+                final String _newUserName = input.getText().toString();
+
+                // Si el nombre es el mismo que el anterior salimos del metodo y no actualizamos la base de datos
+                if (UserRepository.getUser().userName.equals(_newUserName)) return;
+
+                // Comprovamos si el nombre tiene almenos un caracter, sino no se puede tener un nombre vacio
+                if (_newUserName.isEmpty()) {
+                    Toast.makeText(context, "Rellena el campo", Toast.LENGTH_SHORT).show();
+                    return; // Salimos para no actualizar el texto
+                }
 
                 // Actualizamos el userName en la base de datos.
                 boolean succes = UserRepository.getInstance().setUserNameDDB(UserRepository.getUser().getEmail(),
-                        input.getText().toString());
+                        _newUserName);
 
                 // Si el anterior metodo a dado como resultado true, esque se a cambiado el userName correctamente
                 // por lo que podemos actulizar el MutableLiveData para notificar al observer
-                if (succes) userName.setValue(input.getText().toString());
+                if (succes) userName.setValue(_newUserName);
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override

@@ -107,7 +107,7 @@ public class IngredientesList implements Serializable {
         return stringIngredientes;
     }
 
-    public ArrayList<String> getArrayStringId(){
+    public ArrayList<String> toArrayStringId(){
         ArrayList<String> stringIngredientes = new ArrayList<>();
 
         for (Ingrediente ing: ingredientes)
