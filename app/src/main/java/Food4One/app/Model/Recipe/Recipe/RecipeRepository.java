@@ -6,10 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +29,6 @@ import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
-import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 /**
  * Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -266,7 +263,6 @@ public class RecipeRepository {
                 }
 
             });
-
 
     }
 

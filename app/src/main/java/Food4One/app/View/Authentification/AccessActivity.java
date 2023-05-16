@@ -1,19 +1,13 @@
 package Food4One.app.View.Authentification;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.AttributeSet;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -25,13 +19,18 @@ public class AccessActivity extends AppCompatActivity {
 
     private FirebaseUser user;
 
+    private AccesActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_access);
 
+        viewModel = new ViewModelProvider(this).get(AccesActivityViewModel.class);
+
         getSupportActionBar().hide();
+
+        initObservers();
 
         //Animación entrada de App (Splash)----------------------------------------------------------
 /*
@@ -44,9 +43,20 @@ public class AccessActivity extends AppCompatActivity {
                 //Si el usuario ya se registró en la App y ya hizo un login anteriormente, ya puede acceder
                 //directamente al navegador Home...
                 activityCorrespondent();
-                finish();
+                //finish();
             }
         }, 700);
+    }
+
+    private void initObservers() {
+        final Observer<Boolean> completedObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean)
+                    startActivity(new Intent(AccessActivity.this, MainScreen.class));
+            }
+        };
+        viewModel.getCompleted().observe(this, completedObserver);
     }
 
 
@@ -57,8 +67,7 @@ public class AccessActivity extends AppCompatActivity {
             startActivity(new Intent(AccessActivity.this, LoginActivity.class));
         //Sino, nos dirigimos al Navegador con el Usuario Logeado.
         else {
-            UserRepository.getInstance().loadUserFromDDB(user.getEmail(), AccessActivity.this);
-            startActivity(new Intent(AccessActivity.this, HelpActivity.class));
+            UserRepository.getInstance().loadUserFromDDB(user.getEmail(), AccessActivity.this, viewModel);
         }
     }
 }

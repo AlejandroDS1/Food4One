@@ -12,21 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
-import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
-import io.grpc.LoadBalancer;
 
 public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAdapter.ViewHolder> {
 

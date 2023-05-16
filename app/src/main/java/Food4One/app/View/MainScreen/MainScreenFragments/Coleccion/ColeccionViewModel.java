@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 public class ColeccionViewModel extends ViewModel {
 

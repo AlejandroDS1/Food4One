@@ -15,7 +15,6 @@ public class Recipe {
     public static final String PASOS_APP_TAG = "pasos";
     public static final String ALERGIAS_APP_TAG = "Alergias";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
-    public static final String LIKES_TAG = "likes";
     private String idUser;
     private String nombre;
     private String Description;
