@@ -32,7 +32,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,6 +53,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentNewRecipeBinding;
 
@@ -70,10 +73,76 @@ public class NewRecipeFragment extends Fragment {
         binding = FragmentNewRecipeBinding.inflate(inflater, container, false);
 
         initViews();
+        initUploadButton(); // Dejamos el upload button como un metodo aparte
         initLists();
         initListeners();
 
         return binding.getRoot();
+    }
+
+    /**
+     * Añade la logica del clickListener para subir la nueva receta a la base de datos
+     */
+    private void initUploadButton() {
+
+        // Creamos un observer para la variable del viewModel que nos dira si se ha completado correctamente el upload a base de datos o no.
+        final Observer<Byte> completedUpload_Observer = new Observer<Byte>() {
+            @Override
+            public void onChanged(Byte flag) {
+                // Comprovamos que codigo tenemos
+                switch (flag){
+
+                    case 1: // En este caso t0do ha salido bien, asi que nos movemos al perfil para ver las recetas.
+                        uploadSucces();
+                        break;
+
+                    case 2: // En este caso ha habido algun error, lo mostramos por pantalla.
+                        uploadFailed();
+                        break;
+
+                    default: // Este caso no deberia ocurrir, no hacemos nada.
+                        break;
+
+                }
+            }
+
+            // TODO MEJORAR ESTOS METODOS
+            private void uploadSucces() {
+                Toast.makeText(getContext(), "Receta subida correctamente", Toast.LENGTH_SHORT).show();
+                UserRepository.getUser().getIdRecetas().add(binding.newRecipieName.getText().toString() + "@" + UserRepository.getUser().getUserName());
+                UserRepository.getInstance().setUserIdRecipe();
+
+                Navigation.findNavController(getView()).navigateUp();
+                Navigation.findNavController(getView()).navigate(R.id.navigation_perfil);
+            }
+
+            private void uploadFailed() {
+                Toast.makeText(getContext(), "Error al publicar la receta", Toast.LENGTH_SHORT).show();
+            }
+        };
+        newRecipeViewModel.getUpdatedFlag().observe(this.getViewLifecycleOwner(), completedUpload_Observer);
+
+        binding.uploadRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!checkAllFields()){ // Si falta algun campo por rellenar se informa con un toast.
+                    Toast.makeText(getActivity().getApplicationContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                newRecipeViewModel.uploadRecipe(binding.newRecipieName.getText().toString(), binding.newRecipieDescription.getText().toString());
+            }
+        });
+    }
+
+
+    private boolean checkAllFields(){
+        return newRecipeViewModel.getRecipePhotoUri().getValue() != null           // Comprovamos si hay imagen
+                 && !binding.newRecipieName.getText().toString().isEmpty()         // Comprovamos si hay titulo
+                 && !binding.newRecipieDescription.getText().toString().isEmpty()  // Comprovamos si hay descripcion
+                 && ingredientesListAdapter.getItemCount() != 0                    // Comprovamos que haya al menos un ingrediente
+                 && binding.stepsListNewRecipe.getAdapter().getItemCount() != 0;   // Comrpovamos que hay al menos un paso.
     }
 
     private void initViews() {

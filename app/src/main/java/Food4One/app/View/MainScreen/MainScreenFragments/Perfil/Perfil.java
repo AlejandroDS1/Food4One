@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
-import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
@@ -134,7 +133,6 @@ public class Perfil extends Fragment {
                 binding.nomusuari.setText(name);
             }
         };
-        
         perfilViewModel.getmUserName().observe(this.getActivity(), observeNameUser);
         final Observer<String> observerDescription = new Observer<String>() {
             @Override
@@ -191,13 +189,9 @@ public class Perfil extends Fragment {
         transaction.setReorderingAllowed(true)
                 .addToBackStack("PerfilFragChange") ;
 
-//        NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_mainscreen);
-
-        //nav.navigate(R.id.action_navigation_perfil_to_scrollPerfilFragment, bundle);
-
         // Replace whatever is in the fragment_container view with this fragment
         transaction.replace(R.id.perfilFragment, ScrollPerfilFragment.class, bundle);
-       //  Commit the transaction
+        // Commit the transaction
         transaction.commit();
 
     }
@@ -211,7 +205,7 @@ public class Perfil extends Fragment {
         binding.nomusuari.setText(userInfo.getUserName());
         binding.descripcionPerfil.setText(userInfo.getDescripcion());
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
-        if(RecipesUserApp.getRecetasUser().size() == 0) //Si aún no se cargaron las recetas del usuario
+        //if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
             perfilViewModel.loadRecetasOfUserFromRepository(userInfo.getIdRecetas());
     }
 

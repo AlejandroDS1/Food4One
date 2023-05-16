@@ -1,7 +1,5 @@
 package Food4One.app.Model.User;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -22,10 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
-import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.View.MainScreen.MainScreen;
-import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 
@@ -34,7 +29,6 @@ import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
  */
 public class UserRepository {
     private static final String TAG = "Repository";
-    public static String CHARGE = "NotCharge";
 
     /** Autoinstància, pel patró singleton */
     private static final UserRepository mInstance = new UserRepository();
@@ -43,8 +37,6 @@ public class UserRepository {
     private FirebaseFirestore mDb;
 
     private static User user;
-
-
 
     /** Definició de listener (interficie),
      *  per escoltar quan s'hagin acabat de llegir els usuaris de la BBDD */
@@ -217,7 +209,6 @@ public class UserRepository {
         signedUpUser.put(User.DESCRIPCION_TAG, " ");
         signedUpUser.put(User.IDRECETAS_TAG, new ArrayList<String>());
         signedUpUser.put(User.IDCOLLECTIONS_TAG, new ArrayList<String>());
-        signedUpUser.put(User.LIKESRECIPES_TAG, new ArrayList<String>());
         signedUpUser.put(User.PICTUREURL_TAG, null);
         signedUpUser.put(User.IDINGREDIENTES_LIST_TAG, new ArrayList<String>());
 
@@ -275,13 +266,13 @@ public class UserRepository {
                 .addOnSuccessListener(documentReference -> {
                     Log.d(TAG, "Photo upload succeeded: " + pictureUrl);
                     RecipeRepository.getInstance().setURLUserToRecipes(UserRepository.getUser().getIdRecetas(), pictureUrl);
-
                 })
                 .addOnFailureListener(exception -> {
                     Log.d(TAG, "Photo upload failed: " + pictureUrl);
                 });
 
     }
+
 
     public boolean setUserNameDDB(String email, String userName){
 
@@ -335,8 +326,19 @@ public class UserRepository {
                 });
     }
 
-    public void loadUserFromDDB(String email, Activity accessActivity){
+    public void setUserIdRecipe(){
 
+        final User user = UserRepository.getUser();
+
+        final Map<String, ArrayList<String>> toStore = new HashMap<>();
+        toStore.put(User.IDRECETAS_TAG, user.getIdRecetas());
+        // TODO: Alomejor retocar este metodo.
+        mDb.collection(User.TAG).document(user.getEmail())
+                .set(toStore, SetOptions.merge());
+
+    }
+
+    public void loadUserFromDDB(String email){
         mDb.collection(User.TAG).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -351,87 +353,11 @@ public class UserRepository {
 
                     user.setProfilePictureURL(document.getString(User.PICTUREURL_TAG));
 
-                    user.setIdCollections( createHashMap((ArrayList<String>) document.get(User.IDCOLLECTIONS_TAG)) );
+                    user.setIdCollections((ArrayList<String>) document.get(User.IDCOLLECTIONS_TAG));
 
                     user.setIdRecetas((ArrayList<String>) document.get(User.IDRECETAS_TAG));
-
-                    user.setLikesRecipes( createHashMap((ArrayList<String>) document.get(User.LIKESRECIPES_TAG)) );
-
-                    ExploreViewModel.getInstance();
-
-                    accessActivity.startActivity(new Intent(accessActivity.getApplicationContext(), MainScreen.class));
                 }
             }
-
-            private HashMap<String, Boolean> createHashMap(ArrayList<String> strings) {
-
-                HashMap<String, Boolean> mapForUser = new HashMap<>();
-                for(String data: strings)
-                    mapForUser.put(data, true);
-
-                return mapForUser;
-            }
         });
-    }
-
-    public void setUserLikeDDB(Recipe recipe, boolean like) {
-
-        User user =  UserRepository.getUser();
-        HashMap<String, Boolean> idLikesUser = user.getLikesRecipes();
-
-        ArrayList<String> actualLikes=  new ArrayList<>(idLikesUser.keySet());
-        String recipeName = recipe.getNombre();
-
-        int likeDonat = 0;
-
-        if (like){
-            actualLikes.add(recipeName);
-            idLikesUser.put(recipeName, true);
-            recipe.setLikeFromUser(true);
-            likeDonat = 1;
-        } else {
-            likeDonat = -1;
-            actualLikes.remove(recipeName);
-            idLikesUser.remove(recipeName);
-            recipe.setLikeFromUser(false);
-        }
-
-        HashMap<String, ArrayList<String> >  store = new HashMap<>();
-        store.put(User.LIKESRECIPES_TAG, actualLikes);
-
-        mDb.collection(User.TAG).document(user.getEmail()).set(store, SetOptions.merge())
-                .addOnSuccessListener(succesListener -> {
-                    Log.d(TAG, "Like Receta: " + recipeName + " Añadida");
-        });
-
-        //Després cal canviar els likes que tenim a la base de dades de les recetes.
-        recipe.setLikes(likeDonat);
-        RecipeRepository.getInstance().setLikesRecipeDDB(recipeName, recipe.getLikes());
-    }
-
-    public void setUserRecetaCollectionDDB(Recipe recipe, boolean saved) {
-        User user =  UserRepository.getUser();
-        HashMap<String, Boolean> idCollectionUser = user.getIdCollections();
-
-        ArrayList<String> actualCollection =  new ArrayList<>(idCollectionUser.keySet());
-        String recipeName = recipe.getNombre();
-        if(saved) {
-            actualCollection.add(recipeName);
-            idCollectionUser.put(recipeName, true);
-        }else {
-            actualCollection.remove(recipeName);
-            idCollectionUser.remove(recipeName);
-        }
-
-        HashMap<String, ArrayList<String> > store = new HashMap<>();
-        store.put(User.IDCOLLECTIONS_TAG, actualCollection);
-
-        mDb.collection(User.TAG).document(user.getEmail())
-                .set(store, SetOptions.merge())
-                .addOnSuccessListener(succesListener -> {
-                    Log.d(TAG, "User's Collection is update");
-                }).addOnFailureListener(failurelistener-> {
-                        Log.d(TAG, "User's Collection is not working");
-                    });
     }
 }
