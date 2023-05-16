@@ -1,9 +1,7 @@
 package Food4One.app.View.MainScreen;
 
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;

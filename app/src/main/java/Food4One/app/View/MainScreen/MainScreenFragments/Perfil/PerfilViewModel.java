@@ -2,7 +2,6 @@ package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

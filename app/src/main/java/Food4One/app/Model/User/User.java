@@ -1,7 +1,5 @@
 package Food4One.app.Model.User;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;

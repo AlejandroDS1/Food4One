@@ -1,25 +1,16 @@
 package Food4One.app.View.Authentification;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.AttributeSet;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
-import Food4One.app.View.MainScreen.MainScreen;
 
 public class AccessActivity extends AppCompatActivity {
 

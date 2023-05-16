@@ -12,26 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
-import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
-import io.grpc.LoadBalancer;
 
 public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAdapter.ViewHolder> {
-
     private static Context context;
-
     /**
      * Definició de listener (interficie)
      * per a quan algú vulgui escoltar un event de OnClickDoRecipe, és a dir,
@@ -191,7 +184,6 @@ notifyItemRemoved(position);
                          OnLikeRecipeUser listenerLikeRecipe, OnClickSaveRecipe saveListener) {
 
             likeAnim = recetaUser.getLikeFromUser();
-
             //Si esta receta esta en la colección de guardados del usuario, hay que cargar la animación
             if( UserRepository.getUser().getIdCollections().get(recetaUser.getNombre()) != null)
                 savedAnim=true;
@@ -200,12 +192,10 @@ notifyItemRemoved(position);
                 mCardCorazon.setMinAndMaxProgress(0.0f, 0.5f);
                 mCardCorazon.playAnimation();
             }
-
             if(savedAnim) {
                 mCardSaved.setMinAndMaxProgress(0.0f, 1.0f);
                 mCardSaved.playAnimation();
             }
-
             mCardCorazon.setOnClickListener(v->{
                 likeAnimMotion(listenerLikeRecipe, recetaUser);
             });
@@ -213,8 +203,8 @@ notifyItemRemoved(position);
                 saveAnimMotion(saveListener, recetaUser);
             });
 
-            mrecipeName.setText(recetaUser.getNombre());
-            mCardNumberLikes.setText(Integer.toString(recetaUser.getLikes()) );
+            mrecipeName.setText( recetaUser.getNombre());
+            mCardNumberLikes.setText(Integer.toString( recetaUser.getLikes()));
             mCardDescription.setText(UserRepository.getUser().getUserName() +"  "+ recetaUser.getDescription());
 
             cargarPhotoUserAndRecipe(recetaUser);
