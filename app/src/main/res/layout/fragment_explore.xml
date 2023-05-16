@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="35dp"
     tools:context=".View.MainScreen.MainScreenFragments.Explore.ExploreFragment">
 
     <androidx.recyclerview.widget.RecyclerView

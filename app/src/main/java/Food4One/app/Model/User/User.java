@@ -1,8 +1,11 @@
 package Food4One.app.Model.User;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -15,6 +18,7 @@ public class User implements Serializable {
     public final static String DESCRIPCION_TAG = "Description";
     public final static String PICTUREURL_TAG = "PictureURL";
     public final static String IDCOLLECTIONS_TAG = "idCollections";
+    public final static String LIKESRECIPES_TAG= "likesRecipe";
     public final static String IDRECETAS_TAG = "idRecetas";
     public final static String IDINGREDIENTES_LIST_TAG = "IngredientesList";
 
@@ -25,7 +29,8 @@ public class User implements Serializable {
     private String profilePictureURL;
     private ArrayList<String> idRecetas;
     private ArrayList<String> alergias;
-    private ArrayList<String> idCollections;
+    private HashMap<String, Boolean>  idCollections;
+    private HashMap<String, Boolean> likesRecipes;
 
     // ATRIBUTOS OPCIONALES *******
     // PREMIUM BOOLEAN IDEA PARA EL FINAL
@@ -36,7 +41,8 @@ public class User implements Serializable {
         this.userName = userName;
         this.email = email;
         this.alergias = new ArrayList<>(); // Dejamos alegias a null
-        this.idCollections = new ArrayList<>();
+        this.idCollections = new HashMap<>();
+        this.likesRecipes = new HashMap<>();
     }
 
     public User(String userName, String email, ArrayList<String> idRecetas) {
@@ -44,7 +50,8 @@ public class User implements Serializable {
         this.email = email;
         this.idRecetas = idRecetas;
         this.alergias = new ArrayList<>(); // Dejamos alegias a null
-        this.idCollections = new ArrayList<>();
+        this.idCollections = new HashMap<>();
+        this.likesRecipes = new HashMap<>();
     }
 
     public void addIdReceta(String idreceta){
@@ -106,17 +113,22 @@ public class User implements Serializable {
     }
 
     //Getter
-    public ArrayList<String> getIdCollections() {
+    public HashMap<String, Boolean>  getIdCollections() {
         return idCollections;
     }
-
+    public HashMap<String, Boolean> getLikesRecipes() {
+        return likesRecipes;
+    }
     public String getDescripcion() {
         return descripcion;
     }
 
     // Setter
-    public void setIdCollections(ArrayList<String> idCollections) {
+    public void setIdCollections(HashMap<String, Boolean> idCollections) {
         this.idCollections = idCollections;
+    }
+    public void setLikesRecipes(HashMap<String, Boolean> likesRecipes) {
+        this.likesRecipes = likesRecipes;
     }
 
     public void setDescripcion(String descripcion) {

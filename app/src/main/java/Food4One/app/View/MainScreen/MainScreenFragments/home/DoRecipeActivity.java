@@ -8,9 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.squareup.picasso.Picasso;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
@@ -35,8 +33,6 @@ public class DoRecipeActivity extends AppCompatActivity {
         cargarDatosRecipeToMake();
 
     }
-
-
     private void cargarDatosRecipeToMake() {
         //Se cargan los ingredientes y los pasos de la receta que se ha seleccionado antes
         ingredientsAdapter = new ArrayAdapter<String>(this,R.layout.list_ingredients_layout,

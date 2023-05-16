@@ -20,25 +20,15 @@
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
-
-            <TextView
-                android:id="@+id/backbutton"
-                android:layout_width="40dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center|left"
-                android:background="@drawable/flecha_orange"
-                android:paddingStart="8dp" />
-
-            <TextView
-                android:id="@+id/newRecipe"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="40dp"
-                android:gravity="center"
-                android:text="New Recipe"
-                android:textColor="@color/orange"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+             <TextView
+                 android:id="@+id/newRecipe"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:gravity="center"
+                 android:text="New Recipe"
+                 android:textColor="@color/orange"
+                 android:textSize="30dp"
+                 android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -47,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <ImageView
                 android:id="@+id/imagenReceta_newRecpie"
                 android:layout_width="300dp"
@@ -291,14 +280,11 @@
             android:layout_marginVertical="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
-
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginVertical="5dp"
             android:background="@color/GrisOscuro" />
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -317,8 +303,6 @@
             android:layout_marginVertical="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
-
-
         <Button
             android:id="@+id/uploadRecipeBtn"
             android:layout_width="match_parent"

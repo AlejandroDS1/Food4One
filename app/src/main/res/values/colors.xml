@@ -5,7 +5,7 @@
     <color name="purple_700">#FFCE27</color>
     <color name="teal_200">#D37422</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FF9D14</color>
     <color name="mostaza">#FFCE27</color>
@@ -15,7 +15,7 @@
 
     <color name="Gris">#DCDCDC</color>
     <color name="GrisOscuro">#4A4A4A</color>
-    <color name="NegroClaroMain">#201F1F</color>
+    <color name="NegroClaroMain">#2E2D2D</color>
 
     <color name="yellow" >#EFDC30</color>
 </resources>

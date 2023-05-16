@@ -6,25 +6,31 @@ import java.util.ArrayList;
 public class RecipeList implements Serializable {
 
 
-    private ArrayList<Recipe> recipes;
+    private static ArrayList<Recipe> recipesSaved;
 
-    public RecipeList(ArrayList<Recipe> recipes) {
-        this.recipes = recipes;
+    public static ArrayList<Recipe> getInstance(){
+        if (recipesSaved == null) recipesSaved = new ArrayList<>();
+        return recipesSaved;
     }
 
-    public RecipeList() { this.recipes = new ArrayList<>(); }
+    public static ArrayList<Recipe> getRecipesSaved() {
+        return recipesSaved;
+    }
 
+    public static void setRecipesSaved(ArrayList<Recipe> recipesSaved) {
+        RecipeList.recipesSaved = recipesSaved;
+    }
 
     public void add(Recipe recipe){
-        this.recipes.add(recipe);
+        this.recipesSaved.add(recipe);
     }
 
     public void remove(Recipe recipe){
-        this.recipes.remove(recipe);
+        this.recipesSaved.remove(recipe);
     }
 
     public void remove(int pos){
-        this.recipes.remove(pos);
+        this.recipesSaved.remove(pos);
     }
 
 }

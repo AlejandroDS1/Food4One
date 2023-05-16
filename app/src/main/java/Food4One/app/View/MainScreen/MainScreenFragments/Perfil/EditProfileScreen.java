@@ -1,6 +1,18 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
+import androidx.lifecycle.Observer;
+
+import android.animation.LayoutTransition;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,24 +25,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.FileProvider;
-import androidx.lifecycle.Observer;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 
@@ -135,6 +140,7 @@ public class EditProfileScreen extends AppCompatActivity {
 
                         perfilViewModel.setPictureUrlOfUser(
                                 UserRepository.getUser().getEmail(), contentUri);
+                        Toast.makeText(this, "Se ha modificado la foto de Perfil", Toast.LENGTH_SHORT).show();
                     }
                 });
 

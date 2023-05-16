@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 
 
 public class ExploreViewModel extends ViewModel {
@@ -14,7 +15,6 @@ public class ExploreViewModel extends ViewModel {
     private final MutableLiveData<String> userURLFromRecipe;
     static ExploreViewModel exploreViewModel;
     private final RecipeRepository mRecipeRepository;
-
 
     public static ExploreViewModel getInstance(){
         if (exploreViewModel == null) exploreViewModel = new ExploreViewModel();
@@ -25,16 +25,18 @@ public class ExploreViewModel extends ViewModel {
         mRecetas = new MutableLiveData<>(new ArrayList<>());
         userURLFromRecipe = new MutableLiveData<>();
         mRecipeRepository = RecipeRepository.getInstance();
-
         recetasListeners();
+        loadRecetasExplorer();
     }
 
     private void recetasListeners() {
         //Al cargar las recetas el observador será notificado y se acutalizará la lista
-        mRecipeRepository.addOnLoadRecetaListener(new RecipeRepository.OnLoadRecetaListener() {
+
+        mRecipeRepository.setOnLoadRecetasExplorer(new RecipeRepository.OnLoadRecipeExplorer() {
             @Override
-            public void onLoadRecetas(ArrayList<Recipe> recetas) {
+            public void onLoadRecipeExplorer(ArrayList<Recipe> recetas) {
                 ExploreViewModel.this.setmRecetas(recetas);
+                RecipesUserApp.setRecetasExplorer(recetas);
             }
         });
         mRecipeRepository.setmOnLoadURLfromRecipe(new RecipeRepository.OnLoadURLUserFromRecipe() {
@@ -45,7 +47,9 @@ public class ExploreViewModel extends ViewModel {
         });
     }
 
-    public void loadRecetasExplorer(){ mRecipeRepository.loadRecetas(mRecetas.getValue());}
+    public void loadRecetasExplorer(){
+            mRecipeRepository.loadRecetas(mRecetas.getValue(), "EXPLORER");
+    }
 
     public void setmRecetas(ArrayList<Recipe> recetas){ this.mRecetas.setValue(recetas);    }
 

@@ -33,4 +33,9 @@
         android:name="Food4One.app.View.MainScreen.MainScreenFragments.Perfil.Perfil"
         android:label="@string/title_perfil"
         tools:layout="@layout/fragment_perfil" />
+    <fragment
+        android:id="@+id/scrollPerfilFragment"
+        android:name="Food4One.app.View.MainScreen.MainScreenFragments.Perfil.ScrollPerfilFragment"
+        android:label="fragment_scroll_perfil"
+        tools:layout="@layout/fragment_scroll_perfil" />
 </navigation>

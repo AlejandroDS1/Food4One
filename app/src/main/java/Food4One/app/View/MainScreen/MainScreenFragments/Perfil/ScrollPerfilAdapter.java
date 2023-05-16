@@ -28,8 +28,12 @@ public interface OnClickDoRecipeUser {
     void OnClickDoRecipe(Recipe position);
 }
 
+public interface OnClickLikeRecipe{
+    void OnClickLikeRecipe(Recipe recipe);
+}
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
     private ScrollPerfilAdapter.OnClickDoRecipeUser mOnClickDoRecipeListener; // Qui hagi de repintar la ReciclerView
+    private ScrollPerfilAdapter.OnClickLikeRecipe mOnClickLikeRecipeListener;
 
     // quan s'amagui
     // Constructor
@@ -40,6 +44,10 @@ public interface OnClickDoRecipeUser {
 
     public void setOnClickDetailListener(ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
         this.mOnClickDoRecipeListener = listener;
+    }
+
+    public void setOnClickLikeRecipeListener(ScrollPerfilAdapter.OnClickLikeRecipe listener){
+        this.mOnClickLikeRecipeListener = listener;
     }
 
     @NonNull
@@ -110,11 +118,9 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
     private final ImageView mCardRecetaPictureUrl;
     private final TextView mCardNumberLikes;
     private final TextView mCardDescription;
-    private final ImageView mCorazon;
 
     public ViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.mCorazon = itemView.findViewById(R.id.imageHeartDetail);
         this.mrecipeName = itemView.findViewById(R.id.nombreDetailReceta);
         this.mCardNumberLikes = itemView.findViewById(R.id.likesDetailRecipe);
         this.mCardDescription = itemView.findViewById(R.id.decriptionDetailReceta);
@@ -125,17 +131,17 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final Recipe recetaUser, ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
 
-        mCorazon.setImageResource(R.drawable.heart_24);
         mrecipeName.setText(recetaUser.getNombre());
         mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
         mCardDescription.setText(UserRepository.getUser().getUserName() +"  "+ recetaUser.getDescription());
 
         cargarPhotoUserAndRecipe(recetaUser);
-        mrecipeName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        mrecipeName.setOnClickListener( view->{
                 listener.OnClickDoRecipe(recetaUser);
-            }
+            });
+
+        mCardNumberLikes.setOnClickListener(view->{
+            //listener.
         });
 
     }

@@ -6,8 +6,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +31,7 @@ import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
+import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 /**
  * Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -73,9 +76,15 @@ public class RecipeRepository {
         void onLoadRecetas(ArrayList<Recipe> recetas);
     }
 
+    public interface OnLoadRecipeExplorer {
+        void onLoadRecipeExplorer(ArrayList<Recipe> recetas);
+    }
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
 
-    public interface OnLoadRecetaApp {
+
+    public OnLoadRecipeExplorer mOnLoadRecetasExplorer;
+
+    public interface OnLoadRecetaApp{
         void onLoadRecipeApp(ArrayList<Recipe> recetas);
     }
 
@@ -159,7 +168,10 @@ public class RecipeRepository {
         mOnLoadRecetaPictureUrlListener = listener;
     }
 
-    public void setmOnLoadURLfromRecipe(OnLoadURLUserFromRecipe listener) {
+    public void setOnLoadRecetasExplorer(OnLoadRecipeExplorer listener){
+        this.mOnLoadRecetasExplorer = listener;
+    }
+    public void setmOnLoadURLfromRecipe(OnLoadURLUserFromRecipe listener){
         mOnLoadURLfromRecipe = listener;
     }
 
@@ -194,6 +206,7 @@ public class RecipeRepository {
                     recetaUser.setNombre(documentSnapshot.getId());
                     recetaUser.setPhotoUser(documentSnapshot.getString(User.PICTUREURL_TAG + "user"));
                     recetaUser.setIdUser(userID);
+
                     //---------------------------------------------------------------------------
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
@@ -219,30 +232,42 @@ public class RecipeRepository {
     }
 
 
-    public void loadRecetas(ArrayList<Recipe> recetaUsers) {
+    public void loadRecetas(ArrayList<Recipe> recetaUsers, String fragment) {
         recetaUsers.clear();
 
-        //Se cargan todas las recetas de la base de datos...
-        mDb.collection(Recipe.TAG).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    //Se tiene que cargar el String ID de los ingredientes...
-                    Log.d(TAG, document.getId() + " => " + document.getData());
-                    Recipe receta = document.toObject(Recipe.class);
-                    receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
-                    receta.setPasos((ArrayList<String>) document.get("pasos"));
-                    receta.setNombre(document.getId());
-                    receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));
-                    recetaUsers.add(receta);
-                }
-                /*Luego llamamos a sus listeners*/
-                for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
-                    l.onLoadRecetas(recetaUsers);
-                }
-            }
+            //Se cargan todas las recetas de la base de datos...
+            mDb.collection(Recipe.TAG).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        //Se tiene que cargar el String ID de los ingredientes...
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Recipe receta = document.toObject(Recipe.class);
+                        receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
+                        receta.setPasos((ArrayList<String>) document.get(Recipe.PASOS_APP_TAG));
+                        receta.setNombre(document.getId());
+                        receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));
+                        //Le damos el like a la receta si el usuario logado ya lo ha hecho
+                        if (UserRepository.getUser().getLikesRecipes().get(receta.getNombre()) != null) {
+                            receta.setLikeFromUser(true);
+                        } else
+                            receta.setLikeFromUser(false);
 
-        });
+                        recetaUsers.add(receta);
+                    }
+                    if(fragment.equals("EXPLORER"))
+                        mOnLoadRecetasExplorer.onLoadRecipeExplorer(recetaUsers);
+                    else
+                        /*Luego llamamos a sus listeners*/
+                        for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
+                            l.onLoadRecetas(recetaUsers);
+                        }
+
+                }
+
+            });
+
+
     }
 
     /*Se supone que el IdIngredientes jamás será nulo, porque siempre habrá como mínimo un ingrediente
@@ -356,6 +381,15 @@ public class RecipeRepository {
                         completed.setValue((byte) 2);
                     }
                 }
+        });
+    }
+
+    public void setLikesRecipeDDB(String idRecipe, int like){
+
+        HashMap<String, Integer> store = new HashMap<>();
+        store.put(Recipe.LIKES_TAG, like);
+        mDb.collection(Recipe.TAG).document(idRecipe).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
+            Log.d(TAG, "Like guardado en la receta");
         });
     }
 

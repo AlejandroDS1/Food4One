@@ -1,5 +1,6 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.R;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.RecipeTypeAdapter;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 

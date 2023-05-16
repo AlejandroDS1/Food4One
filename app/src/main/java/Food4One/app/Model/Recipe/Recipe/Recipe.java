@@ -15,6 +15,7 @@ public class Recipe {
     public static final String PASOS_APP_TAG = "pasos";
     public static final String ALERGIAS_APP_TAG = "Alergias";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
+    public static final String LIKES_TAG = "likes";
     private String idUser;
     private String nombre;
     private String Description;
@@ -23,7 +24,7 @@ public class Recipe {
     private ArrayList<String> alergias;
     private String pictureURL;
     private int likes;
-
+    private boolean likeFromUser;
     private String userPhoto; // Foto del usuario
 
     public Recipe(){} //Para la base de Datos se necesita un constructor sin argumentos...
@@ -45,7 +46,12 @@ public class Recipe {
         this.alergias = alergias;
     }
 
-
+    public void setLikeFromUser(boolean like){
+        this.likeFromUser = like;
+    }
+    public boolean getLikeFromUser(){
+        return likeFromUser;
+    }
     /**
      * Constructor Dummy
      */
@@ -77,7 +83,7 @@ public class Recipe {
     public void setPasos(ArrayList<String> pasos) { this.pasos = pasos; }
     public void setIngredientes(IngredientesList ingredientes){ this.ingredientes = ingredientes; }
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
-    public void setLikes(int likes) { this.likes = likes; }
+    public void setLikes(int likes) { this.likes += likes; }
     public void setIdUser(String idUser){ this.idUser = idUser; }
     public void setDescription(String description){ Description = description; }
 

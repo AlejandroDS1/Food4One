@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -205,7 +207,7 @@ public class Perfil extends Fragment {
         binding.nomusuari.setText(userInfo.getUserName());
         binding.descripcionPerfil.setText(userInfo.getDescripcion());
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
-        //if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+        if(RecipesUserApp.getRecetasUser().size() == 0) //Si aún no se cargaron las recetas del usuario
             perfilViewModel.loadRecetasOfUserFromRepository(userInfo.getIdRecetas());
     }
 

@@ -103,6 +103,12 @@ public class ScrollPerfilFragment extends Fragment {
                                 startActivity(new Intent(getContext(), DoRecipeActivity.class));
                             }
                         });
+                        mCardRecetaRVAdapter.setOnClickLikeRecipeListener(new ScrollPerfilAdapter.OnClickLikeRecipe() {
+                            @Override
+                            public void OnClickLikeRecipe(Recipe recipe) {
+
+                            }
+                        });
 
                         // Start the transition once all views have been
                         // measured and laid out
