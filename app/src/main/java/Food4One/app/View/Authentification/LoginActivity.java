@@ -81,8 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
 
                                         else {
-                                            mUserRespository.loadUserFromDDB(email, LoginActivity.this);
-                                            startActivity(new Intent(LoginActivity.this, HelpActivity.class));
+                                            mUserRespository.loadUserFromDDB(email, LoginActivity.this, new AccesActivityViewModel());
                                         }
                                         //Cuando vaya bien empezará la ventana Main
                                         //startActivity(new Intent(LoginActivity.this, MainScreen.class));

@@ -15,9 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Food4One"
         tools:targetApi="31">
-        <activity
-            android:name=".View.Authentification.HelpActivity"
-            android:exported="false" />
+
         <activity
             android:name=".View.MainScreen.MainScreenFragments.Perfil.EditProfileScreen"
             android:exported="false" />
