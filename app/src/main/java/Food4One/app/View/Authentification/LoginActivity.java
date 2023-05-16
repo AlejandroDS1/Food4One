@@ -77,12 +77,15 @@ public class LoginActivity extends AppCompatActivity {
                                             // Añadimos el usuario a la base de datos, de momento solo el username y el email.
                                             mUserRespository.addUser(userName, email);
                                             UserRepository.getUser(userName, email); // Creamos el objeto user.
+                                            startActivity(new Intent(LoginActivity.this, MainScreen.class));
                                         }
 
-                                        else mUserRespository.loadUserFromDDB(email);
-
+                                        else {
+                                            mUserRespository.loadUserFromDDB(email, LoginActivity.this);
+                                            startActivity(new Intent(LoginActivity.this, HelpActivity.class));
+                                        }
                                         //Cuando vaya bien empezará la ventana Main
-                                        startActivity(new Intent(LoginActivity.this, MainScreen.class));
+                                        //startActivity(new Intent(LoginActivity.this, MainScreen.class));
                                         finish();
                                     } else
                                         Toast.makeText(getApplicationContext(), "No se ha verificado el correo", Toast.LENGTH_SHORT).show();

@@ -9,12 +9,19 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 public class ColeccionViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<Recipe>> mRecipes;
     private RecipeRepository mRecetaRepository;
     private FirebaseStorage mStorage;
+
+private static ColeccionViewModel coleccionViewModel;
+    public static ColeccionViewModel getInstance(){
+        if (coleccionViewModel == null) coleccionViewModel = new ColeccionViewModel();
+        return coleccionViewModel;
+    }
 
     public ColeccionViewModel() {
         mRecipes = new MutableLiveData<>(new ArrayList<>());

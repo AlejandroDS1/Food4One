@@ -136,6 +136,7 @@ public class Perfil extends Fragment {
                 binding.nomusuari.setText(name);
             }
         };
+        
         perfilViewModel.getmUserName().observe(this.getActivity(), observeNameUser);
         final Observer<String> observerDescription = new Observer<String>() {
             @Override
@@ -212,7 +213,7 @@ public class Perfil extends Fragment {
         binding.nomusuari.setText(userInfo.getUserName());
         binding.descripcionPerfil.setText(userInfo.getDescripcion());
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
-        if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+        if(RecipesUserApp.getRecetasUser().size() == 0) //Si aún no se cargaron las recetas del usuario
             perfilViewModel.loadRecetasOfUserFromRepository(userInfo.getIdRecetas());
     }
 

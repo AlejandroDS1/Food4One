@@ -5,18 +5,26 @@ import java.util.ArrayList;
 public class RecipesUserApp {
     private static ArrayList<Recipe> recetasUser;
 
-    public static ArrayList<Recipe>  getInstance(){
-        if (recetasUser == null) recetasUser = new ArrayList<>();
-        return recetasUser;
+    private static ArrayList<Recipe> recetasExplorer;
+
+    public static ArrayList<Recipe>  getRecetasExplorer(){
+        if (recetasExplorer == null) recetasExplorer = new ArrayList<>();
+        return recetasExplorer;
     }
 
+
     public static ArrayList<Recipe> getRecetasUser() {
+        if (recetasUser == null) recetasUser = new ArrayList<>();
         return recetasUser;
     }
     public static void removeSingleton(){ recetasUser = null; }
 
     public static void setRecetasUser(ArrayList<Recipe> recetasUser) {
         RecipesUserApp.recetasUser = recetasUser;
+    }
+
+    public static void setRecetasExplorer(ArrayList<Recipe> recetasExplorer) {
+        RecipesUserApp.recetasExplorer = recetasExplorer;
     }
 
     public void addNewRecipeUserApp(Recipe recipe){

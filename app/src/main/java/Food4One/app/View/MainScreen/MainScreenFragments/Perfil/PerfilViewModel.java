@@ -29,10 +29,8 @@ import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
 public class PerfilViewModel extends ViewModel {
-
     private final String TAG = "FotosmeActivityViewModel";
     private FirebaseStorage mStorage;
-
     /* Elements observables del ViewModel */
     // Les receptes que la RecyclerView mostra al perfil
     private final MutableLiveData<ArrayList<Recipe>> mRecetas;
@@ -51,8 +49,6 @@ public class PerfilViewModel extends ViewModel {
         if (perfilViewModel == null) perfilViewModel = new PerfilViewModel();
         return perfilViewModel;
     }
-
-
     public PerfilViewModel() {
 
         mText = new MutableLiveData<>();
@@ -180,7 +176,7 @@ public class PerfilViewModel extends ViewModel {
     public void loadPictureOfUser(String email){ mUserRepository.loadPictureOfUser(email);}
 
     public void loadRecetesFromRepository(){
-        mRecetaRepository.loadRecetas(mRecetas.getValue());
+        mRecetaRepository.loadRecetas(mRecetas.getValue(), "PERFIL");
     }
 
     public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){

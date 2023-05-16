@@ -141,12 +141,9 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 // cridi el mètode OnClickHide que implementen els nostres propis
                 // listeners de tipus OnClickHideListener.
 
-                recipeCard.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view){
+                recipeCard.setOnClickListener(view->{
                        listener.OnClickDetail(getAdapterPosition(), view.getScrollY());
-                   }
-                });
+                   });
             }
         }
 

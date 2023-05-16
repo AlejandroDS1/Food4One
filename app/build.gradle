@@ -79,4 +79,7 @@ dependencies {
 
     // Java language implementation
     implementation "androidx.fragment:fragment:$fragment_version"
+
+    //Objects Animation LottieFiles
+    implementation "com.airbnb.android:lottie:3.4.4"
 }
