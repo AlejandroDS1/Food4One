@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
-import Food4One.app.View.MainScreen.MainScreen;
 
 public class AccessActivity extends AppCompatActivity {
 

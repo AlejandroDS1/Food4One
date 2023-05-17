@@ -25,6 +25,7 @@ import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.View.Authentification.AccesActivityViewModel;
+import Food4One.app.View.MainScreen.MainScreen;
 import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
@@ -283,7 +284,6 @@ public class UserRepository {
 
     }
 
-
     public boolean setUserNameDDB(String email, String userName){
 
         HashMap<String, String> store = new HashMap<>();
@@ -374,7 +374,6 @@ public class UserRepository {
 
                     ((AccesActivityViewModel) viewModel).setCompleted(true);
 
-                    //accessActivity.startActivity(new Intent(accessActivity.getApplicationContext(), MainScreen.class));
                 }
             }
 
