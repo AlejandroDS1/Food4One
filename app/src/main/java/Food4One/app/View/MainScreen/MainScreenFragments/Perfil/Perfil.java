@@ -208,6 +208,8 @@ public class Perfil extends Fragment {
         perfilViewModel.loadPictureOfUser(userInfo.getEmail());
         //if(RecipesUserApp.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
             perfilViewModel.loadRecetasOfUserFromRepository(userInfo.getIdRecetas());
+        else
+            perfilViewModel.setRecetes(RecipesUserApp.getRecetasUser());
     }
 
 
