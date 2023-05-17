@@ -18,7 +18,8 @@
 
         <activity
             android:name=".View.MainScreen.MainScreenFragments.Perfil.EditProfileScreen"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".View.MainScreen.MainScreenFragments.home.DoRecipeActivity"
             android:exported="false"
@@ -52,7 +53,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".View.Authentification.AccessActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

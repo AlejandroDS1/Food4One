@@ -77,10 +77,13 @@ public class RecipeRepository {
     public interface OnLoadRecipeExplorer {
         void onLoadRecipeExplorer(ArrayList<Recipe> recetas);
     }
+    public interface OnLoadRecipeCollection {
+        void onLoadRecipeCollection(ArrayList<Recipe> recetas);
+    }
+
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
-
-
     public OnLoadRecipeExplorer mOnLoadRecetasExplorer;
+    public OnLoadRecipeCollection mOnLoadRecipeCollection;
 
     public interface OnLoadRecetaApp{
         void onLoadRecipeApp(ArrayList<Recipe> recetas);
@@ -112,7 +115,6 @@ public class RecipeRepository {
     public OnLoadURLUserFromRecipe mOnLoadURLfromRecipe;
     public ArrayList<OnLoadRecipeToMake> mOnLoadRecipeToMake = new ArrayList<>();
     public ArrayList<OnLoadRecetaAppListener> monLoadRecetaAppListener = new ArrayList<>();
-
     public OnLoadRecetaPictureUrlListener mOnLoadRecetaPictureUrlListener;
 //-------------------------------------------------------------------------------------------------
 
@@ -165,7 +167,9 @@ public class RecipeRepository {
     public void setOnLoadUserPictureListener(OnLoadRecetaPictureUrlListener listener) {
         mOnLoadRecetaPictureUrlListener = listener;
     }
-
+    public void setOnLoadRecetaCollectionListener(OnLoadRecipeCollection listener){
+        this.mOnLoadRecipeCollection = listener;
+    }
     public void setOnLoadRecetasExplorer(OnLoadRecipeExplorer listener){
         this.mOnLoadRecetasExplorer = listener;
     }
@@ -186,7 +190,7 @@ public class RecipeRepository {
      * Mètode que llegeix les recetes. Vindrà cridat des de fora i quan acabi,
      * avisarà sempre als listeners, invocant el seu OnLoadReceta.
      */
-    public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser) {
+    public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser, String fragment) {
         recetaUsers.clear();
         //Se cargan todas las recetas de la base de datos...
 
@@ -211,13 +215,16 @@ public class RecipeRepository {
                     //Cuando se consigan todas las recetas del usuario, se llaman a los listeners
                     //para que puedan cargar las recetas al RecycleView
                     if (recetaUsers.size() == idRecetasUser.size())
-                        onLoadRecetasListenerMethod();
+                        onLoadRecetasListenerMethod(fragment);
                 }
 
-                private void onLoadRecetasListenerMethod() {
+                private void onLoadRecetasListenerMethod(String fragment) {
                     /*Llamamos a sus listeners*/
-                    for (OnLoadRecetaListener l : mOnloadRecetaListeners)
-                        l.onLoadRecetas(recetaUsers);
+                    if(fragment.equals("COLLECTION"))
+                        mOnLoadRecipeCollection.onLoadRecipeCollection(recetaUsers);
+                    else
+                        for (OnLoadRecetaListener l : mOnloadRecetaListeners)
+                            l.onLoadRecetas(recetaUsers);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
