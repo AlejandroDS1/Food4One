@@ -1,5 +1,6 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -80,15 +82,21 @@ public class ShoppingListFragment extends Fragment {
         BtnSaved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BtnSaved.setElevation(15);
-                Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
-                BtnSaved.setBackground(myDrawable1);
+                // Mirem si el fragment encara està en l'activitat
+                if (isAdded()) {
+                    BtnSaved.setElevation(15);
+                    Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
+                    BtnSaved.setBackground(myDrawable1);
 
-                BtnList.setElevation(0);
-                Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
-                BtnList.setBackground(myDrawable2);
+                    BtnList.setElevation(0);
+                    Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
+                    BtnList.setBackground(myDrawable2);
 
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
+                    // POP_BACK_STACK_INCLUSIVE es fa servir per eliminar el mateix fragment i els que estiguin per sobre en el back stack
+                    getActivity().getSupportFragmentManager().popBackStack(ShoppingListFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                }
+
             }
         });
     }

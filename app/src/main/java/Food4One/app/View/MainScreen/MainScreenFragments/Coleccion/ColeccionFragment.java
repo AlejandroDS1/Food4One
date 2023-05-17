@@ -29,6 +29,7 @@ import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentColeccionBinding;
 
 public class ColeccionFragment extends Fragment {
+    public static final String TAG = "ColeccionFragment";
     private FragmentColeccionBinding binding;
     private RecyclerViewAdapter mRecipeCardAdapter;
     private ColeccionViewModel coleccionViewModel;
@@ -43,6 +44,8 @@ public class ColeccionFragment extends Fragment {
 
         cargarReceptesUsuari();
 
+        //paintButton();
+
         clickListenerObjectsView();
 
         cargarRecycleView();
@@ -51,10 +54,11 @@ public class ColeccionFragment extends Fragment {
         return root;
     }
 
+
     private void cargarReceptesUsuari() {
         // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
         if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository(UserRepository.getUser().getIdCollections()/*getIdRecetas()*/); // Internament pobla les receptes de la BBDD
+            coleccionViewModel.loadRecetasOfUserFromRepository(UserRepository.getUser().getIdCollections()); // Internament pobla les receptes de la BBDD
     }
 
     private void clickListenerObjectsView() {
@@ -62,6 +66,7 @@ public class ColeccionFragment extends Fragment {
         binding.BtnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 binding.BtnSaved.setElevation(0);
                 Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
                 binding.BtnSaved.setBackground(myDrawable1);
@@ -70,12 +75,15 @@ public class ColeccionFragment extends Fragment {
                 Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
                 binding.BtnList.setBackground(myDrawable2);
 
-                //Nova instància del fragment a iniciar
-                FragmentManager fM = getActivity().getSupportFragmentManager();
-                FragmentTransaction fT = fM.beginTransaction();
-                fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
-                fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
-                fT.commit();
+                int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+                if (backStackEntryCount == 0) {
+                    //Nova instància del fragment a iniciar
+                    FragmentManager fM = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fT = fM.beginTransaction();
+                    fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
+                    fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
+                    fT.commit();
+                }
             }
         });
         
@@ -115,9 +123,5 @@ public class ColeccionFragment extends Fragment {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+
 }

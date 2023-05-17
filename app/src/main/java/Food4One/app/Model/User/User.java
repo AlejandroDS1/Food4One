@@ -56,7 +56,7 @@ public class User implements Serializable {
         this.idRecetas.add(idreceta);
     }
 
-    public ArrayList<String> getIdRecetas(){return idRecetas; }
+    public ArrayList<String> getIdRecetas(){ return idRecetas; }
     //Getters
 
     public String getUserName() {
