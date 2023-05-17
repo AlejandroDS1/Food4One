@@ -99,7 +99,6 @@ public class PerfilViewModel extends ViewModel {
             @Override
             public void onLoadRecetas(ArrayList<Recipe> recetas) {
                 PerfilViewModel.this.setRecetes(recetas);
-                RecipesUserApp.setRecetasUser(recetas);
             }
         });
 

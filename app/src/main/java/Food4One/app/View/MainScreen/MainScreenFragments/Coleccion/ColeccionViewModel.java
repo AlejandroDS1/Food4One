@@ -34,7 +34,9 @@ public class ColeccionViewModel extends ViewModel {
         });
     }
 
-    public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){ mRecetaRepository.loadRecetasUser(mRecipes.getValue(), idRecetasUser); }
+    public void loadRecetasOfUserFromRepository(ArrayList<String> idRecetasUser){
+        receptesListener();
+        mRecetaRepository.loadRecetasUser(mRecipes.getValue(), idRecetasUser); }
 
     private void setRecipes(ArrayList<Recipe> recipes) {
         mRecipes.setValue(recipes);
