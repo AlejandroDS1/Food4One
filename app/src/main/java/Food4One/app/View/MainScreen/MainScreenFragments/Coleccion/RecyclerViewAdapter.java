@@ -48,7 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     /* Mètode cridat per cada ViewHolder de la RecyclerView */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(mRecipes.get(position), recipeToMakeListener); //Haure de passar l'usuari per entrar en la seva col·lecció i agafar les IDs
+        holder.bind(mRecipes.get(position), recipeToMakeListener);
     }
 
     /**
@@ -78,7 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         public void bind(final Recipe recipe, RecipeRepository.OnLoadRecipeToMake listener) {
-            mCardNameRecipe.setText(recipe.getNombre());
+            mCardNameRecipe.setText(recipe.getNombre().split("@")[0]);
 
             // Carrega foto de l'usuari de la llista directament des d'una Url
             // d'Internet.
