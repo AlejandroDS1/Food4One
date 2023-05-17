@@ -53,8 +53,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
+import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 import Food4One.app.databinding.FragmentNewRecipeBinding;
 
 public class NewRecipeFragment extends Fragment {
@@ -105,12 +107,12 @@ public class NewRecipeFragment extends Fragment {
 
                 }
             }
-
             // TODO MEJORAR ESTOS METODOS
             private void uploadSucces() {
                 Toast.makeText(getContext(), "Receta subida correctamente", Toast.LENGTH_SHORT).show();
                 UserRepository.getUser().getIdRecetas().add(binding.newRecipieName.getText().toString() + "@" + UserRepository.getUser().getUserName());
                 UserRepository.getInstance().setUserIdRecipe();
+                PerfilViewModel.getInstance().setRecetes(RecipesUserApp.getRecetasUser());
 
                 Navigation.findNavController(getView()).navigateUp();
                 Navigation.findNavController(getView()).navigate(R.id.navigation_perfil);

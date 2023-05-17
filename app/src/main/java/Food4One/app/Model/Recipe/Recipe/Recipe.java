@@ -12,13 +12,13 @@ public class Recipe {
     public static final String USER_ID_TAG = "idUser";
     public static final String LIKES_TAG = "likes";
     public static final String DESCRIPTION_APP_TAG = "Description";
-    public static final String PASOS_APP_TAG = "pasos";
+    public static final String PASOS_APP_TAG = "Pasos";
     public static final String ALERGIAS_APP_TAG = "Alergias";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
     private String idUser;
     private String nombre;
     private String Description;
-    private ArrayList<String> pasos;
+    private ArrayList<String> Pasos;
     private IngredientesList ingredientes;
     private ArrayList<String> alergias;
     private String pictureURL;
@@ -41,7 +41,7 @@ public class Recipe {
         this.pictureURL = pictureURL;
         this.likes = likes;
         this.ingredientes = ingredientes;
-        this.pasos = pasos;
+        this.Pasos = pasos;
         this.alergias = alergias;
     }
 
@@ -61,14 +61,14 @@ public class Recipe {
         this.pictureURL = pictureURL;
         this.Description = Description;
         this.likes = likes;
-        this.pasos = pasos;
+        this.Pasos = pasos;
     }
 
     //Getters
 
     //------------..-GETTERS-----------------------------
     public String getNombre() { return nombre;}
-    public ArrayList<String> getPasos() { return pasos; }
+    public ArrayList<String> getPasos() { return Pasos; }
     public IngredientesList getIngredientes() { return ingredientes; }
     public String getPictureURL() {  return pictureURL; }
     public int getLikes() { return likes; }
@@ -79,7 +79,7 @@ public class Recipe {
 
     //---------------SETTERS----------------------------------------
     public void setNombre(String nombre) { this.nombre = nombre;  }
-    public void setPasos(ArrayList<String> pasos) { this.pasos = pasos; }
+    public void setPasos(ArrayList<String> pasos) { this.Pasos = pasos; }
     public void setIngredientes(IngredientesList ingredientes){ this.ingredientes = ingredientes; }
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
     public void setLikes(int likes) { this.likes += likes; }

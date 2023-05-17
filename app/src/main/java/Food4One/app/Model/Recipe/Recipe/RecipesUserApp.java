@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class RecipesUserApp {
     private static ArrayList<Recipe> recetasUser;
-
     private static ArrayList<Recipe> recetasExplorer;
 
     public static ArrayList<Recipe>  getRecetasExplorer(){
@@ -27,7 +26,7 @@ public class RecipesUserApp {
         RecipesUserApp.recetasExplorer = recetasExplorer;
     }
 
-    public void addNewRecipeUserApp(Recipe recipe){
+    public static void addNewRecipeUserApp(Recipe recipe){
         RecipesUserApp.recetasUser.add(recipe);
     }
 
