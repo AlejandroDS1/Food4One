@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
      * la base de datos de la App */
     private UserRepository mUserRespository;
 
+    private AccesActivityViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +49,22 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();// Obtenemos la instancia de FirebaseAuth
         mUserRespository = UserRepository.getInstance();
+        viewModel = new ViewModelProvider(this).get(AccesActivityViewModel.class);
 
+        initObserver();
         initLayout(); // Iniciamos comoponentes del layout
         initButtonsListeners(); // Iniciamos los listeners de los botones
 
+    }
+    private void initObserver() {
+        final Observer<Boolean> completedObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean)
+                    startActivity(new Intent(LoginActivity.this, MainScreen.class));
+            }
+        };
+        viewModel.getCompleted().observe(this, completedObserver);
     }
 
     private void initButtonsListeners() {
@@ -77,11 +93,10 @@ public class LoginActivity extends AppCompatActivity {
                                             // Añadimos el usuario a la base de datos, de momento solo el username y el email.
                                             mUserRespository.addUser(userName, email);
                                             UserRepository.getUser(userName, email); // Creamos el objeto user.
-                                            startActivity(new Intent(LoginActivity.this, MainScreen.class));
+                                            viewModel.setCompleted(true);
                                         }
-
                                         else {
-                                            mUserRespository.loadUserFromDDB(email, LoginActivity.this, new AccesActivityViewModel());
+                                            mUserRespository.loadUserFromDDB(email, LoginActivity.this, viewModel);
                                         }
                                         //Cuando vaya bien empezará la ventana Main
                                         //startActivity(new Intent(LoginActivity.this, MainScreen.class));

@@ -29,6 +29,7 @@ import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
+import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 /**
  * Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -203,7 +204,6 @@ public class RecipeRepository {
                     recetaUser.setNombre(documentSnapshot.getId());
                     recetaUser.setPhotoUser(documentSnapshot.getString(User.PICTUREURL_TAG + "user"));
                     recetaUser.setIdUser(userID);
-
                     //---------------------------------------------------------------------------
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
@@ -239,9 +239,9 @@ public class RecipeRepository {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         //Se tiene que cargar el String ID de los ingredientes...
                         Log.d(TAG, document.getId() + " => " + document.getData());
+
                         Recipe receta = document.toObject(Recipe.class);
                         receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
-                        receta.setPasos((ArrayList<String>) document.get(Recipe.PASOS_APP_TAG));
                         receta.setNombre(document.getId());
                         receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));
                         //Le damos el like a la receta si el usuario logado ya lo ha hecho
@@ -357,8 +357,10 @@ public class RecipeRepository {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
+                        String photoString = task.getResult().toString();
 
-                        recipe.put(Recipe.PICTURE_APP_TAG, task.getResult().toString()); // Ponemos al HashMap la URL que nos falta.
+                        recipe.put(Recipe.PICTURE_APP_TAG, photoString); // Ponemos al HashMap la URL que nos falta.
+                        newRecipe.setPictureURL(photoString);
 
                         // Subimos el documento con la receta.
                         mDb.collection(Recipe.TAG).document(idReceta).set(recipe)

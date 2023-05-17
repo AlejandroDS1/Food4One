@@ -155,7 +155,7 @@ public class Perfil extends Fragment {
 
         //Luego instanciamos el Adapter de las fotos
         mCardRecetaRVAdapter = new RecetaPerfilAdapter(
-                perfilViewModel.getRecetes().getValue(), getActivity());
+                perfilViewModel.getRecetes().getValue(), getActivity() );
 
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
