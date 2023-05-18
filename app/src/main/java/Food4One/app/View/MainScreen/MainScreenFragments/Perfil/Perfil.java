@@ -194,7 +194,6 @@ public class Perfil extends Fragment {
         transaction.replace(R.id.perfilFragment, ScrollPerfilFragment.class, bundle);
         // Commit the transaction
         transaction.commit();
-
     }
     /**
      * Por ahora este método sólo carga el nombre, email y la descripción del Usuario, si queremos

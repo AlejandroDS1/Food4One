@@ -101,7 +101,7 @@ public class RecipeRepository {
     }
 
     public interface OnLoadRecetaAppListener {
-        void OnLoadRecetaApp(ArrayList<Recipe> recetas);
+        void OnLoadRecetaApp(ArrayList<Recipe> recetas, String type);
     }
 
     public interface OnLoadRecipeToMake {
@@ -313,7 +313,7 @@ public class RecipeRepository {
                         }
                         /*Luego llamamos a sus listeners*/
                         for (OnLoadRecetaAppListener l : monLoadRecetaAppListener) {
-                            l.OnLoadRecetaApp(recetaUsers);
+                            l.OnLoadRecetaApp(recetaUsers, selection);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

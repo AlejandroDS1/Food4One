@@ -12,8 +12,13 @@
         android:layout_height="match_parent"
         android:background="@drawable/fondonaranja"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="150dp">
+        android:paddingTop="15dp">
 
+        <Spinner
+            android:id="@+id/spinner_options"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            />
         <!--
         <ImageView
             android:id="@+id/imageView3"
@@ -22,32 +27,70 @@
             android:layout_marginLeft="184dp"
             app:srcCompat="@drawable/flecha" />
         -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="65dp"
+            android:layout_height="60dp"
+            android:id="@+id/lottieFlecha"
+            app:lottie_rawRes="@raw/flecha_roulette"
+            android:layout_gravity="center"/>
 
-        <ImageView
-            android:id="@+id/imageViewWheel"
-            android:layout_width="wrap_content"
-            android:layout_height="350dp"
-            android:layout_marginTop="5dp"
-            app:srcCompat="@drawable/eightcolourwheel2d" />
+        <rubikstudio.library.LuckyWheelView
+            android:layout_gravity="center"
+            app:lkwBackgroundColor="#FF9800"
+            app:lkwTopTextColor="#263238"
+            app:lkwCenterImage="@drawable/wheel"
+            android:id="@+id/luckyWheel"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:lkwEdgeColor="@color/naranjaclaro"
+            app:lkwEdgeWidth="5"
+            app:lkwTopTextPadding="10dp"
+            app:lkwTopTextSize="10sp"
+            app:lkwSecondaryTextSize="25sp"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="15dp">
         <Button
-            android:id="@+id/button"
-            android:layout_width="156dp"
-            android:layout_height="48dp"
+            android:id="@+id/buttonSurprise"
+            android:background="@drawable/botonback"
+            android:layout_width="146dp"
+            android:layout_height="38dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp"
-            android:onClick="spin"
-            android:text="Spin" />
-
+            android:text="Busca una Receta"
+            android:textSize="10dp"
+            android:layout_marginRight="25dp"/>
+            <Button
+                android:id="@+id/buttonRepeatSurprise"
+                android:background="@drawable/botonback"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:text="Reiniciar Surprise"
+                android:textSize="10dp"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/tituloSurprise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:layout_marginLeft="100dp"
-            android:text="Busca una receta"
+            android:layout_gravity="center"
+            android:text=""
             android:textColor="@color/white"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleSurpriseRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="40dp"/>
     </LinearLayout>
+
 
 </RelativeLayout>

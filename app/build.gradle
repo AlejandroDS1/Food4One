@@ -42,6 +42,8 @@ android {
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //ROULETTE
+    implementation 'androidx.core:core:1.1.0-alpha03'
 
     // Bloque añadido por error duplicate class Kotlin stdlib-jdk7
     constraints {
@@ -82,4 +84,17 @@ dependencies {
 
     //Objects Animation LottieFiles
     implementation "com.airbnb.android:lottie:3.4.4"
+
+
+
+    //ROULETTE
+
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    implementation project(path: ':library')
 }

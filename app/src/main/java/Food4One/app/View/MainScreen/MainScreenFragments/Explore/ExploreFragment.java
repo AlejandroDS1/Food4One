@@ -37,7 +37,7 @@ public class ExploreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        mViewModel = new ViewModelProvider(this).get(ExploreViewModel.class);
+        mViewModel = ExploreViewModel.getInstance();
 
         binding = FragmentExploreBinding.inflate(inflater, container, false);
         mViewModel = ExploreViewModel.getInstance();
@@ -46,7 +46,8 @@ public class ExploreFragment extends Fragment {
         recicleInit();
         recetasObserver();
 
-        mViewModel.setmRecetas(RecipesUserApp.getRecetasExplorer());
+        mViewModel.loadRecetasExplorer();
+
         return binding.getRoot();
     }
 

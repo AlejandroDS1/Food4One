@@ -42,6 +42,12 @@
         <item>Surprise me</item>
     </string-array>
 
+    <string-array name="options_Surprise">
+        <item>Salado</item>
+        <item>Dulce</item>
+        <item>Bebidas</item>
+    </string-array>
+
     <string name="title_activity_make_recipe">MakeRecipe</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
