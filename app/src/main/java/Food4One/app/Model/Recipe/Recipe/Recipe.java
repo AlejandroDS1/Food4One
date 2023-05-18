@@ -7,12 +7,12 @@ import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
 public class Recipe {
     public static final String TAG = "Recetas";
-    public static final String PICTURE_APP_TAG = "pictureURL";
+    public static final String PICTURE_APP_TAG = "PictureURL";
     public static final String PICTURE_URL_USER_TAG = "PictureURLuser";
     public static final String USER_ID_TAG = "idUser";
     public static final String LIKES_TAG = "likes";
     public static final String DESCRIPTION_APP_TAG = "Description";
-    public static final String PASOS_APP_TAG = "pasos";
+    public static final String PASOS_APP_TAG = "Pasos";
     public static final String ALERGIAS_APP_TAG = "Alergias";
     public static final String INGREDIENTES_APP_TAG = "Ingredientes";
     private String idUser;

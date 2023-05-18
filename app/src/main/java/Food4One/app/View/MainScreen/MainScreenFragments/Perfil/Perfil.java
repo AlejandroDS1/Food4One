@@ -40,6 +40,7 @@ import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
+import Food4One.app.View.Room_Prueba_Eliminar;
 import Food4One.app.databinding.FragmentPerfilBinding;
 
 /**
@@ -77,7 +78,15 @@ public class Perfil extends Fragment {
 
         setTakeCameraPictureListener(mTakePictureButton);
 
+        BORRAR();
+
         return root;
+    }
+
+    // TODO BOORRAR
+    private void BORRAR() {
+
+        startActivity(new Intent(getContext(), Room_Prueba_Eliminar.class));
     }
 
     private void clickListenerObjectsView() {

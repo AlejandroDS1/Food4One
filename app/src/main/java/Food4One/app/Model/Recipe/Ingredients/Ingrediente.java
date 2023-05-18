@@ -5,19 +5,33 @@ public class Ingrediente {
     private float cantidad;
     private String magnitud;
     private int multiplicador = 1;
+    private boolean checked;
 
     // ATRIBUTOS OPCIONALES ***************
     // AVATAR
 
-    public Ingrediente(final String nombre, final float cantidad, final String magnitud) {
+    public Ingrediente(final String nombre,
+                       final float cantidad,
+                       final String magnitud,
+                       final boolean checked) {
         this.name = nombre;
         this.cantidad = cantidad;
         this.magnitud = magnitud;
+        this.checked = checked;
     }
 
-    public Ingrediente(String id) {
-        // Formato del id ~~ nombre | cantidad | magnitud | multiplicador ~~ SIN ESPACIOS
+    public Ingrediente(final String id){
+        convertId(id);
+        this.checked = false;
+    }
 
+    public Ingrediente(final String id, final boolean checked) {
+        // Formato del id ~~ nombre | cantidad | magnitud | multiplicador ~~ SIN ESPACIOS
+        convertId(id);
+        this.checked = checked;
+    }
+
+    private void convertId(final String id){
         String items[] = id.split("[|]");
 
         // Nombre del ingrediente
@@ -30,6 +44,16 @@ public class Ingrediente {
             this.multiplicador = 1;
         }
 
+    }
+
+    public static String Id_toString(final String ingrediente){
+        final String items[] = ingrediente.split("[|]");
+
+        final StringBuilder str = new StringBuilder();
+
+        for (String item: items) str.append(item).append(" ");
+
+        return str.toString();
     }
 
     //Getters

@@ -14,15 +14,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
-import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
 
-///**
-// * A simple {@link Fragment} subclass.
-// * Use the {@link ShoppingListFragment#newInstance} factory method to
-// * create an instance of this fragment.
-// */
+
 public class ShoppingListFragment extends Fragment {
 
     public static final String TAG = "ShoppingListFragment";
@@ -30,8 +25,6 @@ public class ShoppingListFragment extends Fragment {
     private TextView BtnList;
     private FragmentShoppingListBinding binding;
     private ShoppingListAdapter shoppingListAdapter;
-    private IngredientesList ingredientesList;
-
     private ShoppingListViewModel shoppingListViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,16 +34,16 @@ public class ShoppingListFragment extends Fragment {
         View root = binding.getRoot();
 
         shoppingListViewModel = new ViewModelProvider(this).get(ShoppingListViewModel.class);
+        shoppingListViewModel.setDao(getContext());
 
         BtnList = getActivity().findViewById(R.id.BtnList);
         BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
         initAdapterList();
-        initLayout();
+        //initLayout();
 
         clickListenerObjectsView();
 
-        shoppingListAdapter.notifyDataSetChanged();
         return root;
     }
 
@@ -59,21 +52,21 @@ public class ShoppingListFragment extends Fragment {
         final Observer<IngredientesList> ingredientesListObserver = new Observer<IngredientesList>() {
             @Override
             public void onChanged(IngredientesList ingredientesList) {
-                shoppingListAdapter.setList(ingredientesList);
+               // shoppingListAdapter.setList(ingredientesList);
             }
         };
-        shoppingListViewModel.getIngredientesList().observe(this.getActivity(), ingredientesListObserver);
+//        shoppingListViewModel.getIngredientesList().observe(this.getActivity(), ingredientesListObserver);
     }
 
 
     private void initAdapterList(){
 
-        UserRepository.getInstance().loadUserIngredientesList(UserRepository.getUser().getEmail());
+        binding.UnCheckedItems.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(shoppingListViewModel.getUnCheckedIngredientes().getValue(), this.shoppingListViewModel));
 
-        shoppingListAdapter = new ShoppingListAdapter(shoppingListViewModel.getIngredientesList().getValue());
 
-        binding.shoopingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.shoopingRecyclerView.setAdapter(shoppingListAdapter);
+        binding.checkedItems.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.checkedItems.setAdapter(new ShoppingListAdapter(shoppingListViewModel.getCheckedIngredientes().getValue(), this.shoppingListViewModel));
     }
 
     private void clickListenerObjectsView() {
@@ -92,4 +85,5 @@ public class ShoppingListFragment extends Fragment {
             }
         });
     }
+
 }

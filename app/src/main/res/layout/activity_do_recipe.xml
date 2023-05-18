@@ -44,18 +44,29 @@
                     android:text="Ingredientes"
                     android:layout_marginBottom="4dp"/>
 
-                <LinearLayout
-                    android:id="@+id/parentList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp">
-
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ingredientsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"/>
-                </LinearLayout>
+                    android:layout_marginHorizontal="10dp"/>
+
+                <Button
+                    android:id="@+id/add_ingredients_toList_doRecipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Añadir ingredientes a lista">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/remove_DB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="ELIMINA TODA LA BASE DE DATOS">
+
+                </Button>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -66,17 +77,13 @@
                     android:textSize="16dp"
                     android:text="Pasos a seguir"/>
 
-                <LinearLayout
-                    android:id="@+id/parentPasos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
                 <ListView
                     android:id="@+id/pasosList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     />
-                </LinearLayout>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

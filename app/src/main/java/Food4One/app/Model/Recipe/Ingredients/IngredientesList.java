@@ -6,19 +6,37 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import Food4One.app.DataBase.ShoppingList.ShoppingList;
+
 public class IngredientesList implements Serializable {
 
-    private String id; // ID para receta o nombre.
-
+    private String listName; // ID para receta o nombre.
     private ArrayList<Ingrediente> ingredientes;
 
     public IngredientesList(final ArrayList<Ingrediente> ingredientes) {
         this.ingredientes = ingredientes;
     }
 
-    public IngredientesList(final ArrayList<Ingrediente> ingredientes, final String id){
+    public IngredientesList(final ArrayList<ShoppingList> shoppingLists, final String listName){
+
+        this.listName = listName; // nombre de la lista
+
+        this.ingredientes = new ArrayList<>();
+
+        for(ShoppingList spL: shoppingLists)
+            this.ingredientes.add(new Ingrediente(spL.ingrediente, spL.checked));
+    }
+
+    public IngredientesList(final List<String> ingredientesId){
+        this.ingredientes = new ArrayList<>();
+
+        for(String id: ingredientesId)
+            this.ingredientes.add(new Ingrediente(id));
+    }
+
+    public IngredientesList(final String id, final ArrayList<Ingrediente> ingredientes){
         this.ingredientes = new ArrayList<>(ingredientes);
-        this.id = id;
+        this.listName = id;
     }
 
     public IngredientesList() {
@@ -43,13 +61,13 @@ public class IngredientesList implements Serializable {
         return this.ingredientes.size();
     }
 
-    public String getId() {
-        return id;
+    public String getListName() {
+        return listName;
     }
 
     //Setter
-    public void setId(String id) {
-        this.id = id;
+    public void setListName(String listName) {
+        this.listName = listName;
     }
 
     public void setIngredientes(ArrayList<Ingrediente> ingredientes) {

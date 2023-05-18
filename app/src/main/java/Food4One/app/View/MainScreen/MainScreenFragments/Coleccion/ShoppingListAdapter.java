@@ -18,16 +18,15 @@ import Food4One.app.R;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>{
 
-    private IngredientesList ingredientesList;
+    private final IngredientesList ingredientesList;
+    private static ShoppingListViewModel viewModel;
 
-    public ShoppingListAdapter(IngredientesList ingredientesList) {
+    public ShoppingListAdapter(IngredientesList ingredientesList,
+                               ShoppingListViewModel viewModel) {
         this.ingredientesList = ingredientesList;
+        this.viewModel = viewModel;
     }
 
-    public void setList(IngredientesList ingredientesList){
-        this.ingredientesList = ingredientesList;
-        this.notifyDataSetChanged(); // Notificamos que se ha canviado el dataSet
-    }
     @NonNull
     @Override
     public ShoppingListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,8 +54,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         return ingredientesList.getSize();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
 
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView cantidadTxt, multiplicadorTxt;
         private final CheckBox ingredienteCB;
         private final CardView cardView;
@@ -64,16 +63,15 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.ingredienteCB = itemView.findViewById(R.id.ingrediente_CB);
-
             this.cantidadTxt = itemView.findViewById(R.id.cantidad_txt);
             this.multiplicadorTxt = itemView.findViewById(R.id.multiplicador_txt);
             this.cardView = itemView.findViewById(R.id.cardView_shoppingList);
         }
 
-
-        public void bind(Ingrediente ingrediente){
+        public void bind(Ingrediente ingrediente) {
 
             // Llenamos los datos del CardView con la informacion del ingrediente
+
             this.ingredienteCB.setText(ingrediente.getName());
             this.cantidadTxt.setText(ingrediente.getCantidadStr());
 
@@ -81,17 +79,20 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             this.cardView.setClickable(true);
 
-            // Este listener permite que se active el ceckbox al presionar en cualquier parte
             this.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    if (ingredienteCB.isChecked()) ingredienteCB.setChecked(false);
+                    final boolean checked = !ingredienteCB.isChecked();
 
-                    else ingredienteCB.setChecked(true);
+                    // Invertimos el sentido de checked del checkBox
+                    ingredienteCB.setChecked(checked);
+
+                    // Cambiamos el ingrediente de Lista al que corresponda
+                    // Tambien se guarda en base de datos
+                    viewModel.updateIngredienteCheckState(ingrediente, checked);
                 }
             });
-
         }
     }
 }

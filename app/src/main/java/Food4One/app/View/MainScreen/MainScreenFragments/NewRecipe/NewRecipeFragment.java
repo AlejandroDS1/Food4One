@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -420,7 +419,7 @@ public class NewRecipeFragment extends Fragment {
         }
 
         // Si todos los campos estan llenos empezamos a agregar el item a la lista.
-        newRecipeViewModel.addIngrediente(new Ingrediente(nombreIngrediente, Float.parseFloat(cantidad), magnitud));
+        newRecipeViewModel.addIngrediente(new Ingrediente(nombreIngrediente, Float.parseFloat(cantidad), magnitud, false));
         ingredientesListAdapter.notifyItemInserted(ingredientesListAdapter.getItemCount());
 
         // Por ultimo limpiamos los textos y los dejamos en blanco
@@ -597,11 +596,9 @@ public class NewRecipeFragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             private final TextView stepTxt, numStep;
-            private final LinearLayout layout;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                layout = itemView.findViewById(R.id.steps_layout_newRecipe);
                 this.stepTxt = itemView.findViewById(R.id.stepTxt_newRecipe);
                 numStep = itemView.findViewById(R.id.numStep_newRecipe);
             }
@@ -610,9 +607,7 @@ public class NewRecipeFragment extends Fragment {
 
                 final int position = getAdapterPosition();
 
-                final String stepText = stepsList.get(position);
-
-                this.stepTxt.setText(stepText);
+                this.stepTxt.setText(stepsList.get(position));
                 this.numStep.setText((position+1) + ".-");
 
             }
