@@ -29,49 +29,58 @@ import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
 
-/** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
+/**
+ * Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
  */
 public class UserRepository {
     private static final String TAG = "Repository";
     public static String CHARGE = "NotCharge";
 
-    /** Autoinstància, pel patró singleton */
+    /**
+     * Autoinstància, pel patró singleton
+     */
     private static final UserRepository mInstance = new UserRepository();
 
-    /** Referència a la Base de Dades */
+    /**
+     * Referència a la Base de Dades
+     */
     private FirebaseFirestore mDb;
 
     private static User user;
 
 
-
-    /** Definició de listener (interficie),
-     *  per escoltar quan s'hagin acabat de llegir els usuaris de la BBDD */
+    /**
+     * Definició de listener (interficie),
+     * per escoltar quan s'hagin acabat de llegir els usuaris de la BBDD
+     */
     public interface OnLoadUsersListener {
         void onLoadUsers(ArrayList<User> users);
     }
 
     public ArrayList<OnLoadUsersListener> mOnLoadUsersListeners = new ArrayList<>();
 
-    /** Definició de listener (interficie)
+    /**
+     * Definició de listener (interficie)
      * per poder escoltar quan s'hagi acabat de llegir la Url de la foto de perfil
-     * d'un usuari concret */
+     * d'un usuari concret
+     */
     public interface OnLoadUserPictureUrlListener {
         void OnLoadUserPictureUrl(String pictureUrl);
     }
 
-    public interface  OnLoadUserNameListener{
+    public interface OnLoadUserNameListener {
         void OnLoadUserName(String name);
     }
-    public interface OnLoadUserDescriptionListener{
+
+    public interface OnLoadUserDescriptionListener {
         void OnLoadUserDescription(String description);
     }
 
     /**
      * Listener para escuchar cuando se cargan la lista de ingredientes de DDB
      */
-    public interface OnLoadIngredientesListListener{
+    public interface OnLoadIngredientesListListener {
         void onLoadIngredientesList(IngredientesList IngredientesList);
     }
 
@@ -93,6 +102,7 @@ public class UserRepository {
 
     /**
      * Retorna aquesta instancia singleton
+     *
      * @return
      */
     public static UserRepository getInstance() {
@@ -101,16 +111,17 @@ public class UserRepository {
 
 
     // Getters para conseguir el usuario de la APP.
-    public static User getUser(String userName, String email){
+    public static User getUser(String userName, String email) {
         if (user == null) user = new User(userName, email);
         return user;
     }
-    public static User getUser(){
+
+    public static User getUser() {
         return user;
     }
 
     // Para el logout tenemos que elimiar el usuario
-    public static void logOutUser(){
+    public static void logOutUser() {
         user = null;
     }
 
@@ -119,6 +130,7 @@ public class UserRepository {
      * Afegir un listener de la operació OnLoadUsersListener.
      * Pot haver-n'hi només un. Fem llista, com a exemple, per demostrar la flexibilitat
      * d'aquest disseny.
+     *
      * @param listener
      */
     public void addOnLoadUsersListener(OnLoadUsersListener listener) {
@@ -129,24 +141,30 @@ public class UserRepository {
      * Setejem un listener de la operació OnLoadUserPictureUrlListener.
      * En aquest cas, no és una llista de listeners. Només deixem haver-n'hi un,
      * també a tall d'exemple.
+     *
      * @param listener
      */
     public void setOnLoadUserPictureListener(OnLoadUserPictureUrlListener listener) {
         mOnLoadUserPictureUrlListener = listener;
     }
-    public void setOnLoadUserNameListener( OnLoadUserNameListener listener){
+
+    public void setOnLoadUserNameListener(OnLoadUserNameListener listener) {
         this.mOnLoadUserNameListener = listener;
     }
-    public void setOnLoadUserDescription(OnLoadUserDescriptionListener listener){
+
+    public void setOnLoadUserDescription(OnLoadUserDescriptionListener listener) {
         this.mOnLoadUserDescritionListener = listener;
     }
 
-    public void setmOnLoadIngredientesListListener(OnLoadIngredientesListListener listener){ this.mOnLoadIngredientesListListener = listener; }
+    public void setmOnLoadIngredientesListListener(OnLoadIngredientesListListener listener) {
+        this.mOnLoadIngredientesListListener = listener;
+    }
+
     /**
      * Mètode que llegeix els usuaris. Vindrà cridat des de fora i quan acabi,
      * avisarà sempre als listeners, invocant el seu OnLoadUsers.
      */
-    public void loadUsers(ArrayList<User> users){
+    public void loadUsers(ArrayList<User> users) {
         users.clear();
         mDb.collection(User.TAG)
                 .get()
@@ -164,7 +182,7 @@ public class UserRepository {
                                 users.add(user);
                             }
                             /* Callback listeners */
-                            for (OnLoadUsersListener l: mOnLoadUsersListeners) {
+                            for (OnLoadUsersListener l : mOnLoadUsersListeners) {
                                 l.onLoadUsers(users);
                             }
                         } else {
@@ -202,6 +220,7 @@ public class UserRepository {
     /**
      * Mètode que afegeix un nou usuari a la base de dades. Utilitzat per la funció
      * de Sign-Up (registre) de la SignUpActivity.
+     *
      * @param email
      * @param firstName
      */
@@ -237,14 +256,15 @@ public class UserRepository {
 
     /**
      * Este metodo devuelve un objeto IngredientesList extraido de los ingredientes guardados en la base de datos.
+     *
      * @param userId email del usuario ID
      * @return IngredientesList objeto que contiene los ingredientes guardados.
      */
-    public void loadUserIngredientesList(String userId){
+    public void loadUserIngredientesList(String userId) {
         IngredientesList ingredientesList = new IngredientesList();
         mDb.collection(User.TAG).document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task){
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                 if (task.isSuccessful()) {
 
@@ -262,6 +282,7 @@ public class UserRepository {
     /**
      * Mètode que guarda la Url d'una foto de perfil que un usuari hagi pujat
      * des del PerfilFragment a la BBDD. Concretament, es cridat pel PerfilViewModel.
+     *
      * @param userId
      * @param pictureUrl
      */
@@ -283,14 +304,14 @@ public class UserRepository {
 
     }
 
-    public boolean setUserNameDDB(String email, String userName){
+    public boolean setUserNameDDB(String email, String userName) {
 
         HashMap<String, String> store = new HashMap<>();
         store.put(User.NAME_TAG, userName);
 
         mDb.collection(User.TAG).document(email).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
-                    UserRepository.getUser().setUserName(userName); //Lo cambiamos en el User Global
-                    PerfilViewModel.getInstance().getOnLoadUserListener().OnLoadUserName(userName); //Y en la ventana Perfil
+            UserRepository.getUser().setUserName(userName); //Lo cambiamos en el User Global
+            PerfilViewModel.getInstance().getOnLoadUserListener().OnLoadUserName(userName); //Y en la ventana Perfil
         });
 
         // Comprovamos si ha entrado en el OnSucces, si retorna falso es porque no se ha subido a base de datos.
@@ -298,10 +319,9 @@ public class UserRepository {
     }
 
 
-
     // TODO: Si podemos mejorar el paso por parametro de un MutableLiveData mejor
     // Se puede utilizar pasandole un null sino se utiliza para actualizar el texto de UserSettings
-    public void setUserDescriptionDDB(String email, String description, @Nullable MutableLiveData<String> mdescription){
+    public void setUserDescriptionDDB(String email, String description, @Nullable MutableLiveData<String> mdescription) {
 
         HashMap<String, String> store = new HashMap<>();
         store.put(User.DESCRIPCION_TAG, description);
@@ -325,17 +345,17 @@ public class UserRepository {
         mDb.collection(User.TAG).document(email)
                 .set(store, SetOptions.merge())
                 .addOnSuccessListener(succesListener -> {
-                    if (alergiasTxt != null){
+                    if (alergiasTxt != null) {
                         // Creamos el texto que tenemos que poner en alergiasTxt y lo cambiamos.
                         // Por defecto el ArrayListObject.toString() da como resultado [ Item1, Item2...] Aqui quitamos los "[]"
-                        String _alergias = alergias.toString().substring(1, alergias.toString().length()-1);
+                        String _alergias = alergias.toString().substring(1, alergias.toString().length() - 1);
                         alergiasTxt.setValue(_alergias);
                     }
                     UserRepository.getUser().setAlergias(alergias);
                 });
     }
 
-    public void setUserIdRecipe(){
+    public void setUserIdRecipe() {
 
         final User user = UserRepository.getUser();
 
@@ -347,7 +367,7 @@ public class UserRepository {
 
     }
 
-    public void loadUserFromDDB(String email, Activity accessActivity, ViewModel viewModel){
+    public void loadUserFromDDB(String email, Activity accessActivity, ViewModel viewModel) {
 
         mDb.collection(User.TAG).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -367,37 +387,36 @@ public class UserRepository {
 
                     user.setIdRecetas((ArrayList<String>) document.get(User.IDRECETAS_TAG));
 
-                    user.setLikesRecipes( createHashMap((ArrayList<String>) document.get(User.LIKESRECIPES_TAG)));
+                    user.setLikesRecipes(createHashMap((ArrayList<String>) document.get(User.LIKESRECIPES_TAG)));
 
                     ExploreViewModel.getInstance();
 
                     ((AccesActivityViewModel) viewModel).setCompleted(true);
-
                 }
-            }
-
-            private HashMap<String, Boolean> createHashMap(ArrayList<String> strings) {
-
-                HashMap<String, Boolean> mapForUser = new HashMap<>();
-                for(String data: strings)
-                    mapForUser.put(data, true);
-
-                return mapForUser;
             }
         });
     }
 
+    private HashMap<String, Boolean> createHashMap(ArrayList<String> strings) {
+
+        HashMap<String, Boolean> mapForUser = new HashMap<>();
+        for (String data : strings)
+            mapForUser.put(data, true);
+
+        return mapForUser;
+    }
+
     public void setUserLikeDDB(Recipe recipe, boolean like) {
 
-        User user =  UserRepository.getUser();
+        User user = UserRepository.getUser();
         HashMap<String, Boolean> idLikesUser = user.getLikesRecipes();
 
-        ArrayList<String> actualLikes=  new ArrayList<>(idLikesUser.keySet());
+        ArrayList<String> actualLikes = new ArrayList<>(idLikesUser.keySet());
         String recipeName = recipe.getNombre();
 
         int likeDonat = 0;
 
-        if (like){
+        if (like) {
             actualLikes.add(recipeName);
             idLikesUser.put(recipeName, true);
             recipe.setLikeFromUser(true);
@@ -409,13 +428,13 @@ public class UserRepository {
             recipe.setLikeFromUser(false);
         }
 
-        HashMap<String, ArrayList<String> >  store = new HashMap<>();
+        HashMap<String, ArrayList<String>> store = new HashMap<>();
         store.put(User.LIKESRECIPES_TAG, actualLikes);
 
         mDb.collection(User.TAG).document(user.getEmail()).set(store, SetOptions.merge())
                 .addOnSuccessListener(succesListener -> {
                     Log.d(TAG, "Like Receta: " + recipeName + " Añadida");
-        });
+                });
 
         //Després cal canviar els likes que tenim a la base de dades de les recetes.
         recipe.setLikes(likeDonat);
@@ -423,28 +442,28 @@ public class UserRepository {
     }
 
     public void setUserRecetaCollectionDDB(Recipe recipe, boolean saved) {
-        User user =  UserRepository.getUser();
+        User user = UserRepository.getUser();
         HashMap<String, Boolean> idCollectionUser = user.getIdCollections();
 
-        ArrayList<String> actualCollection =  new ArrayList<>(idCollectionUser.keySet());
+        ArrayList<String> actualCollection = new ArrayList<>(idCollectionUser.keySet());
         String recipeName = recipe.getNombre();
-        if(saved) {
+        if (saved) {
             actualCollection.add(recipeName);
             idCollectionUser.put(recipeName, true);
-        }else {
+        } else {
             actualCollection.remove(recipeName);
             idCollectionUser.remove(recipeName);
         }
 
-        HashMap<String, ArrayList<String> > store = new HashMap<>();
+        HashMap<String, ArrayList<String>> store = new HashMap<>();
         store.put(User.IDCOLLECTIONS_TAG, actualCollection);
 
         mDb.collection(User.TAG).document(user.getEmail())
                 .set(store, SetOptions.merge())
                 .addOnSuccessListener(succesListener -> {
                     Log.d(TAG, "User's Collection is update");
-                }).addOnFailureListener(failurelistener-> {
-                        Log.d(TAG, "User's Collection is not working");
-                    });
+                }).addOnFailureListener(failurelistener -> {
+                    Log.d(TAG, "User's Collection is not working");
+                });
     }
 }

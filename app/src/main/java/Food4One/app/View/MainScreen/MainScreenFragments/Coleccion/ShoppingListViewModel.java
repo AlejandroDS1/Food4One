@@ -46,8 +46,8 @@ public class ShoppingListViewModel extends ViewModel {
 
         final List<ShoppingList> checkedItems = getDao().getCheckedItems();
 
-        this.unCheckedIngredientes.setValue(new IngredientesList((ArrayList<ShoppingList>) unCheckedItems, unCheckedItems.get(0).listName));
-        this.checkedIngredientes.setValue(new IngredientesList((ArrayList<ShoppingList>) checkedItems, unCheckedItems.get(0).listName));
+        this.unCheckedIngredientes.setValue(new IngredientesList((ArrayList<ShoppingList>) unCheckedItems, "PRUEBA"));
+        this.checkedIngredientes.setValue(new IngredientesList((ArrayList<ShoppingList>) checkedItems, "PRUEBA"));
 
      }
 
@@ -63,19 +63,15 @@ public class ShoppingListViewModel extends ViewModel {
     public void updateIngredienteCheckState(final Ingrediente ingrediente, final boolean check){
 
         if(check){
-            this.unCheckedIngredientes.getValue().add(ingrediente);
-            this.checkedIngredientes.getValue().remove(ingrediente);
-
-            // Ahora actualizamos la base de datos
-            getDao().checkIngrediente("PRUEBA", ingrediente.getId(), check);
-        }else{
             this.checkedIngredientes.getValue().add(ingrediente);
             this.unCheckedIngredientes.getValue().remove(ingrediente);
 
-            // Ahora actualizamos la base de datos
-            getDao().checkIngrediente("PRUEBA", ingrediente.getId(), check);
+        }else{
+            this.unCheckedIngredientes.getValue().add(ingrediente);
+            this.checkedIngredientes.getValue().remove(ingrediente);
         }
-
+        // Ahora actualizamos la base de datos
+        getDao().checkIngrediente("PRUEBA", ingrediente.getId(), check);
     }
 
     public void setIngredientesListeners(){

@@ -16,11 +16,11 @@ public class MainScreenViewModel extends ViewModel{
     private MutableLiveData<User> user;
     private MutableLiveData<ArrayList<User>> allUsers;
 
-
     public MainScreenViewModel(){
 
         this.user = new MutableLiveData<>();
         this.allUsers = new MutableLiveData<>();
+
     }
 
     public MainScreenViewModel(User user) {
@@ -30,7 +30,9 @@ public class MainScreenViewModel extends ViewModel{
         // Lista de todos los usuarios
         this.allUsers = new MutableLiveData<>();
         this.allUsers.setValue(new ArrayList<User>());
+
     }
+
 
     //Getters
     public LiveData<User> getUser(){

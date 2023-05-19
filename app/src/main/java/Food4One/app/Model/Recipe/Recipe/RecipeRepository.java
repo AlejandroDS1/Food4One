@@ -76,12 +76,13 @@ public class RecipeRepository {
     public interface OnLoadRecipeExplorer {
         void onLoadRecipeExplorer(ArrayList<Recipe> recetas);
     }
+
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
 
 
     public OnLoadRecipeExplorer mOnLoadRecetasExplorer;
 
-    public interface OnLoadRecetaApp{
+    public interface OnLoadRecetaApp {
         void onLoadRecipeApp(ArrayList<Recipe> recetas);
     }
 
@@ -165,10 +166,11 @@ public class RecipeRepository {
         mOnLoadRecetaPictureUrlListener = listener;
     }
 
-    public void setOnLoadRecetasExplorer(OnLoadRecipeExplorer listener){
+    public void setOnLoadRecetasExplorer(OnLoadRecipeExplorer listener) {
         this.mOnLoadRecetasExplorer = listener;
     }
-    public void setmOnLoadURLfromRecipe(OnLoadURLUserFromRecipe listener){
+
+    public void setmOnLoadURLfromRecipe(OnLoadURLUserFromRecipe listener) {
         mOnLoadURLfromRecipe = listener;
     }
 
@@ -232,39 +234,35 @@ public class RecipeRepository {
     public void loadRecetas(ArrayList<Recipe> recetaUsers, String fragment) {
         recetaUsers.clear();
 
-            //Se cargan todas las recetas de la base de datos...
-            mDb.collection(Recipe.TAG).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        //Se tiene que cargar el String ID de los ingredientes...
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-                        Recipe receta = document.toObject(Recipe.class);
-                        receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
-                        receta.setPasos((ArrayList<String>) document.get(Recipe.PASOS_APP_TAG));
-                        receta.setNombre(document.getId());
-                        receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));
-                        //Le damos el like a la receta si el usuario logado ya lo ha hecho
-                        if (UserRepository.getUser().getLikesRecipes().get(receta.getNombre()) != null) {
-                            receta.setLikeFromUser(true);
-                        } else
-                            receta.setLikeFromUser(false);
+        //Se cargan todas las recetas de la base de datos...
+        mDb.collection(Recipe.TAG).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    //Se tiene que cargar el String ID de los ingredientes...
+                    Log.d(TAG, document.getId() + " => " + document.getData());
+                    Recipe receta = document.toObject(Recipe.class);
+                    receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
+                    receta.setPasos((ArrayList<String>) document.get(Recipe.PASOS_APP_TAG));
+                    receta.setNombre(document.getId());
+                    receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));
+                    //Le damos el like a la receta si el usuario logado ya lo ha hecho
+                    if (UserRepository.getUser().getLikesRecipes().get(receta.getNombre()) != null) {
+                        receta.setLikeFromUser(true);
+                    } else
+                        receta.setLikeFromUser(false);
 
-                        recetaUsers.add(receta);
-                    }
-                    if(fragment.equals("EXPLORER"))
-                        mOnLoadRecetasExplorer.onLoadRecipeExplorer(recetaUsers);
-                    else
-                        /*Luego llamamos a sus listeners*/
-                        for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
-                            l.onLoadRecetas(recetaUsers);
-                        }
-
+                    recetaUsers.add(receta);
                 }
-
-            });
-
-
+                if (fragment.equals("EXPLORER"))
+                    mOnLoadRecetasExplorer.onLoadRecipeExplorer(recetaUsers);
+                else
+                    /*Luego llamamos a sus listeners*/
+                    for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
+                        l.onLoadRecetas(recetaUsers);
+                    }
+            }
+        });
     }
 
     /*Se supone que el IdIngredientes jamás será nulo, porque siempre habrá como mínimo un ingrediente
@@ -356,33 +354,38 @@ public class RecipeRepository {
                 }
             }
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
 
-                        recipe.put(Recipe.PICTURE_APP_TAG, task.getResult().toString()); // Ponemos al HashMap la URL que nos falta.
+                    recipe.put(Recipe.PICTURE_APP_TAG, task.getResult().toString()); // Ponemos al HashMap la URL que nos falta.
 
-                        // Subimos el documento con la receta.
-                        mDb.collection(Recipe.TAG).document(idReceta).set(recipe)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        completed.setValue((byte) 1);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        completed.setValue((byte) 2);
-                                    }
-                                });
-                    } else {
-                        completed.setValue((byte) 2);
-                    }
+                    // Subimos el documento con la receta.
+                    mDb.collection(Recipe.TAG).document(idReceta).set(recipe)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    completed.setValue((byte) 1);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    completed.setValue((byte) 2);
+                                }
+                            });
+                } else {
+                    completed.setValue((byte) 2);
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                completed.setValue((byte) 2);
+            }
         });
     }
 
-    public void setLikesRecipeDDB(String idRecipe, int like){
+    public void setLikesRecipeDDB(String idRecipe, int like) {
 
         HashMap<String, Integer> store = new HashMap<>();
         store.put(Recipe.LIKES_TAG, like);

@@ -9,11 +9,9 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
 
@@ -24,7 +22,6 @@ public class ShoppingListFragment extends Fragment {
     private TextView BtnSaved;
     private TextView BtnList;
     private FragmentShoppingListBinding binding;
-    private ShoppingListAdapter shoppingListAdapter;
     private ShoppingListViewModel shoppingListViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,24 +37,11 @@ public class ShoppingListFragment extends Fragment {
         BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
         initAdapterList();
-        //initLayout();
 
         clickListenerObjectsView();
 
         return root;
     }
-
-    private void initLayout() {
-        // Iniciamos los observers
-        final Observer<IngredientesList> ingredientesListObserver = new Observer<IngredientesList>() {
-            @Override
-            public void onChanged(IngredientesList ingredientesList) {
-               // shoppingListAdapter.setList(ingredientesList);
-            }
-        };
-//        shoppingListViewModel.getIngredientesList().observe(this.getActivity(), ingredientesListObserver);
-    }
-
 
     private void initAdapterList(){
 
@@ -66,7 +50,9 @@ public class ShoppingListFragment extends Fragment {
 
 
         binding.checkedItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.checkedItems.setAdapter(new ShoppingListAdapter(shoppingListViewModel.getCheckedIngredientes().getValue(), this.shoppingListViewModel));
+        binding.checkedItems.setAdapter(new ShoppingListAdapter(shoppingListViewModel.getCheckedIngredientes().getValue(), this.shoppingListViewModel).setAsCheckList());
+
+        ((ShoppingListAdapter) binding.checkedItems.getAdapter()).setSecondList(((ShoppingListAdapter)binding.UnCheckedItems.getAdapter())); // Relacionamos los adapters entre si
     }
 
     private void clickListenerObjectsView() {
