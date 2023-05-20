@@ -205,7 +205,7 @@ notifyItemRemoved(position);
 
             mrecipeName.setText( recetaUser.getNombre());
             mCardNumberLikes.setText(Integer.toString( recetaUser.getLikes()));
-            mCardDescription.setText(UserRepository.getUser().getUserName() +"  "+ recetaUser.getDescription());
+            mCardDescription.setText("Description  "+ recetaUser.getDescription());
 
             cargarPhotoUserAndRecipe(recetaUser);
             mrecipeName.setOnClickListener(view-> { listener.OnClickDoRecipe(recetaUser); });
@@ -242,11 +242,14 @@ notifyItemRemoved(position);
                     .resize(980, 1000)
                     .centerCrop().into(mCardRecetaPictureUrl);
 
-            if( ! recetaUser.getUserPhoto().equals(" "))
-            Picasso.get().load(recetaUser.getUserPhoto())
-                    .resize(200, 200)
-                    .centerCrop().into(mCardUserPictureURL);
-            else
+            if(recetaUser.getUserPhoto() != null) {
+                if (!recetaUser.getUserPhoto().equals(" "))
+                    Picasso.get().load(recetaUser.getUserPhoto())
+                            .resize(200, 200)
+                            .centerCrop().into(mCardUserPictureURL);
+                else
+                    mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
+            } else
                 mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
 
         }

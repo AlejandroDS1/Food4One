@@ -233,7 +233,6 @@ public class RotateActivity extends AppCompatActivity {
             titleSurprise.startAnimation(animation);
             cardView.startAnimation(animation);
         }
-
     }
 
 

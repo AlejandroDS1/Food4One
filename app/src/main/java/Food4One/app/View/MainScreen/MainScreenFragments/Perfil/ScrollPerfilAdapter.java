@@ -140,10 +140,6 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
                 listener.OnClickDoRecipe(recetaUser);
             });
 
-        mCardNumberLikes.setOnClickListener(view->{
-            //listener.
-        });
-
     }
 
     private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
@@ -152,13 +148,16 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
                 .resize(980, 900)
                 .centerCrop().into(mCardRecetaPictureUrl);
 
-        String url;
-        if (!(url = UserRepository.getUser().getProfilePictureURL()).equals(" "))
+        String url = UserRepository.getUser().getProfilePictureURL();
 
-            Picasso.get().load(url)
-                    .resize(200, 200)
-                    .centerCrop().into(mCardUserPictureURL);
-        else
+        if ( url!=null) {
+            if (!url.equals(" "))
+                Picasso.get().load(url)
+                        .resize(200, 200)
+                        .centerCrop().into(mCardUserPictureURL);
+            else
+                mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
+        }else
             mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
 
     }

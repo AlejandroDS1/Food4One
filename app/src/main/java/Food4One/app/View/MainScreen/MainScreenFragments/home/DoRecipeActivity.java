@@ -3,27 +3,18 @@ package Food4One.app.View.MainScreen.MainScreenFragments.home;
 import static android.content.res.Resources.getSystem;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import Food4One.app.Model.Recipe.Recipe.Recipe;
-import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
-import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.ScrollPerfilAdapter;
 
 
 public class DoRecipeActivity extends AppCompatActivity {

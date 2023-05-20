@@ -286,27 +286,4 @@ public class Perfil extends Fragment {
         //try { Thread.sleep(700); } catch (InterruptedException e) { throw new RuntimeException(e);}
         binding.progressBarPerfil.setVisibility(View.GONE);
     }
-
-    public static class loqueseaAdapter extends ExplorerScrollAdapter{
-
-        public loqueseaAdapter(ArrayList<Recipe> recetaList) {
-            super(recetaList);
-        }
-
-        public final class ViewHolder extends ExplorerScrollAdapter.ViewHolder{
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-            }
-
-            @Override
-            public void bind(Recipe recetaUser, OnClickDoRecipeUser listener, OnLikeRecipeUser listenerLikeRecipe, OnClickSaveRecipe saveListener) {
-                super.bind(recetaUser, listener, listenerLikeRecipe, saveListener);
-
-                this.mCardCorazon.setVisibility(View.GONE);
-
-                this.mCardRecetaPictureUrl.setFocusable(View.NOT_FOCUSABLE);
-            }
-        }
-    }
 }
