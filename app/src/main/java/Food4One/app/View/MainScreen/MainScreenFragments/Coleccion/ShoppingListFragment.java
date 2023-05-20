@@ -50,7 +50,7 @@ public class ShoppingListFragment extends Fragment {
         shoppingListAdapter.notifyDataSetChanged();
         return root;
     }
-    
+
     private void initLayout() {
         // Iniciamos los observers
         final Observer<IngredientesList> ingredientesListObserver = new Observer<IngredientesList>() {
