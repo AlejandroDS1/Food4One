@@ -5,6 +5,7 @@ public class Ingrediente {
     private float cantidad;
     private String magnitud;
     private int multiplicador = 1;
+    public boolean checked = false;
 
     // ATRIBUTOS OPCIONALES ***************
     // AVATAR
@@ -30,6 +31,11 @@ public class Ingrediente {
             this.multiplicador = 1;
         }
 
+    }
+
+    public Ingrediente(final String id, final boolean checked){
+        this(id);
+        this.checked = checked;
     }
 
     //Getters

@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.View.Authentification.AccesActivityViewModel;
-import Food4One.app.View.MainScreen.MainScreen;
 import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
@@ -39,12 +39,9 @@ public class UserRepository {
 
     /** Autoinstància, pel patró singleton */
     private static final UserRepository mInstance = new UserRepository();
-
     /** Referència a la Base de Dades */
     private FirebaseFirestore mDb;
-
     private static User user;
-
 
 
     /** Definició de listener (interficie),
@@ -62,21 +59,19 @@ public class UserRepository {
         void OnLoadUserPictureUrl(String pictureUrl);
     }
 
-    public interface  OnLoadUserNameListener{
+    public interface OnLoadUserNameListener{
         void OnLoadUserName(String name);
     }
     public interface OnLoadUserDescriptionListener{
         void OnLoadUserDescription(String description);
     }
 
-    /**
-     * Listener para escuchar cuando se cargan la lista de ingredientes de DDB
-     */
-    public interface OnLoadIngredientesListListener{
-        void onLoadIngredientesList(IngredientesList IngredientesList);
+
+    public OnLoadListIngredientesListener onLoadListIngredientesListener;
+    public interface OnLoadListIngredientesListener{
+        void onLoadListIngredientes();
     }
 
-    public OnLoadIngredientesListListener mOnLoadIngredientesListListener;
 
     public OnLoadUserNameListener mOnLoadUserNameListener;
 
@@ -127,6 +122,14 @@ public class UserRepository {
     }
 
     /**
+     * Añadir listener para el cargado de datos
+     * @param listener
+     */
+    public void setOnLoadListIngredientesListener(OnLoadListIngredientesListener listener){
+        this.onLoadListIngredientesListener = listener;
+    }
+
+    /**
      * Setejem un listener de la operació OnLoadUserPictureUrlListener.
      * En aquest cas, no és una llista de listeners. Només deixem haver-n'hi un,
      * també a tall d'exemple.
@@ -142,7 +145,6 @@ public class UserRepository {
         this.mOnLoadUserDescritionListener = listener;
     }
 
-    public void setmOnLoadIngredientesListListener(OnLoadIngredientesListListener listener){ this.mOnLoadIngredientesListListener = listener; }
     /**
      * Mètode que llegeix els usuaris. Vindrà cridat des de fora i quan acabi,
      * avisarà sempre als listeners, invocant el seu OnLoadUsers.
@@ -238,24 +240,26 @@ public class UserRepository {
 
     /**
      * Este metodo devuelve un objeto IngredientesList extraido de los ingredientes guardados en la base de datos.
-     * @param userId email del usuario ID
      * @return IngredientesList objeto que contiene los ingredientes guardados.
      */
-    public void loadUserIngredientesList(String userId){
-        IngredientesList ingredientesList = new IngredientesList();
-        mDb.collection(User.TAG).document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public void loadUserIngredientesList(@NonNull final MutableLiveData<List<IngredientesList>> _listaIngredientes){
+
+        final List<IngredientesList> ingredientesLists = _listaIngredientes.getValue();
+        mDb.collection(User.TAG).document(UserRepository.getUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task){
-
                 if (task.isSuccessful()) {
+                    // Conseguimos el atributo que queremos
+                    Map<String, Map<String, Boolean>> shoppingLists = (Map<String, Map<String, Boolean>>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG);
 
-                    List<String> listaIngredientes = (List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG);
+                    if (shoppingLists != null){
+                        final Set<String> listas = shoppingLists.keySet();
 
-                    if (listaIngredientes != null) {
-                        ingredientesList.setIngredientes(listaIngredientes);
-                        mOnLoadIngredientesListListener.onLoadIngredientesList(ingredientesList);
+                        for(final String listaName: listas) // Iteramos por cada lista creando los objetos IngredientesList
+                            ingredientesLists.add(new IngredientesList(listaName, shoppingLists.get(listaName)));
                     }
                 }
+                onLoadListIngredientesListener.onLoadListIngredientes();
             }
         });
     }

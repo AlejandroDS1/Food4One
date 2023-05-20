@@ -5,26 +5,46 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class IngredientesList implements Serializable {
 
-    private String id; // ID para receta o nombre.
-
+    private String listName; // ID para receta o nombre.
     private ArrayList<Ingrediente> ingredientes;
 
-    public IngredientesList(final ArrayList<Ingrediente> ingredientes) {
-        this.ingredientes = ingredientes;
+
+    // Constructores
+
+    /**
+     * Crea una lista de ingredientes con su nombre y los id de los ingredientes.
+     * @param listName nombre de la lista
+     * @param ingredientesId todos los id de los ingredientes que componen la lista
+     */
+    public IngredientesList(@NonNull final String listName,
+                            @NonNull final Map<String, Boolean> ingredientesId) {
+        this.listName = listName;
+
+        this.ingredientes = new ArrayList<>();
+
+        for(final String id: ingredientesId.keySet())
+            ingredientes.add(new Ingrediente(id, ingredientesId.get(id)));
     }
 
-    public IngredientesList(final ArrayList<Ingrediente> ingredientes, final String id){
-        this.ingredientes = new ArrayList<>(ingredientes);
-        this.id = id;
+    public IngredientesList(@NonNull final List<Ingrediente> ingredientes){
+        this.ingredientes = (ArrayList<Ingrediente>) ingredientes;
     }
 
-    public IngredientesList() {
-        this.ingredientes = new ArrayList<Ingrediente>();
-    }
+    public IngredientesList() { this.ingredientes = new ArrayList<>(); }
+    public final ArrayList<Ingrediente> IngredienteId_toIngredienteList(@NonNull final Set<String> _ingredientesId){
 
+        ArrayList<Ingrediente> arr = new ArrayList<>();
+
+        for (final String s: _ingredientesId)
+            arr.add(new Ingrediente(s));
+        return arr;
+    }
+    // METODOS
     public void remove(Ingrediente ingrediente) {
         this.ingredientes.remove(ingrediente);
     }
@@ -43,13 +63,13 @@ public class IngredientesList implements Serializable {
         return this.ingredientes.size();
     }
 
-    public String getId() {
-        return id;
+    public String getListName() {
+        return listName;
     }
 
     //Setter
-    public void setId(String id) {
-        this.id = id;
+    public void setListName(String listName) {
+        this.listName = listName;
     }
 
     public void setIngredientes(ArrayList<Ingrediente> ingredientes) {

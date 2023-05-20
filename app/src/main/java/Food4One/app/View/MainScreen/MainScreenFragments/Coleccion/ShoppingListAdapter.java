@@ -17,16 +17,20 @@ import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.R;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>{
-
     private IngredientesList ingredientesList;
+    private final ShoppingListViewModel viewModel;
+    private ShoppingListAdapter secondList; // Este atributo permite tener los dos adapters vinculados, para hacer los cambios
 
-    public ShoppingListAdapter(IngredientesList ingredientesList) {
+    public ShoppingListAdapter(@NonNull final IngredientesList ingredientesList,
+                               @NonNull final ShoppingListViewModel viewModel) {
         this.ingredientesList = ingredientesList;
+        this.viewModel = viewModel;
     }
 
-    public void setList(IngredientesList ingredientesList){
-        this.ingredientesList = ingredientesList;
-        this.notifyDataSetChanged(); // Notificamos que se ha canviado el dataSet
+    public final ShoppingListAdapter setSecondList(@NonNull final ShoppingListAdapter otherList){
+        this.secondList = otherList;
+        otherList.secondList = this;
+        return this;
     }
     @NonNull
     @Override
@@ -55,7 +59,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         return ingredientesList.getSize();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public final class ViewHolder extends RecyclerView.ViewHolder{
 
         private final TextView cantidadTxt, multiplicadorTxt;
         private final CheckBox ingredienteCB;
@@ -75,6 +79,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             // Llenamos los datos del CardView con la informacion del ingrediente
             this.ingredienteCB.setText(ingrediente.getName());
+            this.ingredienteCB.setChecked(ingrediente.checked);
+
             this.cantidadTxt.setText(ingrediente.getCantidadStr());
 
             this.multiplicadorTxt.setText(Integer.toString(ingrediente.getMultiplicador()));
@@ -86,9 +92,15 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View view) {
 
-                    if (ingredienteCB.isChecked()) ingredienteCB.setChecked(false);
+                    final boolean checkState = !ingredienteCB.isChecked();
+                    ingredienteCB.setChecked(checkState); // Invertimos el checked
 
-                    else ingredienteCB.setChecked(true);
+                    notifyItemRemoved(ingredientesList.getIngredientes().indexOf(ingrediente));
+
+                    viewModel.swapCheckedItem(ingrediente, checkState);
+                    // Ahora notificamos al adapter el cambio de ingredientes
+                    secondList.notifyItemInserted(secondList.getItemCount() - 1);
+
                 }
             });
 

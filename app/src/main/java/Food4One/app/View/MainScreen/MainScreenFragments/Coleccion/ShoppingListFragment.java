@@ -9,12 +9,9 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
-import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
 
@@ -29,10 +26,7 @@ public class ShoppingListFragment extends Fragment {
     private TextView BtnSaved;
     private TextView BtnList;
     private FragmentShoppingListBinding binding;
-    private ShoppingListAdapter shoppingListAdapter;
-    private IngredientesList ingredientesList;
-
-    private ShoppingListViewModel shoppingListViewModel;
+    private ShoppingListViewModel viewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,40 +34,38 @@ public class ShoppingListFragment extends Fragment {
         binding = FragmentShoppingListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        shoppingListViewModel = new ViewModelProvider(this).get(ShoppingListViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ShoppingListViewModel.class);
 
         BtnList = getActivity().findViewById(R.id.BtnList);
         BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
         initAdapterList();
-        initLayout();
 
         clickListenerObjectsView();
 
-        shoppingListAdapter.notifyDataSetChanged();
         return root;
     }
 
-    private void initLayout() {
-        // Iniciamos los observers
-        final Observer<IngredientesList> ingredientesListObserver = new Observer<IngredientesList>() {
-            @Override
-            public void onChanged(IngredientesList ingredientesList) {
-                shoppingListAdapter.setList(ingredientesList);
-            }
-        };
-        shoppingListViewModel.getIngredientesList().observe(this.getActivity(), ingredientesListObserver);
-    }
 
 
     private void initAdapterList(){
 
-        UserRepository.getInstance().loadUserIngredientesList(UserRepository.getUser().getEmail());
+        // Creamos los adapters y los asginamos a los recyclersViews
+        binding.checkedItems.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.checkedItems.setAdapter(new ShoppingListAdapter(viewModel.getCheckedItemsList().getValue(), viewModel));
 
-        shoppingListAdapter = new ShoppingListAdapter(shoppingListViewModel.getIngredientesList().getValue());
+        binding.UnCheckedItems.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(viewModel.getUnCheckedItemsList().getValue(), viewModel)
+                                                                .setSecondList((ShoppingListAdapter) binding.checkedItems.getAdapter()));
 
-        binding.shoopingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.shoopingRecyclerView.setAdapter(shoppingListAdapter);
+        viewModel.setOnChangedListsListener(new ShoppingListViewModel.OnChangedListsListener() {
+            @Override
+            public void onChangedListListener() {
+                binding.checkedItems.getAdapter().notifyDataSetChanged();
+                binding.UnCheckedItems.getAdapter().notifyDataSetChanged();
+            }
+        });
+
     }
 
     private void clickListenerObjectsView() {
