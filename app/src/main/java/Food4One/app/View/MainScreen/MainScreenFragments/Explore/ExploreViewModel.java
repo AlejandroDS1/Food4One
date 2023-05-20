@@ -26,7 +26,6 @@ public class ExploreViewModel extends ViewModel {
         userURLFromRecipe = new MutableLiveData<>();
         mRecipeRepository = RecipeRepository.getInstance();
         recetasListeners();
-        loadRecetasExplorer();
     }
 
     private void recetasListeners() {
@@ -35,8 +34,8 @@ public class ExploreViewModel extends ViewModel {
         mRecipeRepository.setOnLoadRecetasExplorer(new RecipeRepository.OnLoadRecipeExplorer() {
             @Override
             public void onLoadRecipeExplorer(ArrayList<Recipe> recetas) {
-                ExploreViewModel.this.setmRecetas(recetas);
                 RecipesUserApp.setRecetasExplorer(recetas);
+                ExploreViewModel.this.setmRecetas(recetas);
             }
         });
         mRecipeRepository.setmOnLoadURLfromRecipe(new RecipeRepository.OnLoadURLUserFromRecipe() {

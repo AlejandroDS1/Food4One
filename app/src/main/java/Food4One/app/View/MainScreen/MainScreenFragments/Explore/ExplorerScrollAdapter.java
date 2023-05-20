@@ -24,9 +24,7 @@ import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 
 public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAdapter.ViewHolder> {
-
     private static Context context;
-
     /**
      * Definició de listener (interficie)
      * per a quan algú vulgui escoltar un event de OnClickDoRecipe, és a dir,
@@ -124,10 +122,10 @@ notifyItemRemoved(position);
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mrecipeName;
         private final ImageView mCardUserPictureURL;
-        private final ImageView mCardRecetaPictureUrl;
+        protected final ImageView mCardRecetaPictureUrl;
         private final TextView mCardNumberLikes;
         private final TextView mCardDescription;
-        private final LottieAnimationView mCardCorazon;
+        protected final LottieAnimationView mCardCorazon;
         private boolean likeAnim;
         private final LottieAnimationView mCardSaved;
         private boolean savedAnim= false;
@@ -186,7 +184,6 @@ notifyItemRemoved(position);
                          OnLikeRecipeUser listenerLikeRecipe, OnClickSaveRecipe saveListener) {
 
             likeAnim = recetaUser.getLikeFromUser();
-
             //Si esta receta esta en la colección de guardados del usuario, hay que cargar la animación
             if( UserRepository.getUser().getIdCollections().get(recetaUser.getNombre()) != null)
                 savedAnim=true;
@@ -195,12 +192,10 @@ notifyItemRemoved(position);
                 mCardCorazon.setMinAndMaxProgress(0.0f, 0.5f);
                 mCardCorazon.playAnimation();
             }
-
             if(savedAnim) {
                 mCardSaved.setMinAndMaxProgress(0.0f, 1.0f);
                 mCardSaved.playAnimation();
             }
-
             mCardCorazon.setOnClickListener(v->{
                 likeAnimMotion(listenerLikeRecipe, recetaUser);
             });
@@ -208,8 +203,8 @@ notifyItemRemoved(position);
                 saveAnimMotion(saveListener, recetaUser);
             });
 
-            mrecipeName.setText(recetaUser.getNombre());
-            mCardNumberLikes.setText(Integer.toString(recetaUser.getLikes()) );
+            mrecipeName.setText( recetaUser.getNombre());
+            mCardNumberLikes.setText(Integer.toString( recetaUser.getLikes()));
             mCardDescription.setText(UserRepository.getUser().getUserName() +"  "+ recetaUser.getDescription());
 
             cargarPhotoUserAndRecipe(recetaUser);
@@ -244,7 +239,7 @@ notifyItemRemoved(position);
 
             //Es carrega l'imatge de la receta i del User d'internet
             Picasso.get().load(recetaUser.getPictureURL())
-                    .resize(980, 800)
+                    .resize(980, 1000)
                     .centerCrop().into(mCardRecetaPictureUrl);
 
             if( ! recetaUser.getUserPhoto().equals(" "))

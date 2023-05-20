@@ -46,7 +46,8 @@ public class ExploreFragment extends Fragment {
         recicleInit();
         recetasObserver();
 
-        mViewModel.setmRecetas(RecipesUserApp.getRecetasExplorer());
+        mViewModel.loadRecetasExplorer();
+
         return binding.getRoot();
     }
 

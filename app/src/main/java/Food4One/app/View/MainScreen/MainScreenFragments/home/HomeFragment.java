@@ -69,8 +69,6 @@ public class HomeFragment extends Fragment {
         transaction.setReorderingAllowed(true)
                 .addToBackStack("HomeFragChange") ;
 
-//        homeViewModel.loadRecetasApp(seleccion);
-
         //Remplazamos el fragmento del Home con la Selección que se ha cargado
         //También le pasamos al nuevo fragmento la selección para que sepa su camino por BBD
         transaction.replace(R.id.homeViewLayout, RecipeVarietyFragment.class, bundle);

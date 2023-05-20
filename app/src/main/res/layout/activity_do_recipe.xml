@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.MainScreenFragments.home.DoRecipeActivity">
+    tools:context=".View.MainScreen.MainScreenFragments.home.DoRecipeActivity"
+    android:background="@color/black">
 
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -25,6 +26,10 @@
                     android:paddingHorizontal="10dp"
                     android:text="Receta Name"
                     android:textSize="35dp"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="4"
                     android:textColor="@color/orange"/>
                 <TextView
                     android:id="@+id/descriptionRecipeToDo"

@@ -15,11 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Food4One"
         tools:targetApi="31">
-
         <activity
             android:name=".View.MainScreen.MainScreenFragments.Perfil.EditProfileScreen"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
         <activity
             android:name=".View.MainScreen.MainScreenFragments.home.DoRecipeActivity"
             android:exported="false"
@@ -53,8 +51,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".View.Authentification.AccessActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

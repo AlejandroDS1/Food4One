@@ -16,6 +16,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
@@ -42,6 +44,7 @@ public class ColeccionFragment extends Fragment {
 
         cargarReceptesUsuari();
         clickListenerObjectsView();
+
         cargarRecycleView();
         observerObjectsView();
 
@@ -50,11 +53,9 @@ public class ColeccionFragment extends Fragment {
 
 
     private void cargarReceptesUsuari() {
-        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrá
+        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
         if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository( new ArrayList<String>(UserRepository.getUser().getIdCollections().keySet()));
-        // Internament pobla les receptes de la BBDD
-
+            coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet())); // Internament pobla les receptes de la BBDD
     }
 
     private void clickListenerObjectsView() {
@@ -62,6 +63,7 @@ public class ColeccionFragment extends Fragment {
         binding.BtnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 binding.BtnSaved.setElevation(0);
                 Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
                 binding.BtnSaved.setBackground(myDrawable1);

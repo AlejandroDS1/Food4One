@@ -149,7 +149,7 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
     private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
         //Es carrega l'imatge de la receta i del User d'internet
         Picasso.get().load(recetaUser.getPictureURL())
-                .resize(980, 700)
+                .resize(980, 900)
                 .centerCrop().into(mCardRecetaPictureUrl);
 
         String url;

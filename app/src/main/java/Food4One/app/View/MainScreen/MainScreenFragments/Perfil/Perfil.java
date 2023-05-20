@@ -40,6 +40,7 @@ import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExplorerScrollAdapter;
 import Food4One.app.databinding.FragmentPerfilBinding;
 
 /**
@@ -194,7 +195,6 @@ public class Perfil extends Fragment {
         transaction.replace(R.id.perfilFragment, ScrollPerfilFragment.class, bundle);
         // Commit the transaction
         transaction.commit();
-
     }
     /**
      * Por ahora este método sólo carga el nombre, email y la descripción del Usuario, si queremos
@@ -287,4 +287,26 @@ public class Perfil extends Fragment {
         binding.progressBarPerfil.setVisibility(View.GONE);
     }
 
+    public static class loqueseaAdapter extends ExplorerScrollAdapter{
+
+        public loqueseaAdapter(ArrayList<Recipe> recetaList) {
+            super(recetaList);
+        }
+
+        public final class ViewHolder extends ExplorerScrollAdapter.ViewHolder{
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+            }
+
+            @Override
+            public void bind(Recipe recetaUser, OnClickDoRecipeUser listener, OnLikeRecipeUser listenerLikeRecipe, OnClickSaveRecipe saveListener) {
+                super.bind(recetaUser, listener, listenerLikeRecipe, saveListener);
+
+                this.mCardCorazon.setVisibility(View.GONE);
+
+                this.mCardRecetaPictureUrl.setFocusable(View.NOT_FOCUSABLE);
+            }
+        }
+    }
 }
