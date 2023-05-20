@@ -7,7 +7,7 @@ import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
 public class Recipe {
     public static final String TAG = "Recetas";
-    public static final String PICTURE_APP_TAG = "pictureURL";
+    public static final String PICTURE_APP_TAG = "PictureURL";
     public static final String PICTURE_URL_USER_TAG = "PictureURLuser";
     public static final String USER_ID_TAG = "idUser";
     public static final String LIKES_TAG = "likes";
@@ -21,7 +21,7 @@ public class Recipe {
     private ArrayList<String> Pasos;
     private IngredientesList ingredientes;
     private ArrayList<String> alergias;
-    private String pictureURL;
+    private String PictureURL;
     private int likes;
     private boolean likeFromUser;
     private String userPhoto; // Foto del usuario
@@ -38,7 +38,7 @@ public class Recipe {
                   ){
         this.nombre = nombre;
         this.Description = description;
-        this.pictureURL = pictureURL;
+        this.PictureURL = pictureURL;
         this.likes = likes;
         this.ingredientes = ingredientes;
         this.Pasos = pasos;
@@ -58,7 +58,7 @@ public class Recipe {
     public Recipe(String nombre, IngredientesList ingredientes, String pictureURL, String Description, int likes, ArrayList<String> pasos) {
         this.nombre = nombre;
         this.ingredientes = ingredientes;
-        this.pictureURL = pictureURL;
+        this.PictureURL = pictureURL;
         this.Description = Description;
         this.likes = likes;
         this.Pasos = pasos;
@@ -70,7 +70,7 @@ public class Recipe {
     public String getNombre() { return nombre;}
     public ArrayList<String> getPasos() { return Pasos; }
     public IngredientesList getIngredientes() { return ingredientes; }
-    public String getPictureURL() {  return pictureURL; }
+    public String getPictureURL() {  return PictureURL; }
     public int getLikes() { return likes; }
     public String getIdUser() { return idUser; }
     public ArrayList<String> getAlergias() { return this.alergias; }
@@ -81,7 +81,7 @@ public class Recipe {
     public void setNombre(String nombre) { this.nombre = nombre;  }
     public void setPasos(ArrayList<String> pasos) { this.Pasos = pasos; }
     public void setIngredientes(IngredientesList ingredientes){ this.ingredientes = ingredientes; }
-    public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
+    public void setPictureURL(String pictureURL) { this.PictureURL = pictureURL; }
     public void setLikes(int likes) { this.likes += likes; }
     public void setIdUser(String idUser){ this.idUser = idUser; }
     public void setDescription(String description){ Description = description; }
