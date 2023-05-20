@@ -60,6 +60,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mRecipes.size();
     }
 
+    public void setRecipe(Recipe recipe){this.mRecipes.add(recipe); this.notifyDataSetChanged();}
+
     /**
      * Classe ViewHolder. No és més que un placeholder de la vista (user_card_list.xml)
      * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,

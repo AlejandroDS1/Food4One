@@ -102,6 +102,7 @@ public class PielView extends View {
         mRange = new RectF(mPadding, mPadding, mPadding + mRadius, mPadding + mRadius);
     }
 
+    public void clearPielView(){this.mLuckyItemList.clear();}
     public int getLuckyItemListSize() {
         return mLuckyItemList.size();
     }

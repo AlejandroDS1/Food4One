@@ -30,6 +30,7 @@ import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.RotateViewModel;
 
 /**
  * Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -288,7 +289,7 @@ public class RecipeRepository {
 
     }
 
-    public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection) {
+    public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection, String fragment) {
         recetaUsers.clear();
 
         String path = "RecetasApp/" + selection + "/" + selection + "Types/";
@@ -315,6 +316,8 @@ public class RecipeRepository {
                         for (OnLoadRecetaAppListener l : monLoadRecetaAppListener) {
                             l.OnLoadRecetaApp(recetaUsers, selection);
                         }
+                        if(fragment.equals("WHEEL"))
+                            RotateViewModel.getInstance().setCompleted(selection);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

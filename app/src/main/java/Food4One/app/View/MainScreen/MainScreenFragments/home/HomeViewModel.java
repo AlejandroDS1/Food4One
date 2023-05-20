@@ -91,9 +91,12 @@ public class HomeViewModel extends ViewModel {
         ArrayList<Recipe> recetas = recetasApp.get(selection);
         //Si no se ha cargado ya de la base de datos, entonces lo cargamos.
         if(recetas.size()==0)
-            mRecetasRepository.loadRecipesApp( mRecetasApp.getValue(), selection);
+            mRecetasRepository.loadRecipesApp( mRecetasApp.getValue(), selection, "HOME");
         else //En el caso contrario, ya se han cargado las recetas y ya las tenemos almacenadas.
+        {
+            mRecetasApp.getValue().clear();
             setRecetesApp(recetas);
+        }
     }
     public void loadRecipeToMake(Recipe recipe){
         mRecetasRepository.loadRecipeToMake(recipe);

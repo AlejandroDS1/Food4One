@@ -44,6 +44,8 @@ public class LuckyWheelView extends RelativeLayout implements PielView.PieRotate
         }
     }
 
+    public void restartWheel(){this.pielView.clearPielView();}
+
     public interface LuckyRoundItemSelectedListener {
         void LuckyRoundItemSelected(int index);
     }

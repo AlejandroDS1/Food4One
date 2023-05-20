@@ -16,6 +16,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
@@ -58,7 +60,7 @@ public class ColeccionFragment extends Fragment {
     private void cargarReceptesUsuari() {
         // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
         if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository(UserRepository.getUser().getIdCollections()); // Internament pobla les receptes de la BBDD
+            coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet())); // Internament pobla les receptes de la BBDD
     }
 
     private void clickListenerObjectsView() {
