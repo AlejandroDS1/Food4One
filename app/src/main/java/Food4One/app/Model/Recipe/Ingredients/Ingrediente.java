@@ -32,7 +32,7 @@ public class Ingrediente {
     }
 
     private void convertId(final String id){
-        String items[] = id.split("[|]");
+        final String items[] = id.split("[|]");
 
         // Nombre del ingrediente
         this.name = items[0];

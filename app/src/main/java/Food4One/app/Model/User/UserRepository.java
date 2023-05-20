@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Food4One.app.DataBase.ShoppingList.ShoppingList;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
@@ -76,15 +77,6 @@ public class UserRepository {
     public interface OnLoadUserDescriptionListener {
         void OnLoadUserDescription(String description);
     }
-
-    /**
-     * Listener para escuchar cuando se cargan la lista de ingredientes de DDB
-     */
-    public interface OnLoadIngredientesListListener {
-        void onLoadIngredientesList(IngredientesList IngredientesList);
-    }
-
-    public OnLoadIngredientesListListener mOnLoadIngredientesListListener;
 
     public OnLoadUserNameListener mOnLoadUserNameListener;
 
@@ -154,10 +146,6 @@ public class UserRepository {
 
     public void setOnLoadUserDescription(OnLoadUserDescriptionListener listener) {
         this.mOnLoadUserDescritionListener = listener;
-    }
-
-    public void setmOnLoadIngredientesListListener(OnLoadIngredientesListListener listener) {
-        this.mOnLoadIngredientesListListener = listener;
     }
 
     /**
@@ -257,26 +245,47 @@ public class UserRepository {
     /**
      * Este metodo devuelve un objeto IngredientesList extraido de los ingredientes guardados en la base de datos.
      *
-     * @param userId email del usuario ID
      * @return IngredientesList objeto que contiene los ingredientes guardados.
      */
-    public void loadUserIngredientesList(String userId) {
+    public final void loadUserIngredientesList(final MutableLiveData<Boolean> completed, final MutableLiveData<List<ShoppingList>> shoppingList) {
         IngredientesList ingredientesList = new IngredientesList();
-        mDb.collection(User.TAG).document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        mDb.collection(User.TAG).document(UserRepository.getUser().getEmail())
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
-                    List<String> listaIngredientes = (List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG);
+                        List<String> listaIngredientes = (List<String>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG);
 
-                    if (listaIngredientes != null) {
-                        ingredientesList.setIngredientes(listaIngredientes);
-                        mOnLoadIngredientesListListener.onLoadIngredientesList(ingredientesList);
+                        if (listaIngredientes != null) {
+
+                            shoppingList.setValue(ShoppingList.convertToShoppingListFromDDBB(listaIngredientes));
+
+                            completed.setValue(true);
+                        }
                     }
                 }
-            }
-        });
+        }).addOnFailureListener(failure -> {
+                completed.setValue(false);
+            });
+    }
+
+    public final void setIngredientesListDDBB(final List<ShoppingList> list){
+
+        Map<String, ArrayList<String>> ingredientes = new HashMap<>();
+
+        ArrayList<String> nombres = new ArrayList<>();
+
+        for (ShoppingList sp: list){
+            nombres.add(ShoppingList.convertToIdDDBB(sp));
+        }
+        ingredientes.put(User.IDINGREDIENTES_LIST_TAG, nombres);
+
+        mDb.collection(User.TAG)
+           .document(UserRepository.getUser().getEmail())
+           .set(ingredientes, SetOptions.merge());
     }
 
     /**

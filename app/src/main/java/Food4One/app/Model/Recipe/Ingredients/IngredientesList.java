@@ -17,7 +17,7 @@ public class IngredientesList implements Serializable {
         this.ingredientes = ingredientes;
     }
 
-    public IngredientesList(final ArrayList<ShoppingList> shoppingLists, final String listName){
+    public IngredientesList(final List<ShoppingList> shoppingLists, final String listName){
 
         this.listName = listName; // nombre de la lista
 
@@ -70,8 +70,24 @@ public class IngredientesList implements Serializable {
         this.listName = listName;
     }
 
-    public void setIngredientes(ArrayList<Ingrediente> ingredientes) {
+    public void setIngredientes(final ArrayList<Ingrediente> ingredientes) {
         this.ingredientes = ingredientes;
+    }
+
+    public final void setIngredientesShopList(final List<ShoppingList> _ingredientes) {
+
+        this.ingredientes.clear();
+
+        if (_ingredientes.isEmpty()) {
+            this.listName = "PRUEBA";
+            return;
+        }
+
+        this.listName = _ingredientes.get(0).listName;
+
+        for(ShoppingList spL: _ingredientes)
+            this.ingredientes.add(new Ingrediente(spL.ingrediente, spL.checked));
+
     }
 
     /**

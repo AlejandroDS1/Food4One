@@ -31,23 +31,52 @@ public class ShoppingListFragment extends Fragment {
         View root = binding.getRoot();
 
         shoppingListViewModel = new ViewModelProvider(this).get(ShoppingListViewModel.class);
-        shoppingListViewModel.setDao(getContext());
+        shoppingListViewModel.setDao(this);
 
         BtnList = getActivity().findViewById(R.id.BtnList);
         BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
         initAdapterList();
 
+        initListeners();
         clickListenerObjectsView();
 
         return root;
     }
 
+    private void initListeners() {
+
+        binding.guardarEnFireBaseShoppingListBtn.setOnClickListener(view -> {
+
+            shoppingListViewModel.setListStateFireBase();
+        });
+    }
+
     private void initAdapterList(){
+
+        shoppingListViewModel.setOnChangedListListener(new ShoppingListViewModel.OnListChangedListener() {
+            @Override
+            public void onChangedListener() {
+
+                binding.checkedItems.getAdapter().notifyDataSetChanged();
+                binding.UnCheckedItems.getAdapter().notifyDataSetChanged();
+            }
+        });
+
+//        final Observer<Boolean> observer = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean aBoolean) {
+//                if (aBoolean){
+//                    binding.checkedItems.getAdapter().notifyDataSetChanged();
+//                    binding.UnCheckedItems.getAdapter().notifyDataSetChanged();
+//                }
+//            }
+//        };
+//        shoppingListViewModel.getCompleted().observe(getViewLifecycleOwner(), observer);
+
 
         binding.UnCheckedItems.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(shoppingListViewModel.getUnCheckedIngredientes().getValue(), this.shoppingListViewModel));
-
 
         binding.checkedItems.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.checkedItems.setAdapter(new ShoppingListAdapter(shoppingListViewModel.getCheckedIngredientes().getValue(), this.shoppingListViewModel).setAsCheckList());

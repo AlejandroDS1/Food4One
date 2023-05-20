@@ -1,10 +1,11 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
-import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.room.Room;
 
@@ -22,34 +23,89 @@ public class ShoppingListViewModel extends ViewModel {
     private final MutableLiveData<IngredientesList> unCheckedIngredientes;
     private final MutableLiveData<IngredientesList> checkedIngredientes;
     private final MutableLiveData<ShoppingListDao> dao;
+    private final MutableLiveData<List<ShoppingList>> allLists;
+    private final MutableLiveData<Boolean> loadCompleted;
     private UserRepository userRepository;
+
+    private ArrayList<OnListChangedListener> mOnListChangedListeners = new ArrayList<>();
+
+    // Interfaces
+
+    public interface OnListChangedListener {
+        void onChangedListener();
+    }
+
+    public void setOnChangedListListener(OnListChangedListener listener){
+        mOnListChangedListeners.add(listener);
+    }
 
     public ShoppingListViewModel(){
         userRepository = UserRepository.getInstance();
 
         this.unCheckedIngredientes = new MutableLiveData<>();
-        this.checkedIngredientes = new MutableLiveData<>(new IngredientesList());
+        this.checkedIngredientes = new MutableLiveData<>();
+        this.allLists = new MutableLiveData<>(new ArrayList<>());
+
+        this.loadCompleted = new MutableLiveData<>(false);
 
         this.dao = new MutableLiveData<>();
-        setIngredientesListeners();
     }
 
-    public void setDao(@NonNull final Context context){
-        this.dao.setValue(Room.databaseBuilder(context, ShoppingListDataBase.class, ShoppingList.TAG_DB).allowMainThreadQueries().build().shoppingListDao());
+    public void setDao(@NonNull ShoppingListFragment fragment){
+        this.dao.setValue(Room.databaseBuilder(fragment.getContext(), ShoppingListDataBase.class, ShoppingList.TAG_DB).allowMainThreadQueries().build().shoppingListDao());
 
-        fillLists();
+        checkedIngredientes.setValue(new IngredientesList(getDao().getCheckedItems(), "PRUEBA"));
+        unCheckedIngredientes.setValue(new IngredientesList(getDao().getUnCheckedItems(), "PRUEBA"));
+
+
+        initObservers(fragment);
+
+        UserRepository.getInstance().loadUserIngredientesList(loadCompleted, allLists);
     }
 
-    private void fillLists(){
+    private void initObservers(@NonNull ShoppingListFragment fragment){
+        final Observer<Boolean> ShoppingListLoadCompleted = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){ // Si aBoolean es true es porque se ha completado la carga de base de datos firebase.
+                    // Entonces cargamos la nueva base de datos en la DB local
 
-        final List<ShoppingList> unCheckedItems = getDao().getUnCheckedItems();
+                    final ArrayList<ShoppingList> checkedList = new ArrayList<>();
+                    final ArrayList<ShoppingList> unCheckedList = new ArrayList<>();
 
-        final List<ShoppingList> checkedItems = getDao().getCheckedItems();
+                    getDao().deleteAll();
+                    getDao().upsertList(allLists.getValue());
 
-        this.unCheckedIngredientes.setValue(new IngredientesList((ArrayList<ShoppingList>) unCheckedItems, "PRUEBA"));
-        this.checkedIngredientes.setValue(new IngredientesList((ArrayList<ShoppingList>) checkedItems, "PRUEBA"));
+                    // Separamos las listas segun sean elementos marcados o no.
+                    for(ShoppingList shoppingList: allLists.getValue()){
+                        if (shoppingList.checked){
+                            checkedList.add(shoppingList);
+                        }else unCheckedList.add(shoppingList);
+                    }
 
-     }
+                    // Guardamos las listas en los mutableLiveData del viewModel
+                    checkedIngredientes.getValue().setIngredientesShopList(checkedList);
+                    unCheckedIngredientes.getValue().setIngredientesShopList(unCheckedList);
+//                    checkedIngredientes.setValue(new IngredientesList(checkedList, "PRUEBA"));
+//                    unCheckedIngredientes.setValue(new IngredientesList(unCheckedList, "PRUEBA"));
+
+
+                }else{ // Si aBoolean es false significa que el usuario no tiene internet o no puede cargar de base de datos, por lo que cargamos directamente de DB local
+                    checkedIngredientes.setValue(new IngredientesList(getDao().getCheckedItems(), "PRUEBA"));
+                    unCheckedIngredientes.setValue(new IngredientesList(getDao().getUnCheckedItems(), "PRUEBA"));
+
+                    // TODO BORRAR
+                }
+                // Notifica que se ha cambiado la lista.
+                for (OnListChangedListener listener : mOnListChangedListeners){
+                    listener.onChangedListener();
+                }
+
+                Toast.makeText(fragment.getContext(), "Acaba", Toast.LENGTH_SHORT).show();
+            }
+        };
+        this.loadCompleted.observe(fragment.getViewLifecycleOwner(), ShoppingListLoadCompleted);
+    }
 
     public final ShoppingListDao getDao(){
         return this.dao.getValue();
@@ -74,15 +130,6 @@ public class ShoppingListViewModel extends ViewModel {
         getDao().checkIngrediente("PRUEBA", ingrediente.getId(), check);
     }
 
-    public void setIngredientesListeners(){
-        userRepository.setmOnLoadIngredientesListListener(new UserRepository.OnLoadIngredientesListListener() {
-            @Override
-            public void onLoadIngredientesList(IngredientesList ingredientesList) {
-                setUnCheckedIngredientes(ingredientesList);
-            }
-        });
-    }
-
     public void setUnCheckedIngredientes(IngredientesList obj){
         this.unCheckedIngredientes.setValue(obj);
     }
@@ -92,5 +139,13 @@ public class ShoppingListViewModel extends ViewModel {
 
     public LiveData<IngredientesList> getCheckedIngredientes(){
         return this.checkedIngredientes;
+    }
+
+    public LiveData<Boolean> getCompleted() {
+        return this.loadCompleted;
+    }
+
+    public void setListStateFireBase() {
+        UserRepository.getInstance().setIngredientesListDDBB(allLists.getValue());
     }
 }

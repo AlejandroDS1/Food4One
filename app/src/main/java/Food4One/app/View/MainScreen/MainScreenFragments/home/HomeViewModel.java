@@ -15,6 +15,7 @@ import Food4One.app.DataBase.ShoppingList.ShoppingListDao;
 import Food4One.app.DataBase.ShoppingList.ShoppingListDataBase;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.User.UserRepository;
 
 public class HomeViewModel extends ViewModel {
 
@@ -80,10 +81,12 @@ public class HomeViewModel extends ViewModel {
         for (String s: ingredientes){
 
             // Añadimos los ingredientes a la base de datos
-            shoppingList.add(new ShoppingList(listName, s));
+            shoppingList.add(new ShoppingList(listName, s, false));
         }
 
         shoppingListDao.getValue().upsertList(shoppingList);
+
+        UserRepository.getInstance().setIngredientesListDDBB(shoppingList);
 
         return true;
     }

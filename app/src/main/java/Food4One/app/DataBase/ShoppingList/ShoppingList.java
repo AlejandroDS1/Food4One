@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(tableName = "ShoppingList")
 public class ShoppingList {
 
@@ -21,8 +24,26 @@ public class ShoppingList {
     public boolean checked = false;
 
     // Constructor
-    public ShoppingList(final String listName, final String ingrediente){
+    public ShoppingList(final String listName, final String ingrediente, final boolean checked){
         this.ingrediente = ingrediente;
         this.listName = listName;
+        this.checked = checked;
+    }
+
+    public static List<ShoppingList> convertToShoppingListFromDDBB(final List<String> listDB){
+
+        List<ShoppingList> mList = new ArrayList<>();
+
+        for(final String s: listDB){
+            final String [] elems = s.split("[#]");
+
+                                     // ListName  Ingrediente ID  checked
+            mList.add(new ShoppingList(elems[0], elems[1], elems[2].equals("true")));
+        }
+        return mList;
+    }
+
+    public static String convertToIdDDBB(final ShoppingList shoppingList){
+        return shoppingList.listName + "#" + shoppingList.ingrediente + "#" + shoppingList.checked;
     }
 }
