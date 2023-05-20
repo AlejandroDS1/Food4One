@@ -29,19 +29,17 @@ import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentColeccionBinding;
 
 public class ColeccionFragment extends Fragment {
-    public static final String TAG = "ColeccionFragment";
     private FragmentColeccionBinding binding;
     private RecyclerViewAdapter mRecipeCardAdapter;
     private ColeccionViewModel coleccionViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        /*coleccionViewModel =
-                new ViewModelProvider(this).get(ColeccionViewModel.class);*/
         coleccionViewModel = ColeccionViewModel.getInstance();
 
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         cargarReceptesUsuari();
         clickListenerObjectsView();
         cargarRecycleView();
@@ -72,6 +70,7 @@ public class ColeccionFragment extends Fragment {
                 Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
                 binding.BtnList.setBackground(myDrawable2);
 
+                //Per evitar que cada vegada que es cliqui s'afegeixi al BackStack (només s'afegeix 1 vegada)
                 int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
                 if (backStackEntryCount == 0) {
                     //Nova instància del fragment a iniciar
@@ -81,14 +80,6 @@ public class ColeccionFragment extends Fragment {
                     fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
                     fT.commit();
                 }
-            }
-        });
-        
-        binding.BtnSaved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.BtnSaved.setElevation(20);  binding.BtnList.setElevation(0);
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
             }
         });
     }

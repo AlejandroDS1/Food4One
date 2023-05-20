@@ -1,6 +1,5 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,11 +20,6 @@ import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
 
-///**
-// * A simple {@link Fragment} subclass.
-// * Use the {@link ShoppingListFragment#newInstance} factory method to
-// * create an instance of this fragment.
-// */
 public class ShoppingListFragment extends Fragment {
 
     public static final String TAG = "ShoppingListFragment";
@@ -55,7 +50,7 @@ public class ShoppingListFragment extends Fragment {
         shoppingListAdapter.notifyDataSetChanged();
         return root;
     }
-
+    
     private void initLayout() {
         // Iniciamos los observers
         final Observer<IngredientesList> ingredientesListObserver = new Observer<IngredientesList>() {

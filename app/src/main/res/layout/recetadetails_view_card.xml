@@ -113,9 +113,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:textColor="@color/white"
-                android:text="Decripción de la receta dada por el usuario "
-
-                />
+                android:text="Decripción de la receta dada por el usuario "/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
