@@ -43,7 +43,7 @@ public class AccessActivity extends AppCompatActivity {
                 //Si el usuario ya se registró en la App y ya hizo un login anteriormente, ya puede acceder
                 //directamente al navegador Home...
                 activityCorrespondent();
-                //finish();
+
             }
         }, 500);
     }
