@@ -1,13 +1,11 @@
 package Food4One.app.Model.Recipe.Recipe;
 
 
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,9 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,9 +24,9 @@ import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
+import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
-/**
- * Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
+/** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
  */
 public class RecipeRepository {
@@ -62,7 +57,6 @@ public class RecipeRepository {
         }
     }
 
-
 //----------------------------------------------------------------------------------------------
 
     /**
@@ -77,7 +71,6 @@ public class RecipeRepository {
         void onLoadRecipeExplorer(ArrayList<Recipe> recetas);
     }
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
-
 
     public OnLoadRecipeExplorer mOnLoadRecetasExplorer;
 
@@ -241,7 +234,7 @@ public class RecipeRepository {
                         Log.d(TAG, document.getId() + " => " + document.getData());
                         Recipe receta = document.toObject(Recipe.class);
                         receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
-                        receta.setPasos((ArrayList<String>) document.get(Recipe.PASOS_APP_TAG));
+                        receta.setPasos((ArrayList<String>) document.get("pasos"));
                         receta.setNombre(document.getId());
                         receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));
                         //Le damos el like a la receta si el usuario logado ya lo ha hecho
@@ -264,6 +257,7 @@ public class RecipeRepository {
 
             });
 
+
     }
 
     /*Se supone que el IdIngredientes jamás será nulo, porque siempre habrá como mínimo un ingrediente
@@ -272,7 +266,7 @@ public class RecipeRepository {
 
         ArrayList<Ingrediente> ingredientesList = new ArrayList<>();
 
-        for (String ingredienteId : IdIngredientes) {
+        for(String ingredienteId : IdIngredientes){
             Ingrediente ingrediente = new Ingrediente(ingredienteId);
             ingredientesList.add(ingrediente);
         }
