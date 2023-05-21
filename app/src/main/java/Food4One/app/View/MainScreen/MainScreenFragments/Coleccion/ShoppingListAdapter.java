@@ -6,10 +6,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -59,7 +59,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         animation.setDuration(200);
 
-        holder.cardView.setAnimation(animation);
+        holder.layout.setAnimation(animation);
         holder.bind(ingredientesList.get(position));
     }
 
@@ -72,7 +72,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         private final TextView cantidadTxt, multiplicadorTxt;
         private final CheckBox ingredienteCB;
-        private final CardView cardView;
+        private final LinearLayout layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,7 +80,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             this.cantidadTxt = itemView.findViewById(R.id.cantidad_txt);
             this.multiplicadorTxt = itemView.findViewById(R.id.multiplicador_txt);
-            this.cardView = itemView.findViewById(R.id.cardView_shoppingList);
+            this.layout = itemView.findViewById(R.id.linearLayout_shoppingList);
         }
 
 
@@ -94,10 +94,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             this.multiplicadorTxt.setText(Integer.toString(ingrediente.getMultiplicador()));
 
-            this.cardView.setClickable(true);
+            this.layout.setClickable(true);
 
             // Este listener permite que se active el ceckbox al presionar en cualquier parte
-            this.cardView.setOnClickListener(new View.OnClickListener() {
+            this.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

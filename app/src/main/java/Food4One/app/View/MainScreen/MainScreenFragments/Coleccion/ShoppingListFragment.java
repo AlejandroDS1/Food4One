@@ -63,6 +63,8 @@ public class ShoppingListFragment extends Fragment {
                 viewModel.addIngredientesList_toDDBB(((ShoppingListAdapter)binding.checkedItems.getAdapter()).getAllLists_toStore());
             }
         });
+
+        binding.listaNameShoppingList.setText(viewModel.getCheckedItemsList().getValue().getListName());
     }
 
     private void initAdapterList(){
