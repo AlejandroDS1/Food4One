@@ -264,13 +264,11 @@ public class RecipeRepository {
                         mOnLoadRecetasExplorer.onLoadRecipeExplorer(recetaUsers);
                     else
                         /*Luego llamamos a sus listeners*/
-                        for (OnLoadRecetaListener l : mOnloadRecetaListeners) {
-                            l.onLoadRecetas(recetaUsers);
-                        }
+                        for (OnLoadRecetaListener l : mOnloadRecetaListeners) l.onLoadRecetas(recetaUsers);
 
                 }
-
             });
+
 
     }
 
@@ -280,7 +278,7 @@ public class RecipeRepository {
 
         ArrayList<Ingrediente> ingredientesList = new ArrayList<>();
 
-        for (String ingredienteId : IdIngredientes) {
+        for(String ingredienteId : IdIngredientes){
             Ingrediente ingrediente = new Ingrediente(ingredienteId);
             ingredientesList.add(ingrediente);
         }

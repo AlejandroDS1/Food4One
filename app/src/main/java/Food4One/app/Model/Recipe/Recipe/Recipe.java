@@ -51,9 +51,6 @@ public class Recipe {
     public boolean getLikeFromUser(){
         return likeFromUser;
     }
-    /**
-     * Constructor Dummy
-     */
 
     public Recipe(String nombre, IngredientesList ingredientes, String pictureURL, String Description, int likes, ArrayList<String> pasos) {
         this.nombre = nombre;

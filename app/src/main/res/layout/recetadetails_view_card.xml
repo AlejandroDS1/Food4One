@@ -94,6 +94,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:elevation="8dp"
                 android:layout_marginLeft="175dp"
@@ -112,9 +113,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:textColor="@color/white"
-                android:text="Decripción de la receta dada por el usuario "
-
-                />
+                android:text="Decripción de la receta dada por el usuario "/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

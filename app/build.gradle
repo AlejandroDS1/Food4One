@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     //ROULETTE
     implementation 'androidx.core:core:1.1.0-alpha03'
+    implementation 'com.airbnb.android:lottie:6.0.0'
 
     // Bloque añadido por error duplicate class Kotlin stdlib-jdk7
     constraints {

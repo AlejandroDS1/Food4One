@@ -1,10 +1,13 @@
 package Food4One.app.Model.Recipe.Ingredients;
 
+import androidx.annotation.NonNull;
+
 public class Ingrediente {
     private String name;
     private float cantidad;
     private String magnitud;
     private int multiplicador = 1;
+    public boolean checked = false;
 
     // ATRIBUTOS OPCIONALES ***************
     // AVATAR
@@ -29,6 +32,19 @@ public class Ingrediente {
         }catch(Exception e){
             this.multiplicador = 1;
         }
+
+    }
+
+    public Ingrediente(final String id, final boolean checked){
+        this(id);
+        this.checked = checked;
+    }
+
+    public static String Id_toString(@NonNull final String id) {
+        final String items[] = id.split("[|]");
+
+        //     Ingrediente      cantidad        magnitud          multiplicador
+        return items[0] + "|" + items[1] + "|" + items[2] + "|" + items[3];
 
     }
 
@@ -66,7 +82,7 @@ public class Ingrediente {
 
     public void setMultiplicador(final int multiplicador){ this.multiplicador = multiplicador; }
 
-    public String getId(){
+    public final String getId(){
         return this.name + "|"
                 + this.cantidad + "|"
                 + this.magnitud.toString() + "|"
@@ -81,7 +97,7 @@ public class Ingrediente {
     }
 
     @Override
-    public String toString(){
+    public final String toString(){
         return this.name + " " + this.getCantidadStr();
     }
 }
