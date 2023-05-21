@@ -8,22 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeList;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
@@ -34,6 +31,11 @@ public class ColeccionFragment extends Fragment {
     private FragmentColeccionBinding binding;
     private RecyclerViewAdapter mRecipeCardAdapter;
     private ColeccionViewModel coleccionViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -78,8 +80,8 @@ public class ColeccionFragment extends Fragment {
                     //Nova instància del fragment a iniciar
                     FragmentManager fM = getActivity().getSupportFragmentManager();
                     FragmentTransaction fT = fM.beginTransaction();
-                    fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
-                    fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
+                    fT.setReorderingAllowed(true).addToBackStack(AllListsFragment.TAG); //Permet tirar enrere
+                    fT.replace(R.id.coleccionFragment, new AllListsFragment());
                     fT.commit();
                 }
             }
@@ -113,5 +115,9 @@ public class ColeccionFragment extends Fragment {
 
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

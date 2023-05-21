@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.R;
@@ -27,10 +29,17 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         this.viewModel = viewModel;
     }
 
-    public final ShoppingListAdapter setSecondList(@NonNull final ShoppingListAdapter otherList){
+    public ShoppingListAdapter setSecondList(@NonNull final ShoppingListAdapter otherList){
         this.secondList = otherList;
         otherList.secondList = this;
         return this;
+    }
+
+    public IngredientesList getAllLists_toStore(){
+        // Conseguimos una copia con los elementos que queremos
+        final IngredientesList _copy = new IngredientesList((List<Ingrediente>) ingredientesList.getIngredientes().clone());
+        _copy.getIngredientes().addAll(secondList.ingredientesList.getIngredientes());
+        return _copy;
     }
     @NonNull
     @Override
@@ -59,7 +68,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         return ingredientesList.getSize();
     }
 
-    public final class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         private final TextView cantidadTxt, multiplicadorTxt;
         private final CheckBox ingredienteCB;

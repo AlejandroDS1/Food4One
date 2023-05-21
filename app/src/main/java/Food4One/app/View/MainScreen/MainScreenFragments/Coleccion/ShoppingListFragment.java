@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import Food4One.app.R;
@@ -27,6 +27,12 @@ public class ShoppingListFragment extends Fragment {
     private TextView BtnList;
     private FragmentShoppingListBinding binding;
     private ShoppingListViewModel viewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,19 +40,30 @@ public class ShoppingListFragment extends Fragment {
         binding = FragmentShoppingListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        viewModel = new ViewModelProvider(this).get(ShoppingListViewModel.class);
+        viewModel = ShoppingListViewModel.getInstance();
 
         BtnList = getActivity().findViewById(R.id.BtnList);
         BtnSaved = getActivity().findViewById(R.id.BtnSaved);
 
         initAdapterList();
 
+        initView();
+
         clickListenerObjectsView();
 
         return root;
     }
 
+    private void initView() {
+        // Boton para actualizar el firebase
+        binding.guardarEnFireBaseShoppingListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                viewModel.addIngredientesList_toDDBB(((ShoppingListAdapter)binding.checkedItems.getAdapter()).getAllLists_toStore());
+            }
+        });
+    }
 
     private void initAdapterList(){
 
@@ -57,15 +74,6 @@ public class ShoppingListFragment extends Fragment {
         binding.UnCheckedItems.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(viewModel.getUnCheckedItemsList().getValue(), viewModel)
                                                                 .setSecondList((ShoppingListAdapter) binding.checkedItems.getAdapter()));
-
-        viewModel.setOnChangedListsListener(new ShoppingListViewModel.OnChangedListsListener() {
-            @Override
-            public void onChangedListListener() {
-                binding.checkedItems.getAdapter().notifyDataSetChanged();
-                binding.UnCheckedItems.getAdapter().notifyDataSetChanged();
-            }
-        });
-
     }
 
     private void clickListenerObjectsView() {

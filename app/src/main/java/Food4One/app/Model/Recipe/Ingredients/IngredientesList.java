@@ -36,7 +36,7 @@ public class IngredientesList implements Serializable {
     }
 
     public IngredientesList() { this.ingredientes = new ArrayList<>(); }
-    public final ArrayList<Ingrediente> IngredienteId_toIngredienteList(@NonNull final Set<String> _ingredientesId){
+    public ArrayList<Ingrediente> IngredienteId_toIngredienteList(@NonNull final Set<String> _ingredientesId){
 
         ArrayList<Ingrediente> arr = new ArrayList<>();
 
@@ -135,6 +135,34 @@ public class IngredientesList implements Serializable {
         return stringIngredientes;
     }
 
+    /**
+     * Este metodo pasa el resultado de la base de datos a una sola lista de IngredientesList
+     * @param dbbInput resultado del document de Firebase
+     * @return
+     */
+    public static List<IngredientesList> mapDDBB_toListIngredientesList(@NonNull final Map<String, Map<String, Boolean>> dbbInput){
+
+        List<IngredientesList> mList = new ArrayList<>();
+
+        if (dbbInput != null){
+            final Set<String> listas = dbbInput.keySet();
+
+            for(final String listaName: listas) // Iteramos por cada lista creando los objetos IngredientesList
+                mList.add(new IngredientesList(listaName, dbbInput.get(listaName)));
+        }
+        return mList;
+    }
+
+    /**
+     * Devuelve de toda la base de datos solo la lista que se ha especificado
+     * @param dbbInput
+     * @param listName
+     * @return
+     */
+    public static IngredientesList map_toSingleList(@NonNull final Map<String, Map<String, Boolean>> dbbInput, @NonNull final String listName) {
+        return new IngredientesList(listName, dbbInput.get(listName));
+    }
+
     public ArrayList<Ingrediente> getIngredientes() {
         return ingredientes;
     }
@@ -142,5 +170,9 @@ public class IngredientesList implements Serializable {
     @Override
     public String toString(){
         return this.ingredientes.toString();
+    }
+
+    public void clear() {
+        this.ingredientes.clear();
     }
 }

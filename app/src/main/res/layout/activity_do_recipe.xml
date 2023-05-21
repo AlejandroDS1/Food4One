@@ -3,86 +3,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MainScreen.MainScreenFragments.home.DoRecipeActivity"
-    android:background="@color/black">
+    tools:context=".View.MainScreen.MainScreenFragments.home.DoRecipeActivity">
 
     <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <ImageView
+                android:id="@+id/recipeToDoImage"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                />
+            <TextView
+                android:id="@+id/recetToDoName"
+                android:paddingVertical="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
-                <ImageView
-                    android:id="@+id/recipeToDoImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    />
-                <TextView
-                    android:id="@+id/recetToDoName"
-                    android:paddingVertical="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:text="Receta Name"
-                    android:textSize="35dp"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDx="2"
-                    android:shadowDy="2"
-                    android:shadowRadius="4"
-                    android:textColor="@color/orange"/>
-                <TextView
-                    android:id="@+id/descriptionRecipeToDo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:textColor="@color/Gris"
-                    android:layout_marginBottom="4dp"/>
+                android:paddingHorizontal="10dp"
+                android:text="Receta Name"
+                android:textSize="35dp"
+                android:textColor="@color/orange"/>
+            <TextView
+                android:id="@+id/descriptionRecipeToDo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/Gris"
+                android:layout_marginBottom="4dp"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    android:textColor="@color/orange"
-                    android:text="Ingredientes"
-                    android:layout_marginBottom="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textColor="@color/orange"
+                android:text="Ingredientes"
+                android:layout_marginBottom="4dp"/>
 
-                <LinearLayout
-                    android:id="@+id/parentList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ingredientsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"/>
 
-                <ListView
-                    android:id="@+id/ingredientsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"/>
-                </LinearLayout>
+            <Button
+                android:id="@+id/add_ingredients_toList_doRecipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Añadir ingredientes a lista">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/orange"
-                    android:paddingHorizontal="10dp"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    android:text="Pasos a seguir"/>
+            </Button>
 
-                <LinearLayout
-                    android:id="@+id/parentPasos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                <ListView
-                    android:id="@+id/pasosList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+            <Button
+                android:id="@+id/remove_DB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="ELIMINA TODA LA BASE DE DATOS">
+
+            </Button>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/orange"
+                android:paddingHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:text="Pasos a seguir"/>
+
+            <ListView
+                android:id="@+id/pasosList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

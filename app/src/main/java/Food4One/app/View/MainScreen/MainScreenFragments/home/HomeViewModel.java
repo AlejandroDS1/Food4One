@@ -102,5 +102,4 @@ public class HomeViewModel extends ViewModel {
         mRecetasRepository.loadRecipeToMake(recipe);
     }
 
-
 }
