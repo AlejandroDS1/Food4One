@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         currentUser = auth.getCurrentUser();// Obtenemos la instancia de FirebaseAuth
         mUserRespository = UserRepository.getInstance();
 
-        initLayout(); // Iniciamos comoponentes del layout
+        initLayout(); // Iniciamos componentes del layout
         initButtonsListeners(); // Iniciamos los listeners de los botones
 
     }
@@ -77,14 +77,12 @@ public class LoginActivity extends AppCompatActivity {
                                             // Añadimos el usuario a la base de datos, de momento solo el username y el email.
                                             mUserRespository.addUser(userName, email);
                                             UserRepository.getUser(userName, email); // Creamos el objeto user.
-                                            startActivity(new Intent(LoginActivity.this, MainScreen.class));
+                                        } else{
+                                            mUserRespository.loadUserFromDDB(email, new AccessActivity(), new AccesActivityViewModel());
                                         }
 
-                                        else {
-                                            mUserRespository.loadUserFromDDB(email, LoginActivity.this, new AccesActivityViewModel());
-                                        }
                                         //Cuando vaya bien empezará la ventana Main
-                                        //startActivity(new Intent(LoginActivity.this, MainScreen.class));
+                                        startActivity(new Intent(LoginActivity.this, MainScreen.class));
                                         finish();
                                     } else
                                         Toast.makeText(getApplicationContext(), "No se ha verificado el correo", Toast.LENGTH_SHORT).show();

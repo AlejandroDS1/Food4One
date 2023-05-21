@@ -122,10 +122,10 @@ notifyItemRemoved(position);
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mrecipeName;
         private final ImageView mCardUserPictureURL;
-        private final ImageView mCardRecetaPictureUrl;
+        protected final ImageView mCardRecetaPictureUrl;
         private final TextView mCardNumberLikes;
         private final TextView mCardDescription;
-        private final LottieAnimationView mCardCorazon;
+        protected final LottieAnimationView mCardCorazon;
         private boolean likeAnim;
         private final LottieAnimationView mCardSaved;
         private boolean savedAnim= false;
@@ -239,7 +239,7 @@ notifyItemRemoved(position);
 
             //Es carrega l'imatge de la receta i del User d'internet
             Picasso.get().load(recetaUser.getPictureURL())
-                    .resize(980, 800)
+                    .resize(980, 1000)
                     .centerCrop().into(mCardRecetaPictureUrl);
 
             if( ! recetaUser.getUserPhoto().equals(" "))

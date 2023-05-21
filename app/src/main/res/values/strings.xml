@@ -14,9 +14,7 @@
     <string name="title_explore">Explore</string>
     <string name="title_saved">Saved</string>
     <string name="title_shoppingList">Shopping List</string>
-
     <!-- Preference Titles -->
-
     <string name="Not_set">Unset</string>
     <string name="perfil_header">Mis Datos</string>
 
@@ -28,30 +26,34 @@
     <string name="Alergias">Alergias</string>
     <string name="Change_Password">Cambiar Contraseña</string>
 
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_settings">UserSettingsActivity</string>
 
     <string name="Settings">Settings</string>
     <string name="Descripcion">Descripcion</string>
 
-
     <string-array name="nombreRecetasHome">
         <item>Barbacoa</item>
         <item>Pasta</item>
         <item>Bocatas</item>
         <item>Arroz</item>
-        <item>Pasteles</item>
+        <item>Pastel</item>
         <item>Bebidas</item>
         <item>Surprise me</item>
     </string-array>
+
+    <string-array name="options_Surprise">
+        <item>Arroz y Pasta</item>
+        <item>Dulce y Bocatas</item>
+        <item>Bebidas</item>
+    </string-array>
+
     <string name="title_activity_make_recipe">MakeRecipe</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

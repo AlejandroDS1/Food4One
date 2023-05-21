@@ -29,6 +29,8 @@ import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
+import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.RotateViewModel;
 
 /**
  * Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
@@ -76,10 +78,13 @@ public class RecipeRepository {
     public interface OnLoadRecipeExplorer {
         void onLoadRecipeExplorer(ArrayList<Recipe> recetas);
     }
+    public interface OnLoadRecipeCollection {
+        void onLoadRecipeCollection(ArrayList<Recipe> recetas);
+    }
+
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
-
-
     public OnLoadRecipeExplorer mOnLoadRecetasExplorer;
+    public OnLoadRecipeCollection mOnLoadRecipeCollection;
 
     public interface OnLoadRecetaApp{
         void onLoadRecipeApp(ArrayList<Recipe> recetas);
@@ -97,7 +102,7 @@ public class RecipeRepository {
     }
 
     public interface OnLoadRecetaAppListener {
-        void OnLoadRecetaApp(ArrayList<Recipe> recetas);
+        void OnLoadRecetaApp(ArrayList<Recipe> recetas, String type);
     }
 
     public interface OnLoadRecipeToMake {
@@ -111,7 +116,6 @@ public class RecipeRepository {
     public OnLoadURLUserFromRecipe mOnLoadURLfromRecipe;
     public ArrayList<OnLoadRecipeToMake> mOnLoadRecipeToMake = new ArrayList<>();
     public ArrayList<OnLoadRecetaAppListener> monLoadRecetaAppListener = new ArrayList<>();
-
     public OnLoadRecetaPictureUrlListener mOnLoadRecetaPictureUrlListener;
 //-------------------------------------------------------------------------------------------------
 
@@ -164,7 +168,9 @@ public class RecipeRepository {
     public void setOnLoadUserPictureListener(OnLoadRecetaPictureUrlListener listener) {
         mOnLoadRecetaPictureUrlListener = listener;
     }
-
+    public void setOnLoadRecetaCollectionListener(OnLoadRecipeCollection listener){
+        this.mOnLoadRecipeCollection = listener;
+    }
     public void setOnLoadRecetasExplorer(OnLoadRecipeExplorer listener){
         this.mOnLoadRecetasExplorer = listener;
     }
@@ -185,7 +191,7 @@ public class RecipeRepository {
      * Mètode que llegeix les recetes. Vindrà cridat des de fora i quan acabi,
      * avisarà sempre als listeners, invocant el seu OnLoadReceta.
      */
-    public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser) {
+    public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser, String fragment) {
         recetaUsers.clear();
         //Se cargan todas las recetas de la base de datos...
 
@@ -203,7 +209,6 @@ public class RecipeRepository {
                     recetaUser.setNombre(documentSnapshot.getId());
                     recetaUser.setPhotoUser(documentSnapshot.getString(User.PICTUREURL_TAG + "user"));
                     recetaUser.setIdUser(userID);
-
                     //---------------------------------------------------------------------------
                     //Lo añadimos a la lista de recetas que se mostrarán...
                     recetaUsers.add(recetaUser);
@@ -211,13 +216,16 @@ public class RecipeRepository {
                     //Cuando se consigan todas las recetas del usuario, se llaman a los listeners
                     //para que puedan cargar las recetas al RecycleView
                     if (recetaUsers.size() == idRecetasUser.size())
-                        onLoadRecetasListenerMethod();
+                        onLoadRecetasListenerMethod(fragment);
                 }
 
-                private void onLoadRecetasListenerMethod() {
+                private void onLoadRecetasListenerMethod(String fragment) {
                     /*Llamamos a sus listeners*/
-                    for (OnLoadRecetaListener l : mOnloadRecetaListeners)
-                        l.onLoadRecetas(recetaUsers);
+                    if(fragment.equals("COLLECTION"))
+                        mOnLoadRecipeCollection.onLoadRecipeCollection(recetaUsers);
+                    else
+                        for (OnLoadRecetaListener l : mOnloadRecetaListeners)
+                            l.onLoadRecetas(recetaUsers);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -239,9 +247,9 @@ public class RecipeRepository {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         //Se tiene que cargar el String ID de los ingredientes...
                         Log.d(TAG, document.getId() + " => " + document.getData());
+
                         Recipe receta = document.toObject(Recipe.class);
                         receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
-                        receta.setPasos((ArrayList<String>) document.get(Recipe.PASOS_APP_TAG));
                         receta.setNombre(document.getId());
                         receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));
                         //Le damos el like a la receta si el usuario logado ya lo ha hecho
@@ -279,7 +287,7 @@ public class RecipeRepository {
 
     }
 
-    public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection) {
+    public void loadRecipesApp(ArrayList<Recipe> recetaUsers, String selection, String fragment) {
         recetaUsers.clear();
 
         String path = "RecetasApp/" + selection + "/" + selection + "Types/";
@@ -304,8 +312,10 @@ public class RecipeRepository {
                         }
                         /*Luego llamamos a sus listeners*/
                         for (OnLoadRecetaAppListener l : monLoadRecetaAppListener) {
-                            l.OnLoadRecetaApp(recetaUsers);
+                            l.OnLoadRecetaApp(recetaUsers, selection);
                         }
+                        if(fragment.equals("WHEEL"))
+                            RotateViewModel.getInstance().setCompleted(selection);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -355,8 +365,10 @@ public class RecipeRepository {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
+                        String photoString = task.getResult().toString();
 
-                        recipe.put(Recipe.PICTURE_APP_TAG, task.getResult().toString()); // Ponemos al HashMap la URL que nos falta.
+                        recipe.put(Recipe.PICTURE_APP_TAG, photoString); // Ponemos al HashMap la URL que nos falta.
+                        newRecipe.setPictureURL(photoString);
 
                         // Subimos el documento con la receta.
                         mDb.collection(Recipe.TAG).document(idReceta).set(recipe)

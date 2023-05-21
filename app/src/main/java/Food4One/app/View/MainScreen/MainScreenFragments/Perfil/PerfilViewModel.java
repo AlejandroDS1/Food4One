@@ -95,7 +95,6 @@ public class PerfilViewModel extends ViewModel {
             @Override
             public void onLoadRecetas(ArrayList<Recipe> recetas) {
                 PerfilViewModel.this.setRecetes(recetas);
-                RecipesUserApp.setRecetasUser(recetas);
             }
         });
 
@@ -174,12 +173,8 @@ public class PerfilViewModel extends ViewModel {
 
     public void loadPictureOfUser(String email){ mUserRepository.loadPictureOfUser(email);}
 
-    public void loadRecetesFromRepository(){
-        mRecetaRepository.loadRecetas(mRecetas.getValue(), "PERFIL");
-    }
-
-    public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){
-         mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser);
+    public void loadRecetasOfUserFromRepository(ArrayList<String> idRecetasUser){
+         mRecetaRepository.loadRecetasUser(mRecetas.getValue(), idRecetasUser, "PERFIL");
     }
 
     public void setPictureUrlOfUser(String userId, Uri imageUri) {

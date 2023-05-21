@@ -32,15 +32,18 @@ private static ColeccionViewModel coleccionViewModel;
     }
 
     private void receptesListener() {
-        mRecetaRepository.addOnLoadRecetaListener(new RecipeRepository.OnLoadRecetaListener() {
+        mRecetaRepository.setOnLoadRecetaCollectionListener(new RecipeRepository.OnLoadRecipeCollection() {
             @Override
-            public void onLoadRecetas(ArrayList<Recipe> recetas) {
+            public void onLoadRecipeCollection(ArrayList<Recipe> recetas) {
                 ColeccionViewModel.this.setRecipes(recetas);
             }
-        });
+        } );
     }
 
-    public void loadRecetasOfUserFromRepository(ArrayList<String > idRecetasUser){ mRecetaRepository.loadRecetasUser(mRecipes.getValue(), idRecetasUser); }
+    public void loadRecetasOfUserFromRepository(ArrayList<String> idRecetasUser){
+        receptesListener();
+        mRecetaRepository.loadRecetasUser(mRecipes.getValue(), idRecetasUser, "COLLECTION");
+    }
 
     private void setRecipes(ArrayList<Recipe> recipes) {
         mRecipes.setValue(recipes);

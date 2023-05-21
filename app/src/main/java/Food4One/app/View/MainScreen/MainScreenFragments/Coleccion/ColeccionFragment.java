@@ -13,13 +13,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeList;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
@@ -33,26 +37,25 @@ public class ColeccionFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        /*coleccionViewModel =
-                new ViewModelProvider(this).get(ColeccionViewModel.class);*/
         coleccionViewModel = ColeccionViewModel.getInstance();
 
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         cargarReceptesUsuari();
         clickListenerObjectsView();
+
         cargarRecycleView();
         observerObjectsView();
 
         return root;
     }
 
-    private void cargarReceptesUsuari() {
-        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrá
-        if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository( new ArrayList<String>(UserRepository.getUser().getIdCollections().keySet()));
-        // Internament pobla les receptes de la BBDD
 
+    private void cargarReceptesUsuari() {
+        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
+        if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+            coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet())); // Internament pobla les receptes de la BBDD
     }
 
     private void clickListenerObjectsView() {
@@ -60,6 +63,7 @@ public class ColeccionFragment extends Fragment {
         binding.BtnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 binding.BtnSaved.setElevation(0);
                 Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
                 binding.BtnSaved.setBackground(myDrawable1);
@@ -68,20 +72,16 @@ public class ColeccionFragment extends Fragment {
                 Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
                 binding.BtnList.setBackground(myDrawable2);
 
-                //Nova instància del fragment a iniciar
-                FragmentManager fM = getActivity().getSupportFragmentManager();
-                FragmentTransaction fT = fM.beginTransaction();
-                fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
-                fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
-                fT.commit();
-            }
-        });
-        
-        binding.BtnSaved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.BtnSaved.setElevation(20);  binding.BtnList.setElevation(0);
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
+                //Per evitar que cada vegada que es cliqui s'afegeixi al BackStack (només s'afegeix 1 vegada)
+                int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+                if (backStackEntryCount == 0) {
+                    //Nova instància del fragment a iniciar
+                    FragmentManager fM = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fT = fM.beginTransaction();
+                    fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
+                    fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
+                    fT.commit();
+                }
             }
         });
     }
@@ -113,9 +113,5 @@ public class ColeccionFragment extends Fragment {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+
 }
