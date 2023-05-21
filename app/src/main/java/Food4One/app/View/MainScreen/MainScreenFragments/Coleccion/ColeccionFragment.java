@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -15,6 +18,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.j2objc.annotations.ObjectiveCName;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -33,97 +40,45 @@ import Food4One.app.databinding.FragmentColeccionBinding;
 public class ColeccionFragment extends Fragment {
     public static final String TAG = "ColeccionFragment";
     private FragmentColeccionBinding binding;
-    private RecyclerViewAdapter mRecipeCardAdapter;
-    private ColeccionViewModel coleccionViewModel;
+
+    private BottomNavigationView savedListBottom;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        coleccionViewModel =
-                new ViewModelProvider(this).get(ColeccionViewModel.class);
 
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        cargarReceptesUsuari();
+        savedListBottom = binding.navegationColeectionFragments;
 
-        //paintButton();
+        Animation animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.recycler_view_left_fadein);
+        animation.setDuration(1000);
+        savedListBottom.setAnimation(animation);
 
-        clickListenerObjectsView();
+        //Empezamos viendo la parte de Guardados
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.containerFragmentCollection, new SavedFragment()).commit();
 
-        cargarRecycleView();
-        observerObjectsView();
+        savedListBottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {Fragment changeFragment = null;
+
+                switch (item.getItemId()) {
+                    case R.id.tab_saved:
+                        changeFragment = new SavedFragment();
+                        break;
+
+                    case R.id.tab_list:
+                        changeFragment = new ShoppingListFragment();
+                        break;
+                }
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containerFragmentCollection, changeFragment).commit();
+                return true;
+            }
+        });
 
         return root;
     }
-
-
-    private void cargarReceptesUsuari() {
-        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
-        if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet())); // Internament pobla les receptes de la BBDD
-    }
-
-    private void clickListenerObjectsView() {
-
-        binding.BtnList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                binding.BtnSaved.setElevation(0);
-                Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
-                binding.BtnSaved.setBackground(myDrawable1);
-
-                binding.BtnList.setElevation(15);
-                Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
-                binding.BtnList.setBackground(myDrawable2);
-
-                int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-                if (backStackEntryCount == 0) {
-                    //Nova instància del fragment a iniciar
-                    FragmentManager fM = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fT = fM.beginTransaction();
-                    fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
-                    fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
-                    fT.commit();
-                }
-            }
-        });
-        
-        binding.BtnSaved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.BtnSaved.setElevation(20);  binding.BtnList.setElevation(0);
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
-            }
-        });
-    }
-
-    private void observerObjectsView() {
-        // Observer a coleccionFragment per veure si la llista de receptes (observable MutableLiveData)
-        // a coleccionViewModel ha canviat.
-        final Observer<ArrayList<Recipe>> observerRecipes = new Observer<ArrayList<Recipe>>() {
-            @Override
-            public void onChanged(ArrayList<Recipe> users) {
-                mRecipeCardAdapter.notifyDataSetChanged();
-            }
-        };
-
-        coleccionViewModel.getmRecipes().observe(this.getViewLifecycleOwner(), observerRecipes);
-    }
-
-    private void cargarRecycleView() {
-        binding.recipeRV.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-        mRecipeCardAdapter = new RecyclerViewAdapter(coleccionViewModel.getmRecipes().getValue());
-        mRecipeCardAdapter.setRecipeToMakeListener(new RecipeRepository.OnLoadRecipeToMake() {
-            @Override
-            public void OnLoadRecipe(Recipe recipeToDo) {
-                HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
-                startActivity(new Intent(getContext(), DoRecipeActivity.class));
-            }
-        });
-        binding.recipeRV.setAdapter(mRecipeCardAdapter);
-
-    }
-
 
 }

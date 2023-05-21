@@ -1,0 +1,127 @@
+package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeList;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.User.UserRepository;
+import Food4One.app.R;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
+import Food4One.app.databinding.FragmentColeccionBinding;
+import Food4One.app.databinding.FragmentSavedBinding;
+
+public class SavedFragment extends Fragment {
+
+    private FragmentSavedBinding binding;
+    private ColeccionViewModel coleccionViewModel;
+    private RecyclerViewAdapter mRecipeCardAdapter;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        coleccionViewModel =
+                new ViewModelProvider(this).get(ColeccionViewModel.class);
+
+        binding = FragmentSavedBinding.inflate(inflater, container, false);
+
+        View root = binding.getRoot();
+
+        cargarReceptesUsuari();
+
+        clickListenerObjectsView();
+
+        cargarRecycleView();
+        observerObjectsView();
+
+        return root;
+    }
+
+
+    private void cargarReceptesUsuari() {
+        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
+        if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+            coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet())); // Internament pobla les receptes de la BBDD
+    }
+
+    private void clickListenerObjectsView() {}
+    /*
+
+    binding.BtnList.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            binding.BtnSaved.setElevation(0);
+            Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
+            binding.BtnSaved.setBackground(myDrawable1);
+
+            binding.BtnList.setElevation(15);
+            Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
+            binding.BtnList.setBackground(myDrawable2);
+
+            int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+            if (backStackEntryCount == 0) {
+                //Nova instància del fragment a iniciar
+                FragmentManager fM = getActivity().getSupportFragmentManager();
+                FragmentTransaction fT = fM.beginTransaction();
+                fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
+                fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
+                fT.commit();
+            }
+        }
+    });
+
+    binding.BtnSaved.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            binding.BtnSaved.setElevation(20);  binding.BtnList.setElevation(0);
+            getActivity().getSupportFragmentManager().popBackStackImmediate();
+        }
+    });
+}
+*/
+    private void observerObjectsView() {
+        // Observer a coleccionFragment per veure si la llista de receptes (observable MutableLiveData)
+        // a coleccionViewModel ha canviat.
+        final Observer<ArrayList<Recipe>> observerRecipes = new Observer<ArrayList<Recipe>>() {
+            @Override
+            public void onChanged(ArrayList<Recipe> users) {
+                mRecipeCardAdapter.notifyDataSetChanged();
+            }
+        };
+
+        coleccionViewModel.getmRecipes().observe(this.getViewLifecycleOwner(), observerRecipes);
+    }
+
+    private void cargarRecycleView() {
+        binding.recipeRV.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+        mRecipeCardAdapter = new RecyclerViewAdapter(coleccionViewModel.getmRecipes().getValue());
+        mRecipeCardAdapter.setRecipeToMakeListener(new RecipeRepository.OnLoadRecipeToMake() {
+            @Override
+            public void OnLoadRecipe(Recipe recipeToDo) {
+                HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
+                startActivity(new Intent(getContext(), DoRecipeActivity.class));
+            }
+        });
+        binding.recipeRV.setAdapter(mRecipeCardAdapter);
+
+
+
+
+    }
+
+}

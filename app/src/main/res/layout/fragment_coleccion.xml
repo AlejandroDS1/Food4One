@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="10dp"
     android:background="@color/black"
     tools:context=".View.MainScreen.MainScreenFragments.Coleccion.ColeccionFragment">
 
@@ -14,25 +15,30 @@
         android:orientation="vertical"
         android:text="Esto es coleccion"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:paddingTop="8dp"
-        android:textSize="20sp">
+        android:textColor="@color/black">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:paddingTop="25dp">
+            android:orientation="horizontal">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navegationColeectionFragments"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginRight="40dp"
+                app:menu="@menu/tabs_collection"
+                android:background="@drawable/tab_collectionsbackground"
+                android:elevation="15dp"
+                app:itemIconSize="33dp"
+                app:itemRippleColor="@android:color/transparent"
+                app:labelVisibilityMode="unlabeled"/>
 
             <TextView
                 android:id="@+id/BtnSaved"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_weight="1"
-                android:layout_marginBottom="17dp"
                 android:background="@drawable/botonback"
-                android:elevation="15dp"
                 android:gravity="center"
                 android:text="Guardados" />
 
@@ -41,59 +47,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_marginBottom="17dp"
-                android:background="@drawable/greybutton"
-                android:elevation="0dp"
-                android:gravity="center"
                 android:text="Lista" />
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
+            android:id="@+id/containerFragmentCollection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/coleccionFragment">
+            android:paddingTop="10dp"/>
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coleccionFragment"
-                app:layout_constraintVertical_bias="0.0">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/titleHome"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:paddingVertical="35dp"
-                        android:text="Guardados"
-                        android:textColor="@color/orange"
-                        android:textSize="45dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recipeRV"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingBottom="50dp"/>
-
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
