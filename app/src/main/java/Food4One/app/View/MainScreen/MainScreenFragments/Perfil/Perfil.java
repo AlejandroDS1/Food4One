@@ -58,7 +58,6 @@ public class Perfil extends Fragment {
     private RecetaPerfilAdapter mCardRecetaRVAdapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser userFirebase;
-
     private Uri mPhotoUri;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

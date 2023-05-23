@@ -275,6 +275,7 @@ public class UserRepository {
 
         ingredientesList.put(User.IDINGREDIENTES_LIST_TAG, viewModel.getMapAllLists_toDDBB());
 
+        // TODO Todavia no se puede eliminar bien, falta implementacion
         mDb.collection(User.TAG)
                 .document(UserRepository.getUser().getEmail())
                 .set(ingredientesList, SetOptions.merge())

@@ -4,13 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,8 +55,8 @@ public class DoRecipeActivity extends AppCompatActivity {
     }
 
     private void initListeners() {
-        binding.addIngredientsToListDoRecipe.setOnClickListener(clickListener -> {
-            ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes);
+        binding.addIngredientsToListDoRecipe.setOnClickListener(addIngredientes -> {
+            addIngredientesToListCreator();
         });
 
         binding.removeDB.setOnClickListener(clickListener -> {
@@ -60,6 +64,56 @@ public class DoRecipeActivity extends AppCompatActivity {
         });
     }
 
+    private void addIngredientesToListCreator(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DoRecipeActivity.this);
+
+        View view = View.inflate(getApplicationContext(), R.layout.alert_dialog_add_ingerdientes_tolist, null);
+
+        builder.setView(view);
+        final ListView listNames = view.findViewById(R.id.listNames_addIngredientes_listview);
+
+        final EditText listaName = view.findViewById(R.id.texto_listaName_alertdialog);
+
+        final List<String> userListNames = ShoppingListViewModel.getInstance().getAllListsNames();
+
+        listNames.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_ingredientes_list_layout, userListNames));
+
+        ShoppingListViewModel.getInstance().setOnChangedListsListener(new ShoppingListViewModel.OnChangedListsListener() {
+            @Override
+            public void onChangedListListener() {
+                userListNames.clear();
+                userListNames.addAll(ShoppingListViewModel.getInstance().getAllListsNames());
+                ((ArrayAdapter)listNames.getAdapter()).notifyDataSetChanged();
+            }
+        });
+        // Declaracion de listeners para las diferentes acciones de la view
+        listNames.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                listaName.setText(userListNames.get(i)); // El texto del edit text sera el de la lista
+            }
+        });
+
+        AlertDialog alert = builder.create();
+
+        // Boton para guardar en base de datos
+        view.findViewById(R.id.BtnGuardar_addToList).setOnClickListener(guardarDDBB -> {
+
+            // Creamos un nuevo hilo para subir las recetas, de esta manera si la conexion es lenta da la ilusion de que va mas rapido
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes, listaName.getText().toString());
+                }
+            }).start();
+            alert.dismiss();
+        });
+
+        view.findViewById(R.id.BtnCancelar_addToList).setOnClickListener(cancelar -> { alert.dismiss(); });
+
+        alert.show();
+    }
 
     private void cargarDatosRecipeToMake() {
         //Se cargan los ingredientes y los pasos de la receta que se ha seleccionado antes
@@ -136,6 +190,4 @@ public class DoRecipeActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }

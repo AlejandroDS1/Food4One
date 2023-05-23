@@ -15,14 +15,14 @@
 
         android:paddingVertical="20dp"
         android:text="Listas"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textColor="@color/white">
 
     </TextView>
 
     <TextView
         android:id="@+id/editBtn_allLists"
-        android:layout_width="30dp"
+        android:layout_width="25dp"
         android:layout_height="30dp"
 
         android:clickable="true"

@@ -20,10 +20,19 @@ public class ShoppingListViewModel extends ViewModel {
 //    private final MutableLiveData<List<IngredientesList>> allLists;
     private final MutableLiveData<IngredientesList> unCheckedItems;
     private final MutableLiveData<IngredientesList> checkedItems;
-    public OnChangedListsListener onChangedListsListener;
 
+    // Listener atributes
+    public List<OnChangedListsListener> onChangedListsListener;
+
+    public OnDeletedListItem onDeletedListItem;
+
+    // Definicion de las interficies para listeners
     public interface OnChangedListsListener{
         void onChangedListListener();
+    }
+
+    public interface OnDeletedListItem {
+        void onDeletedlistItemListener(Object listRemoved);
     }
 
     private static ShoppingListViewModel instance;
@@ -41,13 +50,19 @@ public class ShoppingListViewModel extends ViewModel {
 
         loadIngredientesList_fromDDBB();
         initListeners();
+
+        this.onChangedListsListener = new ArrayList<>();
     }
 
+    // Metodos para asignar los listeners
+    public void setOnChangedListsListener(OnChangedListsListener listener){ this.onChangedListsListener.add(listener); }
+    public void setOnDeletedListListener(OnDeletedListItem listener) {this.onDeletedListItem = listener; }
+
+
+    // Metodos ViewModel
     public void loadIngredientesList_fromDDBB() {
         UserRepository.getInstance().loadUserIngredientesList(allLists);
     }
-
-    public void setOnChangedListsListener(OnChangedListsListener listener){ this.onChangedListsListener = listener; }
 
     private void initListeners() {
         UserRepository.getInstance().setOnLoadListIngredientesListener(new UserRepository.OnLoadListIngredientesListener() {
@@ -56,8 +71,9 @@ public class ShoppingListViewModel extends ViewModel {
                 if (allLists.getValue().isEmpty()) { // Si es igual a null es porque no tiene ingerdientes guardados
 
                 }else // Si no es null es porque hay una lista.
-                    if (onChangedListsListener != null) onChangedListsListener.onChangedListListener();
-
+                    if (onChangedListsListener != null)
+                        for (OnChangedListsListener listener : onChangedListsListener)
+                            listener.onChangedListListener();
             }
         });
     }
@@ -112,9 +128,7 @@ public class ShoppingListViewModel extends ViewModel {
         return this.allLists.getValue();
     }
 
-    public void addIngredientesList_toDDBB(@NonNull final List<String> ingredientes){
-
-        final String listName = "PRUEBA2";
+    public void addIngredientesList_toDDBB(@NonNull final List<String> ingredientes, @NonNull final String listName){
 
         Map<String, Boolean> newList = new HashMap<>();
 
@@ -124,11 +138,9 @@ public class ShoppingListViewModel extends ViewModel {
         // TODO de momento no compruebo si hay otra lista que se llama igual a si que se sobreescribe
         this.allLists.getValue().put(listName, newList);
 
-        UserRepository.getInstance().setUserIngredientesListDDBB(this);
+        updateIngredientesList();
     }
     public void addIngredientesList_toDDBB(@NonNull final IngredientesList ingredientes){
-
-        final String listName = "PRUEBA2";
 
         Map<String, Boolean> newList = new HashMap<>();
 
@@ -136,9 +148,40 @@ public class ShoppingListViewModel extends ViewModel {
             newList.put(in.getId(), in.checked);
 
         // TODO de momento no compruebo si hay otra lista que se llama igual a si que se sobreescribe
-        this.allLists.getValue().put(listName, newList);
+        this.allLists.getValue().put(ingredientes.getListName(), newList);
 
+        updateIngredientesList();
+    }
+
+    public void updateIngredientesList(){
         UserRepository.getInstance().setUserIngredientesListDDBB(this);
     }
 
+    public void changeListName(@NonNull final String newListaName, @NonNull final String prevListName) {
+
+        Map<String, Boolean> ingredientesList = this.allLists.getValue().get(prevListName);
+
+        allLists.getValue().remove(prevListName);
+        allLists.getValue().put(newListaName, ingredientesList);
+
+        // TODO CAMBIAR EN BASE DE DATOS
+    }
+
+
+    /**
+     * Elimina 'listaName' de la lista de listas. Lo guarda en base de datos
+     * @param listaName Nombre de la lista de listas
+     */
+    public void deleteList(@NonNull final String listaName) {
+
+        // Si no se encuentra la lista no hacemos nada
+        if (this.allLists.getValue().get(listaName) == null) return;
+
+        // Si se ha encontrado la lista, eliminamos la lista, y actualizamos la base de datos.
+        this.allLists.getValue().remove(listaName);
+
+        updateIngredientesList(); // Eliminamos de base de datos
+
+        this.onDeletedListItem.onDeletedlistItemListener(listaName); // Notificamos a los adapters
+    }
 }
