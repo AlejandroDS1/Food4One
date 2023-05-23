@@ -2,8 +2,8 @@ package Food4One.app.Model.Recipe.Recipe;
 
 
 import java.util.ArrayList;
-
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
+
 
 public class Recipe {
     public static final String TAG = "Recetas";

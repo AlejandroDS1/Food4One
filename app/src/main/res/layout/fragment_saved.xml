@@ -38,13 +38,22 @@ tools:context=".View.MainScreen.MainScreenFragments.Coleccion.SavedFragment">
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <TextView
+                android:id="@+id/emptymessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/naranjaclaro"
+                android:textSize="18dp"
+                android:layout_marginTop="50dp"
+                android:padding="50dp"
+                android:text="Aquí aparecerán las recetas que hayas guardado"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recipeRV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingBottom="65dp"/>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -128,7 +128,7 @@ notifyItemRemoved(position);
         protected final LottieAnimationView mCardCorazon;
         private boolean likeAnim;
         private final LottieAnimationView mCardSaved;
-        private boolean savedAnim= false;
+        private boolean savedAnim;
         private long  time=0;
         boolean firstTouch= false;
 
@@ -164,18 +164,21 @@ notifyItemRemoved(position);
 
         public void saveAnimMotion(OnClickSaveRecipe listener, Recipe recipe){
             if(savedAnim){
-                mCardSaved.setMinAndMaxProgress(0.0f,1.0f);
-                mCardSaved.reverseAnimationSpeed();
+                if(mCardSaved.getSpeed() > 0)
+                    mCardSaved.reverseAnimationSpeed();
+                mCardSaved.setProgress(1.0f);
                 mCardSaved.playAnimation();
-                savedAnim = !savedAnim;
+                savedAnim = ! savedAnim;
                 Toast.makeText(context, "Se ha borrado de colecciones", Toast.LENGTH_SHORT).show();
             }else{
-                mCardSaved.setMinAndMaxProgress(0.0f, 1.0f);
-                mCardSaved.reverseAnimationSpeed();
+                if(mCardSaved.getSpeed() < 0)
+                    mCardSaved.reverseAnimationSpeed();
+                mCardSaved.setProgress(1.0f);
                 mCardSaved.playAnimation();
-                savedAnim = !savedAnim;
+                savedAnim = ! savedAnim;
                 Toast.makeText(context, "Se ha guardado la receta", Toast.LENGTH_SHORT).show();
             }
+
             listener.OnClickSave(recipe, savedAnim);
 
         }
@@ -185,17 +188,29 @@ notifyItemRemoved(position);
 
             likeAnim = recetaUser.getLikeFromUser();
             //Si esta receta esta en la colección de guardados del usuario, hay que cargar la animación
-            if( UserRepository.getUser().getIdCollections().get(recetaUser.getNombre()) != null)
-                savedAnim=true;
+
+            if(UserRepository.getUser().getIdCollections().get(recetaUser.getNombre()) != null)
+                savedAnim = UserRepository.getUser().getIdCollections().get(recetaUser.getNombre());
+            else
+                savedAnim = false;
 
             if(likeAnim) {
                 mCardCorazon.setMinAndMaxProgress(0.0f, 0.5f);
                 mCardCorazon.playAnimation();
             }
             if(savedAnim) {
-                mCardSaved.setMinAndMaxProgress(0.0f, 1.0f);
+                if(mCardSaved.getSpeed() < 0)
+                    mCardSaved.reverseAnimationSpeed();
+                mCardSaved.setProgress(1.0f);
                 mCardSaved.playAnimation();
+            }else {
+                if(mCardSaved.getSpeed() > 0)
+                    mCardSaved.reverseAnimationSpeed();
+                mCardSaved.setProgress(1.0f);
+                mCardSaved.playAnimation();
+
             }
+
             mCardCorazon.setOnClickListener(v->{
                 likeAnimMotion(listenerLikeRecipe, recetaUser);
             });
@@ -203,12 +218,15 @@ notifyItemRemoved(position);
                 saveAnimMotion(saveListener, recetaUser);
             });
 
+            mrecipeName.setOnClickListener(view-> {
+                listener.OnClickDoRecipe(recetaUser);
+            });
+
             mrecipeName.setText( recetaUser.getNombre());
             mCardNumberLikes.setText(Integer.toString( recetaUser.getLikes()));
             mCardDescription.setText("Description  "+ recetaUser.getDescription());
 
             cargarPhotoUserAndRecipe(recetaUser);
-            mrecipeName.setOnClickListener(view-> { listener.OnClickDoRecipe(recetaUser); });
 
             imageLikeAnimation(listenerLikeRecipe, recetaUser);
         }
@@ -254,26 +272,5 @@ notifyItemRemoved(position);
 
         }
 
-    }
-    public abstract class DoubleClickListener implements View.OnClickListener {
-
-        private static final long DOUBLE_CLICK_TIME_DELTA = 300;//milliseconds
-
-        long lastClickTime = 0;
-
-        @Override
-        public void onClick(View v) {
-            long clickTime = System.currentTimeMillis();
-            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA){
-                onDoubleClick(v);
-                lastClickTime = 0;
-            } else {
-                onSingleClick(v);
-            }
-            lastClickTime = clickTime;
-        }
-
-        public abstract void onSingleClick(View v);
-        public abstract void onDoubleClick(View v);
     }
 }

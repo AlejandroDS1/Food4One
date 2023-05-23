@@ -1,8 +1,11 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,10 +21,8 @@ import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeList;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.Model.User.UserRepository;
-import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
-import Food4One.app.databinding.FragmentColeccionBinding;
 import Food4One.app.databinding.FragmentSavedBinding;
 
 public class SavedFragment extends Fragment {
@@ -38,12 +39,10 @@ public class SavedFragment extends Fragment {
                 new ViewModelProvider(this).get(ColeccionViewModel.class);
 
         binding = FragmentSavedBinding.inflate(inflater, container, false);
-
         View root = binding.getRoot();
 
         cargarReceptesUsuari();
-
-        clickListenerObjectsView();
+        binding.emptymessage.setVisibility(View.GONE);
 
         cargarRecycleView();
         observerObjectsView();
@@ -54,46 +53,12 @@ public class SavedFragment extends Fragment {
 
     private void cargarReceptesUsuari() {
         // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
-        if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet())); // Internament pobla les receptes de la BBDD
+
+       // if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
+        // Internament pobla les receptes de la BBDD
+        coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet()));
     }
 
-    private void clickListenerObjectsView() {}
-    /*
-
-    binding.BtnList.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-            binding.BtnSaved.setElevation(0);
-            Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
-            binding.BtnSaved.setBackground(myDrawable1);
-
-            binding.BtnList.setElevation(15);
-            Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
-            binding.BtnList.setBackground(myDrawable2);
-
-            int backStackEntryCount = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-            if (backStackEntryCount == 0) {
-                //Nova instància del fragment a iniciar
-                FragmentManager fM = getActivity().getSupportFragmentManager();
-                FragmentTransaction fT = fM.beginTransaction();
-                fT.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
-                fT.replace(R.id.coleccionFragment, new ShoppingListFragment());
-                fT.commit();
-            }
-        }
-    });
-
-    binding.BtnSaved.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            binding.BtnSaved.setElevation(20);  binding.BtnList.setElevation(0);
-            getActivity().getSupportFragmentManager().popBackStackImmediate();
-        }
-    });
-}
-*/
     private void observerObjectsView() {
         // Observer a coleccionFragment per veure si la llista de receptes (observable MutableLiveData)
         // a coleccionViewModel ha canviat.
@@ -105,6 +70,17 @@ public class SavedFragment extends Fragment {
         };
 
         coleccionViewModel.getmRecipes().observe(this.getViewLifecycleOwner(), observerRecipes);
+
+        final Observer<String> observerEmptys = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(s.equals("VISIBLE"))
+                    binding.emptymessage.setVisibility(View.VISIBLE);
+                else if (s.equals("GONE"))
+                    binding.emptymessage.setVisibility(View.GONE);
+            }
+        };
+        coleccionViewModel.getEmptySignal().observe(this.getViewLifecycleOwner(), observerEmptys);
     }
 
     private void cargarRecycleView() {

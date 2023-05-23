@@ -1,9 +1,12 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.home;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +37,7 @@ public class DoRecipeActivity extends AppCompatActivity {
     private HomeViewModel homeViewModel;
     private Recipe recipeToMake;
     private IngredienteAdapter ingredientsAdapter;
+    private CardView addToListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +51,43 @@ public class DoRecipeActivity extends AppCompatActivity {
         homeViewModel = HomeViewModel.getInstance();
 
         recipeToMake = homeViewModel.getDoRecipe().getValue();
+        addToListView = binding.addToList;
+        addToListView.setVisibility(View.GONE);
+
         cargarDatosRecipeToMake();
         initListeners();
     }
 
     private void initListeners() {
-        binding.addIngredientsToListDoRecipe.setOnClickListener(clickListener -> {
-            ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes);
+
+        binding.addIngredientePlus.setOnClickListener( v->{
+            //No podemos ver la carta, así que la ponemos visible y animamos para su aparición
+            if(addToListView.getVisibility()== View.GONE) {
+                addToListView.setVisibility(View.VISIBLE);
+                cargarAddToLis(R.anim.recycle_view_right_fadein);
+            }else {
+                //La carta es visible, la movemos y esperamos la animación para quita la visibilidad
+                cargarAddToLis(R.anim.recycle_view_right_fideout);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        addToListView.setVisibility(View.GONE);
+                    }
+                }, 600);
+            }
         });
 
-        binding.removeDB.setOnClickListener(clickListener -> {
-            Toast.makeText(getApplicationContext(), "Not immplemented yet", Toast.LENGTH_SHORT).show();
+        binding.addToList.setOnClickListener(v ->{
+            ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes);
+            Toast.makeText(this, "Add List Clicked", Toast.LENGTH_SHORT).show();
         });
     }
 
+    void cargarAddToLis(int idAnim){
+        Animation anim = AnimationUtils.loadAnimation(this,idAnim);
+        anim.setDuration(500);
+        addToListView.setAnimation(anim);
+    }
 
     private void cargarDatosRecipeToMake() {
         //Se cargan los ingredientes y los pasos de la receta que se ha seleccionado antes
@@ -72,7 +100,7 @@ public class DoRecipeActivity extends AppCompatActivity {
         binding.ingredientsList.setAdapter(ingredientsAdapter);
 
         // Inicio de los componentes de la lista de pasos
-        binding.pasosList.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.item_step_do_recipe, recipeToMake.getPasos()));
+        //binding.pasosList.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.item_step_do_recipe, recipeToMake.getPasos()));
 
         //Imagen, Descripción y Nombre de la Receta
         binding.descriptionRecipeToDo.setText(recipeToMake.getDescription());
@@ -84,6 +112,8 @@ public class DoRecipeActivity extends AppCompatActivity {
 
         binding.recetToDoName.setText(recipeToMake.getNombre().split("@")[0]);
     }
+
+
     private static class IngredienteAdapter extends RecyclerView.Adapter<IngredienteAdapter.ViewHolder>{
 
         private final List<String> ingredientes;

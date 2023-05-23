@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 import Food4One.app.Model.User.UserRepository;
+import Food4One.app.View.MainScreen.MainScreenFragments.Coleccion.ColeccionViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentExploreBinding;
 
 public class ExploreFragment extends Fragment {
-
-    private ExploreViewModel mViewModel;
     private static RecyclerView recyclerViewExplorer;
+    private ExploreViewModel mViewModel;
     private FragmentExploreBinding binding;
     private ExplorerScrollAdapter adapter;
     public ExplorerScrollAdapter getAdapter() {
@@ -109,8 +109,6 @@ public class ExploreFragment extends Fragment {
             }
         };
         mViewModel.getUserURLFromRecipe().observe(this.getActivity(), observerURLUser);
-
     }
-
 
 }
