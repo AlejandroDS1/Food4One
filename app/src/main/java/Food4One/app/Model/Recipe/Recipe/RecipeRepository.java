@@ -24,6 +24,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
@@ -187,15 +188,33 @@ public class RecipeRepository {
     }
 
 
-    public void deleteRecipeDDBB(){
-        // TODO
+    public void deleteRecipeDDBB(@NonNull final String idReceta){
+        mDb.collection(Recipe.TAG).document(idReceta).delete();
+
+        // Ahora eliminamos de la base de datos la receta de las recetas vinculadas al usuario.
+        mDb.collection(User.TAG).document(UserRepository.getUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ArrayList<String> recetas = (ArrayList<String>) documentSnapshot.get(User.IDRECETAS_TAG);
+
+                if (recetas == null || recetas.isEmpty()) return; // Comprovamos que hayan recetas
+
+                recetas.remove(idReceta); // eliminamos la receta
+
+                Map<String, ArrayList<String>> mapDDBB = new HashMap<>(); // Creamos el mapa para subir a firebase
+
+                mapDDBB.put(User.IDRECETAS_TAG, recetas);
+
+                mDb.collection(User.TAG).document(UserRepository.getUser().getEmail()).set(mapDDBB, SetOptions.merge());
+            }
+        });
     }
 
     /**
      * Mètode que llegeix les recetes. Vindrà cridat des de fora i quan acabi,
      * avisarà sempre als listeners, invocant el seu OnLoadReceta.
      */
-    public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser, String fragment) {
+    public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser, final String fragment) {
         recetaUsers.clear();
         //Se cargan todas las recetas de la base de datos...
         if(fragment.equals("COLLECTION"))
@@ -214,6 +233,9 @@ public class RecipeRepository {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     //Cargamos la receta que tiene el Mismo ID---------------------------------
                     Recipe recetaUser = documentSnapshot.toObject(Recipe.class);
+
+                    if (checkRecipe(recetaUser)) return;
+
                     recetaUser.setIngredientes(cargarIngredientes((ArrayList<String>) documentSnapshot.get(Recipe.INGREDIENTES_APP_TAG)));
                     recetaUser.setNombre(documentSnapshot.getId());
                     recetaUser.setPhotoUser(documentSnapshot.getString(User.PICTUREURL_TAG + "user"));
@@ -226,6 +248,19 @@ public class RecipeRepository {
                     //para que puedan cargar las recetas al RecycleView
                     if (recetaUsers.size() == idRecetasUser.size())
                         onLoadRecetasListenerMethod(fragment);
+                }
+
+                public boolean checkRecipe(final Recipe recipe){
+                    if (recipe == null){
+
+                        idRecetasUser.remove(idReceta);
+
+                        Map<String, Object> mapa = new HashMap<>();
+                        mapa.put(User.IDCOLLECTIONS_TAG, idRecetasUser);
+                        mDb.collection(User.TAG).document(UserRepository.getUser().getEmail()).set(mapa, SetOptions.merge());
+                        return true;
+                    }
+                    return false;
                 }
 
                 private void onLoadRecetasListenerMethod(String fragment) {
@@ -283,11 +318,13 @@ public class RecipeRepository {
 
     /*Se supone que el IdIngredientes jamás será nulo, porque siempre habrá como mínimo un ingrediente
      * Si aparece un error aquí, es porque no han colocado ningún ingrediente en la base de datos...*/
-    private IngredientesList cargarIngredientes(ArrayList<String> IdIngredientes) {
+    private IngredientesList cargarIngredientes(ArrayList<String> idIngredientes) {
+
+        if (idIngredientes == null) return null;
 
         ArrayList<Ingrediente> ingredientesList = new ArrayList<>();
 
-        for(String ingredienteId : IdIngredientes){
+        for(String ingredienteId : idIngredientes){
             Ingrediente ingrediente = new Ingrediente(ingredienteId);
             ingredientesList.add(ingrediente);
         }

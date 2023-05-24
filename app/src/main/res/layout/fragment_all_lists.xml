@@ -22,6 +22,24 @@
 
     </TextView>
 
+    <TextView
+        android:id="@+id/emptyList_notifyer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:visibility="gone"
+        android:layout_marginTop="30dp"
+        android:layout_marginVertical="30dp"
+
+        android:gravity="center"
+
+        android:text="Tus listas apareceran aqui"
+        android:textSize="25sp"
+        android:textColor="@color/orange"
+
+        />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_allLists"
         android:layout_width="match_parent"

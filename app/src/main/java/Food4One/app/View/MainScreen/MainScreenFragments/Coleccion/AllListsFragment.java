@@ -69,10 +69,19 @@ public class AllListsFragment extends Fragment {
         viewModel.setOnChangedListsListener(new ShoppingListViewModel.OnChangedListsListener() {
             @Override
             public void onChangedListListener() {
+                binding.emptyListNotifyer.setVisibility(View.GONE);
+                binding.listAllLists.setVisibility(View.VISIBLE);
                 binding.listAllLists.setAdapter(new AllListsAdapter(viewModel.getAllListsNames()));
             }
         });
 
+        viewModel.setOnListIsEmptyListener(new ShoppingListViewModel.OnListIsEmptyListener() {
+            @Override
+            public void onListIsEmptyListener() {
+                binding.listAllLists.setVisibility(View.GONE);
+                binding.emptyListNotifyer.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.ViewHolder> {
@@ -177,11 +186,6 @@ public class AllListsFragment extends Fragment {
                     alert.show();
                 });
             }
-
         }
     }
-
-
-
-
 }

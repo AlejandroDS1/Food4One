@@ -40,6 +40,7 @@ import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
+import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.databinding.FragmentPerfilBinding;
 
 /**
@@ -156,10 +157,28 @@ public class Perfil extends Fragment {
         mCardRecetaRVAdapter = new RecetaPerfilAdapter(
                 perfilViewModel.getRecetes().getValue(), getActivity() );
 
+
+
+        // Listener para escuchar cuando se elimina una receta
+        mCardRecetaRVAdapter.setOnRemovedRecipeListener(new RecetaPerfilAdapter.OnRemovedRecipeListener() {
+            @Override
+            public void onRemovedRecipe(Recipe recipe, int position) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        perfilViewModel.deleteRecipeDDBB(recipe);
+                        ExploreViewModel.getInstance().loadRecetasExplorer();
+                    }
+                }).start();
+                mCardRecetaRVAdapter.notifyItemRemoved(position);
+            }
+        });
+
+
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
             @Override
-            public void OnClickDetail(int position) {
+            public void onClickDetail(int position) {
                 //Al clicar se abrirá un nuevo Fragment
                 initScrollViewRecipes(position);
             }

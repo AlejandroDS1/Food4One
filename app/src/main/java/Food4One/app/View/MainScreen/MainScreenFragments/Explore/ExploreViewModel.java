@@ -58,7 +58,6 @@ public class ExploreViewModel extends ViewModel {
 
     public MutableLiveData<String> getUserURLFromRecipe(){return userURLFromRecipe;}
 
-
     public void onClikDoRecipe(Recipe recipe) {
         HomeViewModel.getInstance().loadRecipeToMake(recipe);
     }

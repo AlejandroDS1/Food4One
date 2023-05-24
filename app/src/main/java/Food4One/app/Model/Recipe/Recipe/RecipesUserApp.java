@@ -6,11 +6,10 @@ public class RecipesUserApp {
     private static ArrayList<Recipe> recetasUser;
     private static ArrayList<Recipe> recetasExplorer;
 
-    public static ArrayList<Recipe>  getRecetasExplorer(){
+    public static ArrayList<Recipe> getRecetasExplorer(){
         if (recetasExplorer == null) recetasExplorer = new ArrayList<>();
         return recetasExplorer;
     }
-
 
     public static ArrayList<Recipe> getRecetasUser() {
         if (recetasUser == null) recetasUser = new ArrayList<>();

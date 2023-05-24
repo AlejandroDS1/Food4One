@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -26,8 +25,9 @@ import Food4One.app.R;
 
 public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapter.ViewHolder> {
 
-    private OnClickDetailListener mOnClickHideListener; // Qui hagi de repintar la ReciclerView
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
+    private OnClickDetailListener mOnClickHideListener; // Qui hagi de repintar la ReciclerView
+    private OnRemovedRecipeListener onRemovedRecipeListener;
     public static int screenWidth = 10;
 
     // quan s'amagui
@@ -41,9 +41,12 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
      * quan l'usuari faci clic en la creu (amagar) algún dels items de la RecyclerView
      */
     public interface OnClickDetailListener {
-        void OnClickDetail(int position);
+        void onClickDetail(int position);
     }
 
+    public interface OnRemovedRecipeListener {
+        void onRemovedRecipe(Recipe recipe, int position);
+    }
 
     // quan s'amagui
     // Constructor
@@ -60,6 +63,10 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
     public void setOnClickDetailListener(OnClickDetailListener listener) {
         this.mOnClickHideListener = listener;
     }
+    public void setOnRemovedRecipeListener(OnRemovedRecipeListener listener) {
+        this.onRemovedRecipeListener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -93,83 +100,84 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
     public int getItemCount() {
         return mRecetes.size();
     }
-        /**
-         * Classe ViewHolder. No és més que un placeholder de la vista (recetaview_card.xml)
-         * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
-         * però es pot fer dins.
-         */
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            private final ImageView mCardRecetaPictureUrl;
-            private final TextView mCardNumberLikes;
-            private final ImageView mCorazon;
-            FrameLayout recipeCard;
-            private final CardView recipieCardView;
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
 
-                this.mCardRecetaPictureUrl = itemView.findViewById(R.id.picturerecetaPerfil);
-                this.mCardNumberLikes = itemView.findViewById(R.id.likesPicture);
-                this.mCorazon = itemView.findViewById(R.id.corazonCard);
-                this.recipeCard  = itemView.findViewById(R.id.recipephotoProfile);
-                this.recipieCardView = itemView.findViewById(R.id.cardRecetas);
+    /**
+     * Classe ViewHolder. No és més que un placeholder de la vista (recetaview_card.xml)
+     * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
+     * però es pot fer dins.
+     */
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView mCardRecetaPictureUrl;
+        private final TextView mCardNumberLikes;
+        private final ImageView mCorazon;
+        FrameLayout recipeCard;
+        private final CardView recipieCardView;
 
-            }
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
 
-            public void bind(final Recipe recetaUser, OnClickDetailListener listener) {
+            this.mCardRecetaPictureUrl = itemView.findViewById(R.id.picturerecetaPerfil);
+            this.mCardNumberLikes = itemView.findViewById(R.id.likesPicture);
+            this.mCorazon = itemView.findViewById(R.id.corazonCard);
+            this.recipeCard  = itemView.findViewById(R.id.recipephotoProfile);
+            this.recipieCardView = itemView.findViewById(R.id.cardRecetas);
 
-                //mCorazon.setVisibility(View.VISIBLE);
-                mCorazon.setImageResource(R.drawable.heart_24);
+        }
 
-                // Modificamos el cardView para que tenga el tamaño que queremos.
-                GridLayoutManager.LayoutParams layoutParams= (GridLayoutManager.LayoutParams) recipieCardView.getLayoutParams();
-                layoutParams.width = RecetaPerfilAdapter.screenWidth;
-                layoutParams.height = RecetaPerfilAdapter.screenWidth;
+        public void bind(final Recipe recetaUser, OnClickDetailListener listener) {
 
-                int resize = (int) (RecetaPerfilAdapter.screenWidth - (RecetaPerfilAdapter.screenWidth / 3));
+            //mCorazon.setVisibility(View.VISIBLE);
+            mCorazon.setImageResource(R.drawable.heart_24);
 
-                recipieCardView.setLayoutParams(layoutParams);
+            // Modificamos el cardView para que tenga el tamaño que queremos.
+            GridLayoutManager.LayoutParams layoutParams= (GridLayoutManager.LayoutParams) recipieCardView.getLayoutParams();
+            layoutParams.width = RecetaPerfilAdapter.screenWidth;
+            layoutParams.height = RecetaPerfilAdapter.screenWidth;
 
-                mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
-                // Carrega foto de l'usuari de la llista directament des d'una Url
-                // d'Internet.
-                Picasso.get().load(recetaUser.getPictureURL())
-                        // El resize lo hacemos a la screenWidth -
-                        .resize(resize, resize)
-                        .centerCrop().into(mCardRecetaPictureUrl);
-                // Seteja el listener onClick del botó d'amagar (hide), que alhora
-                // cridi el mètode OnClickHide que implementen els nostres propis
-                // listeners de tipus OnClickHideListener.
+            int resize = (int) (RecetaPerfilAdapter.screenWidth - (RecetaPerfilAdapter.screenWidth / 3));
+
+            recipieCardView.setLayoutParams(layoutParams);
+
+            mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
+            // Carrega foto de l'usuari de la llista directament des d'una Url
+            // d'Internet.
+            Picasso.get().load(recetaUser.getPictureURL())
+                    // El resize lo hacemos a la screenWidth -
+                    .resize(resize, resize)
+                    .centerCrop().into(mCardRecetaPictureUrl);
+            // Seteja el listener onClick del botó d'amagar (hide), que alhora
+            // cridi el mètode OnClickHide que implementen els nostres propis
+            // listeners de tipus OnClickHideListener.
 
                 recipeCard.setOnClickListener(view->{
-                       listener.OnClickDetail(getAdapterPosition());
+                       listener.onClickDetail(getAdapterPosition());
                 });
 
-                recipeCard.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
+            recipeCard.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
 
-                        final Context context = view.getContext();
-                        Snackbar snackbar = Snackbar.make(view, "Elimina la publicacion", Snackbar.LENGTH_SHORT);
+                    final Context context = view.getContext();
+                    Snackbar snackbar = Snackbar.make(view, "Elimina la publicacion", Snackbar.LENGTH_SHORT);
 
-                        snackbar.setTextColor(context.getColor(R.color.naranjaclaro));
+                    snackbar.setTextColor(context.getColor(R.color.naranjaclaro));
 
-                        snackbar.setBackgroundTint(context.getColor(R.color.GrisOscuro));
+                    snackbar.setBackgroundTint(context.getColor(R.color.GrisOscuro));
 
-                        snackbar.setActionTextColor(context.getColor(R.color.orange));
-                        snackbar.setAction("Aceptar", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(view.getContext(), "TODAVIA POR IMPLEMENTAR", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    snackbar.setActionTextColor(context.getColor(R.color.orange));
+                    snackbar.setAction("Aceptar", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onRemovedRecipeListener.onRemovedRecipe(recetaUser, getAdapterPosition());
+                        }
+                    });
 
-
-                        snackbar.show();
-                        return true;
-                    }
-                });
-            }
+                    snackbar.show();
+                    return true;
+                }
+            });
         }
+    }
 
 }

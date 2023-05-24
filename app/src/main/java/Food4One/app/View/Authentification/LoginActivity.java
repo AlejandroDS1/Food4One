@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                             mUserRespository.addUser(userName, email);
                                             UserRepository.getUser(userName, email); // Creamos el objeto user.
                                         } else{
-                                            mUserRespository.loadUserFromDDB(email, new AccessActivity(), new AccesActivityViewModel());
+                                            mUserRespository.loadUserFromDDB(email);
                                         }
 
                                         //Cuando vaya bien empezará la ventana Main

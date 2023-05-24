@@ -1,12 +1,10 @@
 package Food4One.app.Model.User;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,7 +23,6 @@ import java.util.Map;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.View.Authentification.AccesActivityViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Coleccion.ShoppingListViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
@@ -381,7 +378,7 @@ public class UserRepository {
 
     }
 
-    public void loadUserFromDDB(String email, Activity accessActivity, ViewModel viewModel){
+    public void loadUserFromDDB(String email){
 
         mDb.collection(User.TAG).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -405,9 +402,9 @@ public class UserRepository {
 
                     ExploreViewModel.getInstance();
 
-                    ((AccesActivityViewModel) viewModel).setCompleted(true);
+                    for (OnLoadUsersListener l: mOnLoadUsersListeners)
+                        l.onLoadUsers(null);
 
-                    //accessActivity.startActivity(new Intent(accessActivity.getApplicationContext(), MainScreen.class));
                 }
             }
 
@@ -458,7 +455,7 @@ public class UserRepository {
     }
 
     public void setUserRecetaCollectionDDB(Recipe recipe, boolean saved) {
-        User user =  UserRepository.getUser();
+        final User user =  UserRepository.getUser();
         HashMap<String, Boolean> idCollectionUser = user.getIdCollections();
 
         ArrayList<String> actualCollection =  new ArrayList<>(idCollectionUser.keySet());

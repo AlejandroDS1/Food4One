@@ -8,14 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.Model.User.UserRepository;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentSavedBinding;
@@ -55,19 +53,19 @@ public class SavedFragment extends Fragment {
                     mRecipeCardAdapter.notifyDataSetChanged();
             }
         };
-
         coleccionViewModel.getmRecipes().observe(this.getViewLifecycleOwner(), observerRecipes);
 
-        final Observer<String> observerEmptys = new Observer<String>() {
+        RecipeRepository.getInstance().setOnLoadRecetaCollectionListener(new RecipeRepository.OnLoadRecipeCollection() {
             @Override
-            public void onChanged(String s) {
-                if(s.equals("VISIBLE"))
+            public void onLoadRecipeCollection(ArrayList<Recipe> recetas) {
+                coleccionViewModel.setRecipes(recetas);
+
+                if (recetas.isEmpty())
                     binding.emptymessage.setVisibility(View.VISIBLE);
-                else if (s.equals("GONE"))
+                else
                     binding.emptymessage.setVisibility(View.GONE);
             }
-        };
-        coleccionViewModel.getEmptySignal().observe(this.getViewLifecycleOwner(), observerEmptys);
+        });
     }
 
     private void cargarRecycleView() {

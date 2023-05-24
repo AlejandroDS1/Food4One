@@ -52,7 +52,6 @@ public class DoRecipeActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-
         homeViewModel = HomeViewModel.getInstance();
 
         recipeToMake = homeViewModel.getDoRecipe().getValue();
@@ -202,15 +201,22 @@ public class DoRecipeActivity extends AppCompatActivity {
         }
 
         private final class ViewHolder extends RecyclerView.ViewHolder {
-
             private final CheckBox checkBox;
+            private final TextView cantidad;
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                checkBox = itemView.findViewById(R.id.mIngrediente_doRecipe);
+                checkBox = itemView.findViewById(R.id.ingredienteName_doRecipe);
+                cantidad = itemView.findViewById(R.id.cantidadymagnitud_doRecipe);
             }
 
             public void onBind(final String ingrediente){
-                checkBox.setText(Ingrediente.Id_toString(ingrediente));
+
+                // Creamos un objeto ingrediente que decodifica el ingrediente por la id
+                final Ingrediente _ingrediente = new Ingrediente(ingrediente);
+
+                checkBox.setText(_ingrediente.getName()); // Ponemos el nombre del ingrediente en el checkbox
+                cantidad.setText(_ingrediente.getCantidadStr());
+
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {

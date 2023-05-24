@@ -53,7 +53,13 @@ public class Recipe {
         return likeFromUser;
     }
 
-    public Recipe(String nombre, IngredientesList ingredientes, String pictureURL, String Description, int likes, ArrayList<String> pasos) {
+    public Recipe(final String nombre,
+                  final IngredientesList ingredientes,
+                  final String pictureURL,
+                  final String Description,
+                  final  int likes,
+                  final ArrayList<String> pasos) {
+
         this.nombre = nombre;
         this.ingredientes = ingredientes;
         this.PictureURL = pictureURL;

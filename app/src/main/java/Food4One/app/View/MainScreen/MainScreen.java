@@ -12,15 +12,10 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import Food4One.app.R;
-import Food4One.app.ViewModel.MainScreenViewModel;
 import Food4One.app.databinding.ActivityMainScreenBinding;
 
 public class MainScreen extends AppCompatActivity {
     private ActivityMainScreenBinding binding;
-
-    private MainScreenViewModel mainScreenViewModel;
-
-    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +45,4 @@ public class MainScreen extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
     }
-
-
 }

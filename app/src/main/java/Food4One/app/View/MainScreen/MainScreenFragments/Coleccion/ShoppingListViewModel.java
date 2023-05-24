@@ -12,8 +12,6 @@ import java.util.Map;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
-import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
 public class ShoppingListViewModel extends ViewModel {
@@ -24,10 +22,15 @@ public class ShoppingListViewModel extends ViewModel {
     private final MutableLiveData<IngredientesList> checkedItems;
     // Listener atributes
     public List<OnChangedListsListener> onChangedListsListener;
+    private OnListIsEmptyListener onListIsEmptyListener;
 
     // Definicion de las interficies para listeners
     public interface OnChangedListsListener{
         void onChangedListListener();
+    }
+
+    public interface OnListIsEmptyListener{
+        void onListIsEmptyListener();
     }
 
     private static ShoppingListViewModel instance;
@@ -54,6 +57,8 @@ public class ShoppingListViewModel extends ViewModel {
         this.onChangedListsListener.add(listener);
     }
 
+    public void setOnListIsEmptyListener(OnListIsEmptyListener listener) {this.onListIsEmptyListener = listener; }
+
     // Metodos ViewModel
     public void loadIngredientesList_fromDDBB() {
         UserRepository.getInstance().loadUserIngredientesList(allLists);
@@ -63,8 +68,9 @@ public class ShoppingListViewModel extends ViewModel {
         UserRepository.getInstance().setOnLoadListIngredientesListener(new UserRepository.OnLoadListIngredientesListener() {
             @Override
             public void onLoadListIngredientes() {
+                if (allLists.getValue() == null) allLists.setValue(new HashMap<>());
                 if (allLists.getValue().isEmpty()) { // Si es igual a null es porque no tiene ingerdientes guardados
-
+                    onListIsEmptyListener.onListIsEmptyListener();
                 }else // Si no es null es porque hay una lista.
                     if (onChangedListsListener != null)
                         for (OnChangedListsListener listener : onChangedListsListener)

@@ -10,10 +10,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -205,4 +202,8 @@ public class PerfilViewModel extends ViewModel {
         return mUserRepository.mOnLoadUserDescritionListener;
     }
 
+    public void deleteRecipeDDBB(@NonNull final Recipe recipe){
+        RecipeRepository.getInstance().deleteRecipeDDBB(recipe.getNombre());
+        this.mRecetas.getValue().remove(recipe);
+    }
 }

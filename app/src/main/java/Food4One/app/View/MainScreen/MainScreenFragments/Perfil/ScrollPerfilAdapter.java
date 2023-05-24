@@ -78,60 +78,58 @@ public interface OnClickDoRecipeUser {
         return mRecetes.size();
     }
 
-/**
- * Classe ViewHolder. No és més que un placeholder de la vista
- * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
- * però es pot fer dins.
- */
-public static class ViewHolder extends RecyclerView.ViewHolder {
-    private final TextView mrecipeName;
-    private final ImageView mCardUserPictureURL;
-    private final ImageView mCardRecetaPictureUrl;
-    private final TextView mCardNumberLikes;
-    private final TextView mCardDescription;
+    /**
+     * Classe ViewHolder. No és més que un placeholder de la vista (user_card_list.xml)
+     * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
+     * però es pot fer dins.
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView mrecipeName;
+        private final ImageView mCardUserPictureURL;
+        private final ImageView mCardRecetaPictureUrl;
+        private final TextView mCardNumberLikes;
+        private final TextView mCardDescription;
 
-    public ViewHolder(@NonNull View itemView) {
-        super(itemView);
-        this.mrecipeName = itemView.findViewById(R.id.nombreDetailReceta);
-        this.mCardNumberLikes = itemView.findViewById(R.id.likesDetailRecipe);
-        this.mCardDescription = itemView.findViewById(R.id.decriptionDetailReceta);
-        this.mCardUserPictureURL = itemView.findViewById(R.id.pictureUserReceta);
-        this.mCardRecetaPictureUrl = itemView.findViewById(R.id.pictureDetailReceta);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.mrecipeName = itemView.findViewById(R.id.nombreDetailReceta);
+            this.mCardNumberLikes = itemView.findViewById(R.id.likesDetailRecipe);
+            this.mCardDescription = itemView.findViewById(R.id.decriptionDetailReceta);
+            this.mCardUserPictureURL = itemView.findViewById(R.id.pictureUserReceta);
+            this.mCardRecetaPictureUrl = itemView.findViewById(R.id.pictureDetailReceta);
 
-    }
+        }
 
-    public void bind(final Recipe recetaUser, ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
+        public void bind(final Recipe recetaUser, ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
 
-        mrecipeName.setText(recetaUser.getNombre());
-        mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
-        mCardDescription.setText(UserRepository.getUser().getUserName() +"  "+ recetaUser.getDescription());
+            mrecipeName.setText(recetaUser.getNombre());
+            mCardNumberLikes.setText( Integer.toString(recetaUser.getLikes()) );
+            mCardDescription.setText(UserRepository.getUser().getUserName() +"  "+ recetaUser.getDescription());
 
-        cargarPhotoUserAndRecipe(recetaUser);
-        mrecipeName.setOnClickListener( view->{
-                listener.OnClickDoRecipe(recetaUser);
+            cargarPhotoUserAndRecipe(recetaUser);
+            mrecipeName.setOnClickListener( view->{
+                    listener.OnClickDoRecipe(recetaUser);
             });
 
-    }
+        }
 
-    private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
-        //Es carrega l'imatge de la receta i del User d'internet
-        Picasso.get().load(recetaUser.getPictureURL())
-                .resize(980, 900)
-                .centerCrop().into(mCardRecetaPictureUrl);
+        private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
+            //Es carrega l'imatge de la receta i del User d'internet
+            Picasso.get().load(recetaUser.getPictureURL())
+                    .resize(980, 900)
+                    .centerCrop().into(mCardRecetaPictureUrl);
 
-        String url = UserRepository.getUser().getProfilePictureURL();
+            String url = UserRepository.getUser().getProfilePictureURL();
 
-        if ( url!=null) {
-            if (!url.equals(" "))
-                Picasso.get().load(url)
-                        .resize(200, 200)
-                        .centerCrop().into(mCardUserPictureURL);
-            else
+            if (url != null) {
+                if (!url.equals(" "))
+                    Picasso.get().load(url)
+                            .resize(200, 200)
+                            .centerCrop().into(mCardUserPictureURL);
+                else
+                    mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
+            } else
                 mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
-        }else
-            mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
-
+        }
     }
-}
-
 }
