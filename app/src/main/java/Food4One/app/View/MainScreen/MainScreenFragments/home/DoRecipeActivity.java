@@ -70,7 +70,6 @@ public class DoRecipeActivity extends AppCompatActivity {
                 addToListView.setVisibility(View.VISIBLE);
                 cargarAddToLis(R.anim.recycle_view_right_fadein);
                 binding.addIngredientePlus.setText("  -  ");
-
             }else {
                 //La carta es visible, la movemos y esperamos la animación para quita la visibilidad
                 cargarAddToLis(R.anim.recycle_view_right_fideout);
