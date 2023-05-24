@@ -51,7 +51,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".View.Authentification.AccessActivity"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,15 +61,15 @@ public class ScrollPerfilFragment extends Fragment {
                         for(Recipe receta: perfilViewModel.getRecetes().getValue())
                             recetas.add(receta);
 
-                        Collections.reverse(recetas);
+                        //Collections.reverse(recetas);
 
                         // Set the data on the RecyclerView adapter
                         //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles
-                        mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas);
+                        mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas, perfilViewModel);
 
                         mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
-                        if(focusSelection!= RecyclerView.NO_POSITION)
-                            mRecetaCardsRV.scrollToPosition(focusSelection);
+                        //if(focusSelection!= RecyclerView.NO_POSITION)
+                         //   mRecetaCardsRV.scrollToPosition(focusSelection);
                         mCardRecetaRVAdapter.setOnClickDetailListener(new ScrollPerfilAdapter.OnClickDoRecipeUser() {
                             @Override
                             public void OnClickDoRecipe(Recipe recipeToDo) {
@@ -111,5 +113,20 @@ public class ScrollPerfilFragment extends Fragment {
                 getActivity().getSupportFragmentManager().popBackStackImmediate();
             });
 
+
+        //Hay que completar toda la vista antes de hacer el ScrollToPosition
+        final Observer<String> dataCargada = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(s.equals("RecycleView Cargarda")) {
+                    if (focusSelection != RecyclerView.NO_POSITION)
+                        mRecetaCardsRV.smoothScrollToPosition( focusSelection);
+                    perfilViewModel.getmText().setValue(" ");
+                }
+            }
+        };
+        perfilViewModel.getmText().observe(this.getViewLifecycleOwner(), dataCargada);
+
     }
+
 }

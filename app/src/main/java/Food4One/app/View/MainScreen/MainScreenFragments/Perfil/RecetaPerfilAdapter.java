@@ -28,7 +28,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
 
     private OnClickDetailListener mOnClickHideListener; // Qui hagi de repintar la ReciclerView
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
-
     public static int screenWidth = 10;
 
     // quan s'amagui
@@ -42,7 +41,7 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
      * quan l'usuari faci clic en la creu (amagar) algún dels items de la RecyclerView
      */
     public interface OnClickDetailListener {
-        void OnClickDetail(int positionX, int positionY);
+        void OnClickDetail(int position);
     }
 
 
@@ -94,8 +93,6 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
     public int getItemCount() {
         return mRecetes.size();
     }
-
-
         /**
          * Classe ViewHolder. No és més que un placeholder de la vista (recetaview_card.xml)
          * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
@@ -145,7 +142,7 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
                 // listeners de tipus OnClickHideListener.
 
                 recipeCard.setOnClickListener(view->{
-                       listener.OnClickDetail(getAdapterPosition(), view.getScrollY());
+                       listener.OnClickDetail(getAdapterPosition());
                 });
 
                 recipeCard.setOnLongClickListener(new View.OnLongClickListener() {

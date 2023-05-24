@@ -50,7 +50,7 @@ public class PerfilViewModel extends ViewModel {
     public PerfilViewModel() {
 
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fra1gment");
+        mText.setValue("This is notifications fragment");
 
         mUsers = new MutableLiveData<>(new ArrayList<>());
         mStorage = FirebaseStorage.getInstance();
@@ -96,13 +96,6 @@ public class PerfilViewModel extends ViewModel {
                 PerfilViewModel.this.setRecetes(recetas);
             }
         });
-
-        /*mRecetaRepository.setOnLoadUserPictureListener(new RecetaUserRepository.OnLoadRecetaPictureUrlListener() {
-            @Override
-            public void OnLoadRecetaPictureUrl(String pictureUrl) {
-                mPictureUrl.setValue(pictureUrl);
-            }
-        });*/
     }
 
     private void userPictureliteners() {
@@ -136,6 +129,11 @@ public class PerfilViewModel extends ViewModel {
     public LiveData<ArrayList<Recipe>> getRecetes() {
         return mRecetas;
     }
+
+    public MutableLiveData<String> getmText() {
+        return mText;
+    }
+
     /*
      * Retorna el LiveData de la URL de la foto per a què PerfilFragment
      * pugui subscriure-hi l'observable.
@@ -143,24 +141,6 @@ public class PerfilViewModel extends ViewModel {
     public LiveData<String> getPictureProfileUrl() { return mPictureUrl;  }
     public MutableLiveData<String> getmUserName() { return mUserName;  }
     public MutableLiveData<String> getmDescription() { return mDescription;  }
-
-    public void loadIDRecetasUser(String email, User user){
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection(User.TAG).document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult();
-                ArrayList<String> recetasID = new ArrayList<>((ArrayList<String>) document.get(User.IDRECETAS_TAG));
-                for (String id : recetasID)
-                    user.addIdReceta(id);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("No se pudieron cargar los id's");
-            }
-        });
-    }
     public void setRecetes(ArrayList<Recipe> recetas) {
         mRecetas.setValue(recetas);
     }

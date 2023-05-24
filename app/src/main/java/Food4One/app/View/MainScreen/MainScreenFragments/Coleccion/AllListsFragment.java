@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentAllListsBinding;
 
@@ -44,14 +45,26 @@ public class AllListsFragment extends Fragment {
         viewModel = ShoppingListViewModel.getInstance();
 
         initAdapters();
+        changeAllListListener();
 
         return binding.getRoot();
     }
 
+    void changeAllListListener(){
+        UserRepository.getInstance().setOnSetListIngredientesListener(new UserRepository.OnSetListIngredientesListener() {
+            @Override
+            public void onSetListIngredientes(boolean state) {
+                if(state)
+                    binding.listAllLists.getAdapter().notifyDataSetChanged();
+            }
+        });
+
+    }
 
     private void initAdapters() {
 
         binding.listAllLists.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.listAllLists.setAdapter(new AllListsAdapter(viewModel.getAllListsNames()));
 
         viewModel.setOnChangedListsListener(new ShoppingListViewModel.OnChangedListsListener() {
             @Override
@@ -60,18 +73,6 @@ public class AllListsFragment extends Fragment {
             }
         });
 
-        viewModel.setOnDeletedListListener(new ShoppingListViewModel.OnDeletedListItem() {
-            @Override
-            public void onDeletedlistItemListener(Object listRemoved) {
-                AllListsAdapter adapter = ((AllListsAdapter)binding.listAllLists.getAdapter());
-
-                final int PREV_POS = adapter.allLists.indexOf((String) listRemoved);
-
-                if (PREV_POS == -1) return;
-
-                adapter.allLists.remove(PREV_POS); adapter.notifyItemRemoved(PREV_POS);
-            }
-        });
     }
 
     public class AllListsAdapter extends RecyclerView.Adapter<AllListsAdapter.ViewHolder> {
@@ -156,10 +157,6 @@ public class AllListsFragment extends Fragment {
                                 Toast.makeText(getContext(), "Introduce un nombre diferente", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            // Si el nombre de la receta es correcto, lo introducimos en la base de datos.
-
-                            // TODO FALTA SUBIRLO A BASE DE DATOS
-                            //  Estaria bien usar otro hilo quizas
 
                             viewModel.changeListName(newListaName, listaName);
 
@@ -171,17 +168,20 @@ public class AllListsFragment extends Fragment {
                     view.findViewById(R.id.eliminarLista_Btn_dialogAllLists).setOnClickListener(deleteLista -> {
 
                         // Lanzamos este codigo en otro hilo para la subida a la base de datos de la modificacion en las listas.
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                viewModel.deleteList(listaName); // Eliminamos la lista, tambien en base de datos.
-                            }
-                        }).start();
+                        viewModel.deleteList(listaName); // Eliminamos la lista, tambien en base de datos.
+
+                        allLists.remove(getAdapterPosition());
+                        notifyItemRemoved(getAdapterPosition());
                         alert.dismiss();
                     });
                     alert.show();
                 });
             }
+
         }
     }
+
+
+
+
 }

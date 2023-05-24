@@ -198,6 +198,11 @@ public class RecipeRepository {
     public void loadRecetasUser(ArrayList<Recipe> recetaUsers, ArrayList<String> idRecetasUser, String fragment) {
         recetaUsers.clear();
         //Se cargan todas las recetas de la base de datos...
+        if(fragment.equals("COLLECTION"))
+            if(idRecetasUser.isEmpty()) {
+                mOnLoadRecipeCollection.onLoadRecipeCollection(recetaUsers);
+                return;
+            }
 
         Iterator iterator = idRecetasUser.iterator();
         String userID = UserRepository.getUser().getEmail();
@@ -238,9 +243,6 @@ public class RecipeRepository {
                 }
             });
         }
-        if(fragment.equals("COLLECTION"))
-            if(idRecetasUser.isEmpty())
-                mOnLoadRecipeCollection.onLoadRecipeCollection(recetaUsers);
     }
 
 

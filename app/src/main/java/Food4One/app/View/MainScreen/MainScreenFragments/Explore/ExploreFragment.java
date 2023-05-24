@@ -44,10 +44,14 @@ public class ExploreFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerViewExplorer.scrollToPosition(0);
+    }
 
     private void recicleInit() {
         adapter = new ExplorerScrollAdapter(mViewModel.getRecetas().getValue(), mViewModel);
-
 
         recyclerViewExplorer = binding.explorerRecycleView;
         //Ahora le definimos un Manager Recycle View. (Deslizar verticalmente el Recycle)
@@ -63,6 +67,7 @@ public class ExploreFragment extends Fragment {
         final Observer<ArrayList<Recipe>> observerRecetes = new Observer<ArrayList<Recipe>>() {
             @Override
             public void onChanged(ArrayList<Recipe> recetas) {
+
                 adapter.notifyDataSetChanged();
             }
         };

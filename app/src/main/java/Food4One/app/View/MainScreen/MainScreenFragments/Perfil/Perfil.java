@@ -159,9 +159,9 @@ public class Perfil extends Fragment {
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
             @Override
-            public void OnClickDetail(int positionX, int positionY) {
+            public void OnClickDetail(int position) {
                 //Al clicar se abrirá un nuevo Fragment
-                initScrollViewRecipes(positionX, positionY);
+                initScrollViewRecipes(position);
             }
         });
 
@@ -171,12 +171,10 @@ public class Perfil extends Fragment {
         mLoggedPictureUser = binding.avatarusuario;
         mTakePictureButton = binding.photobuttomPerfil;
     }
-    private void initScrollViewRecipes(int position, int positionY) {
+    private void initScrollViewRecipes(int position) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("RecycleViewPosition", position);
-        bundle.putInt("X", position);
-        bundle.putInt("Y", positionY);
 
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -271,11 +269,9 @@ public class Perfil extends Fragment {
         });
     }
 
-
     private void initEditPerfilWindow() {
         startActivity(new Intent(this.getContext(), EditProfileScreen.class));
     }
-
 
     @Override
     public void onResume() {

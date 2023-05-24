@@ -36,7 +36,6 @@ public class MainScreen extends AppCompatActivity {
 
     }
     private void init(){
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         // Passing each menu ID as a set of Ids because each
@@ -52,12 +51,5 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_mainscreen);
-        navController.navigateUp();
-        navController.navigate(R.id.navigation_explore);
-    }
 }

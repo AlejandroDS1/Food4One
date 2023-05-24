@@ -49,8 +49,8 @@ public class ShoppingListFragment extends Fragment {
 
         initView();
 
+        //Al precionar Back en este fragment, hay que regresar al fragment del Tab
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-
             @Override
             public void handleOnBackPressed() {
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -63,15 +63,6 @@ public class ShoppingListFragment extends Fragment {
     }
 
     private void initView() {
-        // Boton para actualizar el firebase
-        binding.guardarEnFireBaseShoppingListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                viewModel.addIngredientesList_toDDBB(((ShoppingListAdapter)binding.checkedItems.getAdapter()).getAllLists_toStore());
-            }
-        });
-
         binding.listaNameShoppingList.setText(viewModel.getCheckedItemsList().getValue().getListName());
     }
 

@@ -37,13 +37,12 @@ import Food4One.app.databinding.ActivityDoRecipeBinding;
 
 
 public class DoRecipeActivity extends AppCompatActivity {
-
-    ActivityDoRecipeBinding binding;
-    private HomeViewModel homeViewModel;
-    private Recipe recipeToMake;
     private IngredienteAdapter ingredientsAdapter;
+    private HomeViewModel homeViewModel;
     private StepsAdapter stepsAdapter;
+    ActivityDoRecipeBinding binding;
     private CardView addToListView;
+    private Recipe recipeToMake;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +101,12 @@ public class DoRecipeActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DoRecipeActivity.this);
 
-        View view = View.inflate(getApplicationContext(), R.layout.alert_dialog_add_ingerdientes_tolist, null);
+        View dialog = View.inflate(getApplicationContext(), R.layout.alert_dialog_add_ingerdientes_tolist, null);
 
-        builder.setView(view);
-        final ListView listNames = view.findViewById(R.id.listNames_addIngredientes_listview);
+        builder.setView(dialog);
+        final ListView listNames = dialog.findViewById(R.id.listNames_addIngredientes_listview);
 
-        final EditText listaName = view.findViewById(R.id.texto_listaName_alertdialog);
+        final EditText listaName = dialog.findViewById(R.id.texto_listaName_alertdialog);
 
         final List<String> userListNames = ShoppingListViewModel.getInstance().getAllListsNames();
 
@@ -132,20 +131,19 @@ public class DoRecipeActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
 
         // Boton para guardar en base de datos
-        view.findViewById(R.id.BtnGuardar_addToList).setOnClickListener(guardarDDBB -> {
+        dialog.findViewById(R.id.BtnGuardar_addToList).setOnClickListener(guardarDDBB -> {
 
             // Creamos un nuevo hilo para subir las recetas, de esta manera si la conexion es lenta da la ilusion de que va mas rapido
             new Thread(new Runnable(){
                 @Override
                 public void run() {
                     ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes, listaName.getText().toString());
-                    Toast.makeText(getApplicationContext(), "Ingredientes añadidos", Toast.LENGTH_SHORT).show();
                 }
             }).start();
             alert.dismiss();
         });
 
-        view.findViewById(R.id.BtnCancelar_addToList).setOnClickListener(cancelar -> { alert.dismiss(); });
+        dialog.findViewById(R.id.BtnCancelar_addToList).setOnClickListener(cancelar -> { alert.dismiss(); });
 
         alert.show();
     }

@@ -30,13 +30,11 @@ public class SavedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        coleccionViewModel =
-                new ViewModelProvider(this).get(ColeccionViewModel.class);
+        coleccionViewModel = ColeccionViewModel.getInstance();
 
         binding = FragmentSavedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        cargarReceptesUsuari();
         binding.emptymessage.setVisibility(View.GONE);
 
         cargarRecycleView();
@@ -46,13 +44,6 @@ public class SavedFragment extends Fragment {
     }
 
 
-    private void cargarReceptesUsuari() {
-        // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
-
-       // if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-        // Internament pobla les receptes de la BBDD
-        coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet()));
-    }
 
     private void observerObjectsView() {
         // Observer a coleccionFragment per veure si la llista de receptes (observable MutableLiveData)
@@ -60,7 +51,8 @@ public class SavedFragment extends Fragment {
         final Observer<ArrayList<Recipe>> observerRecipes = new Observer<ArrayList<Recipe>>() {
             @Override
             public void onChanged(ArrayList<Recipe> users) {
-                mRecipeCardAdapter.notifyDataSetChanged();
+                if(! users.isEmpty())
+                    mRecipeCardAdapter.notifyDataSetChanged();
             }
         };
 

@@ -12,6 +12,8 @@ import java.util.Map;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 
 public class ShoppingListViewModel extends ViewModel {
@@ -20,19 +22,12 @@ public class ShoppingListViewModel extends ViewModel {
 //    private final MutableLiveData<List<IngredientesList>> allLists;
     private final MutableLiveData<IngredientesList> unCheckedItems;
     private final MutableLiveData<IngredientesList> checkedItems;
-
     // Listener atributes
     public List<OnChangedListsListener> onChangedListsListener;
-
-    public OnDeletedListItem onDeletedListItem;
 
     // Definicion de las interficies para listeners
     public interface OnChangedListsListener{
         void onChangedListListener();
-    }
-
-    public interface OnDeletedListItem {
-        void onDeletedlistItemListener(Object listRemoved);
     }
 
     private static ShoppingListViewModel instance;
@@ -55,9 +50,9 @@ public class ShoppingListViewModel extends ViewModel {
     }
 
     // Metodos para asignar los listeners
-    public void setOnChangedListsListener(OnChangedListsListener listener){ this.onChangedListsListener.add(listener); }
-    public void setOnDeletedListListener(OnDeletedListItem listener) {this.onDeletedListItem = listener; }
-
+    public void setOnChangedListsListener(OnChangedListsListener listener){
+        this.onChangedListsListener.add(listener);
+    }
 
     // Metodos ViewModel
     public void loadIngredientesList_fromDDBB() {
@@ -131,15 +126,20 @@ public class ShoppingListViewModel extends ViewModel {
     public void addIngredientesList_toDDBB(@NonNull final List<String> ingredientes, @NonNull final String listName){
 
         Map<String, Boolean> newList = new HashMap<>();
+        //Habrá el caso en que el usuario cree una nueva lista, así que hay que ver si existe en la App
+        Map<String, Boolean>  actualMap =  allLists.getValue().get(listName);
+
+        //Si no es una nueva entonces hay que guardar los nuevos ingredientes con la actual.
+        if(actualMap!= null)
+            newList.putAll(actualMap);
 
         for(final String in: ingredientes)
             newList.put(in, false);
 
-        // TODO de momento no compruebo si hay otra lista que se llama igual a si que se sobreescribe
         this.allLists.getValue().put(listName, newList);
-
         updateIngredientesList();
     }
+
     public void addIngredientesList_toDDBB(@NonNull final IngredientesList ingredientes){
 
         Map<String, Boolean> newList = new HashMap<>();
@@ -164,7 +164,7 @@ public class ShoppingListViewModel extends ViewModel {
         allLists.getValue().remove(prevListName);
         allLists.getValue().put(newListaName, ingredientesList);
 
-        // TODO CAMBIAR EN BASE DE DATOS
+        this.deleteList(prevListName);
     }
 
 
@@ -178,10 +178,9 @@ public class ShoppingListViewModel extends ViewModel {
         if (this.allLists.getValue().get(listaName) == null) return;
 
         // Si se ha encontrado la lista, eliminamos la lista, y actualizamos la base de datos.
-        this.allLists.getValue().remove(listaName);
 
-        updateIngredientesList(); // Eliminamos de base de datos
+        //updateIngredientesList(); // Cargamos de base de datos
 
-        this.onDeletedListItem.onDeletedlistItemListener(listaName); // Notificamos a los adapters
+        UserRepository.getInstance().deleteListUser(listaName);
     }
 }

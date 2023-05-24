@@ -9,8 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -267,7 +270,7 @@ public class UserRepository {
 
 
     /**
-     * Este metodo actualiza la base de datso de Firebase con las actualizaciones que puedan haber habido en la lista de ingredientes
+     * Este metodo actualiza la base de datos de Firebase con las actualizaciones que puedan haber habido en la lista de ingredientes
      * @param viewModel viewMOdel que contiene el objeto a añadir a base de datos
      */
     public void setUserIngredientesListDDBB(@NonNull final ShoppingListViewModel viewModel){
@@ -481,5 +484,27 @@ public class UserRepository {
                 }).addOnFailureListener(failurelistener-> {
                         Log.d(TAG, "User's Collection is not working");
                     });
+    }
+
+    public void deleteListUser(String listaName) {
+
+        //Borramos el HashMap con el nombre anterior
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(User.IDINGREDIENTES_LIST_TAG+"."+listaName, FieldValue.delete());
+
+        mDb.collection(User.TAG).document(getUser().getEmail()).update(updates)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d(TAG, "Lista Borrada de BASE DE DATOS");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Error al borrar de BASE DE DATOS");
+
+                }
+            });
+
     }
 }

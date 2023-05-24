@@ -11,7 +11,6 @@ import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 
 public class ColeccionViewModel extends ViewModel {
-
     private final MutableLiveData<ArrayList<Recipe>> mRecipes;
     private final MutableLiveData<String> recetasVacias;
     private RecipeRepository mRecetaRepository;
@@ -30,7 +29,6 @@ private static ColeccionViewModel coleccionViewModel;
         mRecetaRepository = RecipeRepository.getInstance();
 
         receptesListener();
-
     }
 
     private void receptesListener() {

@@ -52,7 +52,7 @@ public class ExploreViewModel extends ViewModel {
             mRecipeRepository.loadRecetas(mRecetas.getValue(), "EXPLORER");
     }
 
-    public void setmRecetas(ArrayList<Recipe> recetas){ this.mRecetas.setValue(recetas);    }
+    public void setmRecetas(ArrayList<Recipe> recetas){ this.mRecetas.setValue(recetas); }
 
     public MutableLiveData<ArrayList<Recipe>> getRecetas() { return mRecetas;  }
 

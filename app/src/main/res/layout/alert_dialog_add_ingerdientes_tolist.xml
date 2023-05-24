@@ -51,60 +51,14 @@
         android:paddingStart="5dp"
         android:orientation="horizontal">
 
-        <!--
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:layout_weight="1"
-        />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:visibility="gone"
-        />
-
-        -->
-        <!-- TODO LISTA BACKGROUND DE WILL -->
-
-        <!--
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-
-            android:gravity="center"
-            android:visibility="gone"
-
-            android:textSize="30sp"
-            android:text="+"
-            android:textColor="@color/white"
-            />
-
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-
-            android:gravity="center"
-
-            android:textSize="30sp"
-            android:text="+"
-            android:textColor="@color/white"
-        />
-        -->
 
 
         <EditText
             android:id="@+id/texto_listaName_alertdialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:gravity="center"
-
             android:backgroundTint="@color/naranjaclaro"
-
             android:hint="Nombre de la lista"
             android:textColorHint="@color/naranjaclaro"
             android:textColor="@color/naranjaclaro"
@@ -118,10 +72,9 @@
         android:id="@+id/listNames_addIngredientes_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:scrollbars="vertical"
-
         android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
     />
 
     <TextView

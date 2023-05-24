@@ -28,27 +28,21 @@ public interface OnClickDoRecipeUser {
     void OnClickDoRecipe(Recipe position);
 }
 
-public interface OnClickLikeRecipe{
-    void OnClickLikeRecipe(Recipe recipe);
-}
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
     private ScrollPerfilAdapter.OnClickDoRecipeUser mOnClickDoRecipeListener; // Qui hagi de repintar la ReciclerView
-    private ScrollPerfilAdapter.OnClickLikeRecipe mOnClickLikeRecipeListener;
+    private PerfilViewModel viewModel;
 
     // quan s'amagui
     // Constructor
-    public ScrollPerfilAdapter(ArrayList<Recipe> recetaList) {
+    public ScrollPerfilAdapter(ArrayList<Recipe> recetaList, PerfilViewModel viewModel) {
         this.mRecetes = recetaList; // no fa new (La llista la manté el ViewModel)
-
+        this.viewModel = viewModel;
     }
 
     public void setOnClickDetailListener(ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
         this.mOnClickDoRecipeListener = listener;
     }
 
-    public void setOnClickLikeRecipeListener(ScrollPerfilAdapter.OnClickLikeRecipe listener){
-        this.mOnClickLikeRecipeListener = listener;
-    }
 
     @NonNull
     @Override
@@ -70,6 +64,8 @@ public interface OnClickLikeRecipe{
         // i assignar-los a les variables del ViewHolder.
         // Qualsevol listener que volguem posar a un item, ha d'entrar com a paràmetre extra (2n).
         holder.bind(mRecetes.get(position), this.mOnClickDoRecipeListener);
+        if(position == 0)
+            viewModel.getmText().setValue("RecycleView Cargarda");
     }
 
     /**
@@ -82,33 +78,8 @@ public interface OnClickLikeRecipe{
         return mRecetes.size();
     }
 
-    /**
-     * Mètode que seteja de nou la llista d'usuaris si s'hi han fet canvis de manera externa.
-     *
-     * @param recetes
-     */
-    public void setRecetes(ArrayList<Recipe> recetes) {
-        this.mRecetes = recetes; // no recicla/repinta res
-    }
-
 /**
- * Mètode que repinta la RecyclerView sencera.
-
- public void updateUsers() {------------------------------------------------------------------
- notifyDataSetChanged();
- }
- */
-
-/**
- * Mètode que repinta només posició indicada
- * @param position
-
-public void hideUser(int position) {-------------------------------------------------
-notifyItemRemoved(position);
-}*/
-
-/**
- * Classe ViewHolder. No és més que un placeholder de la vista (user_card_list.xml)
+ * Classe ViewHolder. No és més que un placeholder de la vista
  * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
  * però es pot fer dins.
  */
@@ -163,4 +134,4 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
-    }
+}
