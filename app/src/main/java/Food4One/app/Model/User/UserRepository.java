@@ -460,6 +460,7 @@ public class UserRepository {
 
         ArrayList<String> actualCollection =  new ArrayList<>(idCollectionUser.keySet());
         String recipeName = recipe.getNombre();
+
         if(saved) {
             actualCollection.add(recipeName);
             idCollectionUser.put(recipeName, true);
@@ -467,6 +468,8 @@ public class UserRepository {
             actualCollection.remove(recipeName);
             idCollectionUser.remove(recipeName);
         }
+
+       // user.setIdCollections(idCollectionUser);
 
         HashMap<String, ArrayList<String> > store = new HashMap<>();
         store.put(User.IDCOLLECTIONS_TAG, actualCollection);

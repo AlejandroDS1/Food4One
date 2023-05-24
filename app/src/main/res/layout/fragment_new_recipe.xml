@@ -5,7 +5,7 @@
     android:id="@+id/newRecipeFragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="55dp"
+    android:paddingBottom="65dp"
     android:background="@color/black"
     tools:context=".View.MainScreen.MainScreenFragments.NewRecipe.NewRecipeFragment">
 
@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:paddingBottom="5dp"
             android:orientation="horizontal">
 
              <TextView
@@ -121,7 +121,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/NegroClaroMain"
-                app:cardCornerRadius="20dp">
+                app:cardCornerRadius="20dp"
+                android:layout_marginHorizontal="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -227,14 +228,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/NegroClaroMain"
                 app:cardCornerRadius="20dp">
-
 
                 <EditText
                     android:id="@+id/stepText_newRecipe"
@@ -307,11 +308,12 @@
             android:id="@+id/uploadRecipeBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="70dp"
             android:layout_marginVertical="15dp"
+            android:background="@drawable/botonback"
             android:layout_marginTop="20dp"
             android:text="Publicar Receta"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
 
     </LinearLayout>
 

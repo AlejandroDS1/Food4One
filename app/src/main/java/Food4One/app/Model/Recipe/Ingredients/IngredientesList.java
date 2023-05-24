@@ -2,13 +2,12 @@ package Food4One.app.Model.Recipe.Ingredients;
 
 import androidx.annotation.NonNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class IngredientesList implements Serializable {
+public class IngredientesList{
 
     private String listName; // ID para receta o nombre.
     private ArrayList<Ingrediente> ingredientes;
@@ -36,7 +35,7 @@ public class IngredientesList implements Serializable {
     }
 
     public IngredientesList() { this.ingredientes = new ArrayList<>(); }
-    public ArrayList<Ingrediente> IngredienteId_toIngredienteList(@NonNull final Set<String> _ingredientesId){
+    public static ArrayList<Ingrediente> IngredienteId_toIngredienteList(@NonNull final Set<String> _ingredientesId){
 
         ArrayList<Ingrediente> arr = new ArrayList<>();
 
@@ -140,14 +139,14 @@ public class IngredientesList implements Serializable {
      * @param dbbInput resultado del document de Firebase
      * @return
      */
-    public static List<IngredientesList> mapDDBB_toListIngredientesList(@NonNull final Map<String, Map<String, Boolean>> dbbInput){
+    public List<IngredientesList> mapDDBB_toListIngredientesList(@NonNull final Map<String, Map<String, Boolean>> dbbInput){
 
-        List<IngredientesList> mList = new ArrayList<>();
+        ArrayList<IngredientesList> mList = new ArrayList<>();
 
         if (dbbInput != null){
             final Set<String> listas = dbbInput.keySet();
 
-            for(final String listaName: listas) // Iteramos por cada lista creando los objetos IngredientesList
+            for(String listaName: listas) // Iteramos por cada lista creando los objetos IngredientesList
                 mList.add(new IngredientesList(listaName, dbbInput.get(listaName)));
         }
         return mList;

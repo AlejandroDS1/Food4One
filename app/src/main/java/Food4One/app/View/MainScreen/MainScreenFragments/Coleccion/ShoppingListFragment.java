@@ -1,15 +1,15 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import Food4One.app.R;
@@ -49,7 +49,15 @@ public class ShoppingListFragment extends Fragment {
 
         initView();
 
-        clickListenerObjectsView();
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+
+            @Override
+            public void handleOnBackPressed() {
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setReorderingAllowed(true); //Permet tirar enrere
+                fragmentTransaction.replace(R.id.containerFragmentCollection, new AllListsFragment()).commit();
+            }
+        });
 
         return root;
     }
@@ -76,22 +84,6 @@ public class ShoppingListFragment extends Fragment {
         binding.UnCheckedItems.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(viewModel.getUnCheckedItemsList().getValue(), viewModel)
                                                                 .setSecondList((ShoppingListAdapter) binding.checkedItems.getAdapter()));
-    }
 
-    private void clickListenerObjectsView() {
-        BtnSaved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BtnSaved.setElevation(15);
-                Drawable myDrawable1 = ContextCompat.getDrawable(getContext(), R.drawable.botonback);
-                BtnSaved.setBackground(myDrawable1);
-
-                BtnList.setElevation(0);
-                Drawable myDrawable2 = ContextCompat.getDrawable(getContext(), R.drawable.greybutton);
-                BtnList.setBackground(myDrawable2);
-
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
-            }
-        });
     }
 }

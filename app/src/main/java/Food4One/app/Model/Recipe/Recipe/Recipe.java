@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
+
 public class Recipe {
     public static final String TAG = "Recetas";
     public static final String PICTURE_APP_TAG = "PictureURL";

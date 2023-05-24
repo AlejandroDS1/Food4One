@@ -75,13 +75,17 @@ public class EditProfileScreen extends AppCompatActivity {
         final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
             public void onChanged(String pictureUrl) {
-                if(! pictureUrl.equals(" ")){
-                Picasso.get()
-                        .load(pictureUrl).resize(1000, 1000)
-                        .into(mLoggedPictureUser);
-                UserRepository.getUser().setProfilePictureURL(pictureUrl);
-                }else
+                if(pictureUrl == null)
                     mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
+                else {
+                    if (!pictureUrl.equals(" ")) {
+                        Picasso.get()
+                                .load(pictureUrl).resize(1000, 1000)
+                                .into(mLoggedPictureUser);
+                        UserRepository.getUser().setProfilePictureURL(pictureUrl);
+                    } else
+                        mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
+                }
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this, observerPictureUrl);

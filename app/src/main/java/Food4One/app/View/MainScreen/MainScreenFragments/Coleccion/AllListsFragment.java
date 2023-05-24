@@ -118,7 +118,7 @@ public class AllListsFragment extends Fragment {
 
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.setReorderingAllowed(true).addToBackStack(ShoppingListFragment.TAG); //Permet tirar enrere
-                        fragmentTransaction.add(R.id.coleccionFragment, new ShoppingListFragment());
+                        fragmentTransaction.add(R.id.containerFragmentCollection, new ShoppingListFragment());
                         fragmentTransaction.commit();
                     }
                 });

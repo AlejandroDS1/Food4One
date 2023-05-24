@@ -238,6 +238,9 @@ public class RecipeRepository {
                 }
             });
         }
+        if(fragment.equals("COLLECTION"))
+            if(idRecetasUser.isEmpty())
+                mOnLoadRecipeCollection.onLoadRecipeCollection(recetaUsers);
     }
 
 

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
+import Food4One.app.Model.User.UserRepository;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 
 
 public class ExploreViewModel extends ViewModel {
@@ -55,4 +57,16 @@ public class ExploreViewModel extends ViewModel {
     public MutableLiveData<ArrayList<Recipe>> getRecetas() { return mRecetas;  }
 
     public MutableLiveData<String> getUserURLFromRecipe(){return userURLFromRecipe;}
+
+
+    public void onClikDoRecipe(Recipe recipe) {
+        HomeViewModel.getInstance().loadRecipeToMake(recipe);
+    }
+    public void onClickLikeRecipe(Recipe recipe, boolean like) {
+        UserRepository.getInstance().setUserLikeDDB(recipe,like );
+    }
+
+    public void onClickSaveRecipe(Recipe recipe, boolean saved) {
+        UserRepository.getInstance().setUserRecetaCollectionDDB(recipe, saved);
+    }
 }

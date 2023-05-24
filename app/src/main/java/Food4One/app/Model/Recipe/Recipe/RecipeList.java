@@ -1,6 +1,5 @@
 package Food4One.app.Model.Recipe.Recipe;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class RecipeList {
