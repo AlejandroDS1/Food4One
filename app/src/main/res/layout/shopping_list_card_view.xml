@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardView_shoppingList"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/linearLayout_shoppingList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/black"
-    android:layout_marginVertical="3dp"
-    android:layout_marginHorizontal="3dp"
-    app:cardCornerRadius="20dp">
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,37 +14,34 @@
         android:paddingHorizontal="10dp"
         android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/ingrediente_CB"
-                android:layout_width="300dp"
-                android:layout_height="70dp"
-                android:text="Arroz con patatas"
-                android:textSize="18dp"
-                android:clickable="false"
-                android:paddingStart="5dp">
+        <CheckBox
+            android:id="@+id/ingrediente_CB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-            </CheckBox>
+            android:layout_weight="1"
 
-            <TextView
-                android:id="@+id/cantidad_txt"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:text="100 Gr"
-                android:textSize="16dp">
+            android:text="Arroz con patatas"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:clickable="false"
+            android:paddingStart="5dp">
 
-            </TextView>
+        </CheckBox>
 
-            <TextView
-                android:id="@+id/multiplicador_txt"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="x1"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+        <TextView
+            android:id="@+id/cantidad_txt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_weight="5"
+
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="100 Gr"
+            android:textSize="16dp">
+
+        </TextView>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>

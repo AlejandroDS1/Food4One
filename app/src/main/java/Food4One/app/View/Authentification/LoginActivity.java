@@ -11,8 +11,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private EditText userName, passwordUser;
     private Button in;
-    private TextView registrarse;
+    private TextView registrarse, olvidarContraseña;
     private FirebaseUser currentUser;
     /*En este atributo de guardan a todos los usuarios logeados de la App,
      * cuando el usuario consiga entrar a la App, lo guardaremos en este atributo y en
@@ -78,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                             mUserRespository.addUser(userName, email);
                                             UserRepository.getUser(userName, email); // Creamos el objeto user.
                                         } else{
-                                            mUserRespository.loadUserFromDDB(email, new AccessActivity(), new AccesActivityViewModel());
+                                            mUserRespository.loadUserFromDDB(email);
                                         }
 
                                         //Cuando vaya bien empezará la ventana Main
@@ -110,6 +112,25 @@ public class LoginActivity extends AppCompatActivity {
             //Inicio directamente la ventana para registrarse
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
+
+        olvidarContraseña.setOnClickListener(v->{
+            String email = userName.getText().toString();
+
+            if(email.isEmpty() || ! Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Para una nueva contraseña necesitamos el correo", Toast.LENGTH_SHORT).show();
+                userName.setError("Correo Inválido");
+            }else
+                auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), "Correo de Recuperación enviado", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+        });
+
     }
 
 
@@ -119,8 +140,8 @@ public class LoginActivity extends AppCompatActivity {
         userName = findViewById(R.id.editTextTextEmailAddress);
         passwordUser = findViewById(R.id.editTextRegisterPassword);
         registrarse = findViewById(R.id.registrarse);
+        olvidarContraseña = this.findViewById(R.id.forgotPassword);
         in = findViewById(R.id.entrarBtn);
-
     }
 
     /*Este método se llama después de haber pasado a otras ventanas, en nuestro caso sería el

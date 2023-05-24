@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/NegroClaroMain"
+    android:layout_width="match_parent"
+    android:theme="@style/Theme.AppCompat"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginVertical="5dp"
+        android:gravity="center"
+        android:paddingVertical="5dp"
+
+        android:text="Añade los ingredientes a una lista"
+        android:textColor="@color/orange"
+        android:textStyle="bold"
+        android:textSize="18sp">
+
+    </TextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginHorizontal="3dp"
+        android:layout_marginVertical="3dp"
+        android:background="@color/white">
+
+    </View>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginVertical="5dp"
+        android:gravity="center"
+
+        android:textSize="14sp"
+        android:text="Escribe un nombre o seleciona una lista"
+        android:textColor="@color/naranjaclaro"
+    />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingStart="5dp"
+        android:orientation="horizontal">
+
+
+
+        <EditText
+            android:id="@+id/texto_listaName_alertdialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:backgroundTint="@color/naranjaclaro"
+            android:hint="Nombre de la lista"
+            android:textColorHint="@color/naranjaclaro"
+            android:textColor="@color/naranjaclaro"
+
+        />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/listNames_addIngredientes_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+    />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+
+        android:layout_marginVertical="10dp"
+
+        android:visibility="gone"
+
+        android:text="No hay listas disponibles"
+        android:textColor="@color/orange"
+        android:textSize="20sp"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/BtnCancelar_addToList"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+
+            android:paddingVertical="5dp"
+            android:gravity="center"
+
+
+            android:textColor="@color/orange"
+            android:textSize="18sp"
+            android:text="Cancelar">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/BtnGuardar_addToList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:paddingVertical="5dp"
+            android:gravity="center"
+
+            android:textColor="@color/orange"
+            android:textSize="18sp"
+            android:text="Guardar">
+
+        </TextView>
+
+    </LinearLayout>
+
+</LinearLayout>

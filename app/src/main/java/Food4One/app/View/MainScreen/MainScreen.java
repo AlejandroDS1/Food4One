@@ -12,22 +12,16 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import Food4One.app.R;
-import Food4One.app.ViewModel.MainScreenViewModel;
 import Food4One.app.databinding.ActivityMainScreenBinding;
 
 public class MainScreen extends AppCompatActivity {
-    private ActivityMainScreenBinding binding;
-
-    private MainScreenViewModel mainScreenViewModel;
-
-    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Conseguimos el Layout con el binding
-        binding = ActivityMainScreenBinding.inflate(getLayoutInflater());
+        ActivityMainScreenBinding binding = ActivityMainScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
 
@@ -36,7 +30,6 @@ public class MainScreen extends AppCompatActivity {
 
     }
     private void init(){
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         // Passing each menu ID as a set of Ids because each

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,10 +7,80 @@
     android:background="@color/black"
     tools:context=".View.MainScreen.MainScreenFragments.Coleccion.ShoppingListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shooping_recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"/>
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/listaName_shoppingList"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginVertical="10dp"
+            android:gravity="center"
+
+            android:text="Nombre lista"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:textColor="@color/orange">
+        </TextView>
+
+        <!--
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingVertical="10dp"
+
+            android:text="Not Checked"
+            android:textSize="20sp"
+            android:textColor="@color/orange">
+
+        </TextView>
+
+        -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/UnCheckedItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+
+            android:layout_marginHorizontal="5dp"
+            android:background="@color/white">
+
+        </View>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingVertical="5dp"
+
+            android:text="Checked"
+            android:textSize="20sp"
+            android:textColor="@color/orange">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/checkedItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
