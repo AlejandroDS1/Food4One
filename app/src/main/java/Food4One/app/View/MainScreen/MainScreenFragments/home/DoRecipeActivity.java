@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ public class DoRecipeActivity extends AppCompatActivity {
     private HomeViewModel homeViewModel;
     private Recipe recipeToMake;
     private IngredienteAdapter ingredientsAdapter;
+    private StepsAdapter stepsAdapter;
     private CardView addToListView;
 
     @Override
@@ -65,6 +69,8 @@ public class DoRecipeActivity extends AppCompatActivity {
             if(addToListView.getVisibility()== View.GONE) {
                 addToListView.setVisibility(View.VISIBLE);
                 cargarAddToLis(R.anim.recycle_view_right_fadein);
+                binding.addIngredientePlus.setText("  -  ");
+
             }else {
                 //La carta es visible, la movemos y esperamos la animación para quita la visibilidad
                 cargarAddToLis(R.anim.recycle_view_right_fideout);
@@ -72,6 +78,7 @@ public class DoRecipeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         addToListView.setVisibility(View.GONE);
+                        binding.addIngredientePlus.setText("  +  ");
                     }
                 }, 600);
             }
@@ -94,17 +101,17 @@ public class DoRecipeActivity extends AppCompatActivity {
 
         // Inicio de los componentes para la lista de ingredientes
         ingredientsAdapter = new IngredienteAdapter(recipeToMake.getIngredientes().toArrayStringId());
+        // Inicio de los componentes de la lista de pasos
+        stepsAdapter = new StepsAdapter(recipeToMake.getPasos());
 
         binding.ingredientsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        binding.pasosList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         binding.ingredientsList.setAdapter(ingredientsAdapter);
-
-        // Inicio de los componentes de la lista de pasos
-        //binding.pasosList.setAdapter(new ArrayAdapter(getApplicationContext(), R.layout.item_step_do_recipe, recipeToMake.getPasos()));
+        binding.pasosList.setAdapter(stepsAdapter);
 
         //Imagen, Descripción y Nombre de la Receta
         binding.descriptionRecipeToDo.setText(recipeToMake.getDescription());
-
         // Configuracion de la foto de la receta
         ImageView recipePhoto = binding.recipeToDoImage;
 
@@ -128,9 +135,7 @@ public class DoRecipeActivity extends AppCompatActivity {
         @Override
         public IngredienteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
             View view = inflater.inflate(R.layout.item_ingredientes_do_recipe, parent, false);
-
             return new IngredienteAdapter.ViewHolder(view);
         }
 
@@ -163,6 +168,42 @@ public class DoRecipeActivity extends AppCompatActivity {
                             selectedIngredientes.remove(ingrediente);
                     }
                 });
+            }
+        }
+    }
+
+    private static class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder>{
+        ArrayList<String> pasos;
+        public StepsAdapter(ArrayList<String> pasos) {
+            this.pasos = pasos;
+        }
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.item_steps_list_new_recipe, parent, false);
+            return new StepsAdapter.ViewHolder(view);
+        }
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.onBind(this.pasos.get(position), position);
+        }
+        @Override
+        public int getItemCount() {
+            return pasos.size();
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder{
+            TextView pasoString, numSteps;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                pasoString = itemView.findViewById(R.id.stepTxt_newRecipe);
+                numSteps = itemView.findViewById(R.id.numStep_newRecipe);
+            }
+            public void onBind(String step, Integer position){
+                pasoString.setText(step);
+                numSteps.setText(Integer.toString(position+1) );
             }
         }
     }

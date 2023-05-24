@@ -217,13 +217,11 @@ notifyItemRemoved(position);
                 GestureDetector gestureDetector = new GestureDetector(itemView.getContext(), new GestureDetector.SimpleOnGestureListener() {
                     @Override
                     public boolean onDoubleTap(@NonNull MotionEvent e) {
-                        Toast.makeText(itemView.getContext(), "Damos LIke", Toast.LENGTH_SHORT).show();
                         likeAnimMotion(recipe);
                         return super.onDoubleTap(e);
                     }
                     @Override
                     public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
-                        Toast.makeText(itemView.getContext(), "Single Tap Abrimos", Toast.LENGTH_SHORT).show();
                         loadDoRecipe(recipe);
                         return super.onSingleTapConfirmed(e);
                     }

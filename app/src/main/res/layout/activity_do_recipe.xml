@@ -83,6 +83,7 @@
                             android:layout_height="wrap_content"
                             android:background="@color/orange"
                             android:paddingHorizontal="8dp"
+                            android:paddingVertical="6dp"
                             android:text="Añadir a Lista" />
 
                     </androidx.cardview.widget.CardView>
