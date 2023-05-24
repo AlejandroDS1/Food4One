@@ -1,7 +1,10 @@
 package Food4One.app.Model.Recipe.Recipe;
 
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 
@@ -27,7 +30,10 @@ public class Recipe {
     private boolean likeFromUser;
     private String userPhoto; // Foto del usuario
 
-    public Recipe(){} //Para la base de Datos se necesita un constructor sin argumentos...
+    public Recipe(){
+        this.alergias = new ArrayList<>();
+        this.Pasos = new ArrayList<>();
+    } //Para la base de Datos se necesita un constructor sin argumentos...
     //Constructor
     public Recipe(  final String nombre,
                     final String description,
@@ -36,7 +42,7 @@ public class Recipe {
                     final int likes,
                     final ArrayList<String> pasos,
                     final ArrayList<String> alergias
-                  ){
+    ){
         this.nombre = nombre;
         this.Description = description;
         this.PictureURL = pictureURL;
@@ -66,6 +72,7 @@ public class Recipe {
         this.Description = Description;
         this.likes = likes;
         this.Pasos = pasos;
+        this.alergias = new ArrayList<>();
     }
 
     //Getters
@@ -97,5 +104,9 @@ public class Recipe {
 
     public void setPhotoUser(String string) {
         this.userPhoto = string;
+    }
+
+    public void setAlergias(@NonNull final List<String> _alergias) {
+        this.alergias = (ArrayList<String>) _alergias;
     }
 }

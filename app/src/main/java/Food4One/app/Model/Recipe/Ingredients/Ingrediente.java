@@ -6,7 +6,6 @@ public class Ingrediente {
     private String name;
     private float cantidad;
     private String magnitud;
-    private int multiplicador = 1;
     public boolean checked = false;
 
     // ATRIBUTOS OPCIONALES ***************
@@ -27,12 +26,6 @@ public class Ingrediente {
         this.name = items[0];
         this.cantidad = Float.parseFloat(items[1]);
         this.magnitud = items[2];
-        try {
-            this.multiplicador = Integer.parseInt(items[3]);
-        }catch(Exception e){
-            this.multiplicador = 1;
-        }
-
     }
 
     public Ingrediente(final String id, final boolean checked){
@@ -65,7 +58,6 @@ public class Ingrediente {
     public String getCantidadStr(){
         return cantidad + " " + magnitud;
     }
-    public int getMultiplicador(){ return this.multiplicador; }
 
     //Setters
     public void setName(String name) {
@@ -79,21 +71,15 @@ public class Ingrediente {
     public void setMagnitud(String magnitud) {
         this.magnitud = magnitud;
     }
-
-    public void setMultiplicador(final int multiplicador){ this.multiplicador = multiplicador; }
-
     public final String getId(){
         return this.name + "|"
                 + this.cantidad + "|"
-                + this.magnitud.toString() + "|"
-                + this.multiplicador;
+                + this.magnitud;
     }
 
     public boolean equals(Ingrediente ingrediente) {
-
         // Si el nombre del ingrediente es igual, consideramos que es el mismo ingrediente
-        if (ingrediente.getName().equals(this.name)) return true;
-        return false;
+        return ingrediente.getName().equals(this.name);
     }
 
     @Override

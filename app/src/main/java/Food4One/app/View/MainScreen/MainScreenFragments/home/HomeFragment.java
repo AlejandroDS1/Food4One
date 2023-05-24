@@ -22,24 +22,18 @@ public class HomeFragment extends Fragment {
 
     ArrayList<ListRecipes> recetasHome = new ArrayList<>();
     private FragmentHomeBinding binding;
-    private RecyclerView viewRV;
-    private HomeViewModel homeViewModel ;
-    ListRecipesAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        homeViewModel =HomeViewModel.getInstance();
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         //Recetas principales de la App /BARB/PAST/BEBID/ARROZ...
         setupModelRecetasHome();
 
-        viewRV = binding.recycleHomeRecetas;
-        viewRV.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        adapter = new ListRecipesAdapter(getContext(), recetasHome);
-        viewRV.setAdapter(adapter);
+        binding.recycleHomeRecetas.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        binding.recycleHomeRecetas.setAdapter(new ListRecipesAdapter(getContext(), recetasHome));
         agregarListener();
 
         return root;
@@ -47,7 +41,7 @@ public class HomeFragment extends Fragment {
 
     private void agregarListener() {
 
-        adapter.setmOnClickListenerHomeSelection(new ListRecipesAdapter.OnClickListenerHomeSelection() {
+        ((ListRecipesAdapter)binding.recycleHomeRecetas.getAdapter()).setmOnClickListenerHomeSelection(new ListRecipesAdapter.OnClickListenerHomeSelection() {
             @Override
             public void onClickHomeSelection(String position) {
                 openSelectionHome(position);

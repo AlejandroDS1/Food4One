@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.storage.FirebaseStorage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,15 +14,10 @@ public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<Recipe>> mRecetasApp;
     private final MutableLiveData<Recipe> mdoRecipe;
-
     private HashMap<String, ArrayList<Recipe>> recetasApp;
-
-    private ArrayList<Recipe> pastaRecipes, riceRecipes, pastelRecipes, bebidasRecipes,bocatasRecipes, barbacoaRecipes;
+    private ArrayList<Recipe> pastaRecipes, riceRecipes, pastelRecipes, bebidasRecipes, bocatasRecipes, barbacoaRecipes;
     private RecipeRepository mRecetasRepository;
-
-    private FirebaseStorage mStorage;
     private static HomeViewModel homeViewModel;
-
     public static HomeViewModel getInstance(){
         if (homeViewModel == null)
             homeViewModel = new HomeViewModel();

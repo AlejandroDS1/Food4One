@@ -18,8 +18,6 @@ import Food4One.app.View.MainScreen.MainScreen;
 
 public class AccessActivity extends AppCompatActivity {
 
-    private FirebaseUser user;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +46,7 @@ public class AccessActivity extends AppCompatActivity {
 
 
     public void activityCorrespondent() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user == null) //Si el Usuario no existe, creamos la ventana LOGIN.
             startActivity(new Intent(AccessActivity.this, LoginActivity.class));

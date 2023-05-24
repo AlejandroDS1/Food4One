@@ -24,6 +24,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
@@ -293,6 +294,7 @@ public class RecipeRepository {
                         Log.d(TAG, document.getId() + " => " + document.getData());
 
                         Recipe receta = document.toObject(Recipe.class);
+                        receta.setAlergias((List<String>) document.get(Recipe.ALERGIAS_APP_TAG));
                         receta.setIngredientes(cargarIngredientes((ArrayList<String>) document.get(Recipe.INGREDIENTES_APP_TAG)));
                         receta.setNombre(document.getId());
                         receta.setPhotoUser(document.getString(User.PICTUREURL_TAG + "user"));

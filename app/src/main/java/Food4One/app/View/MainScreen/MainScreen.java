@@ -15,14 +15,13 @@ import Food4One.app.R;
 import Food4One.app.databinding.ActivityMainScreenBinding;
 
 public class MainScreen extends AppCompatActivity {
-    private ActivityMainScreenBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Conseguimos el Layout con el binding
-        binding = ActivityMainScreenBinding.inflate(getLayoutInflater());
+        ActivityMainScreenBinding binding = ActivityMainScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
 

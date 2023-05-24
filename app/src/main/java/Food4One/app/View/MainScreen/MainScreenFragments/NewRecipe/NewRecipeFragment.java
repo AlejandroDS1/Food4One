@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -107,7 +106,6 @@ public class NewRecipeFragment extends Fragment {
 
                 }
             }
-            // TODO MEJORAR ESTOS METODOS
             private void uploadSucces() {
                 Toast.makeText(getContext(), "Receta subida correctamente", Toast.LENGTH_SHORT).show();
                 UserRepository.getUser().getIdRecetas().add(binding.newRecipieName.getText().toString() + "@" + UserRepository.getUser().getUserName());
@@ -168,9 +166,8 @@ public class NewRecipeFragment extends Fragment {
         binding.ingredienteListNewRecipe.setAdapter(ingredientesListAdapter);
 
         // Iniciamos la lista de Alergias -------------------------------
-        List<String> alergias = new ArrayList<>();
 
-        alergias.addAll(Arrays.asList(getResources().getStringArray(R.array.Alergias)));
+        List<String> alergias = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.Alergias)));
 
         //Ahora le definimos un Manager Grid
 
@@ -188,25 +185,23 @@ public class NewRecipeFragment extends Fragment {
         // Ahora vamos a crear el listener para nuestro PopUpWindow personalizado.
         _popUpWindow = new MPopUpWindow(getContext(), binding.spinnerMagnitudNewRecipe); // Creamos el objeto PopUpWindow
 
-        binding.spinnerMagnitudNewRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideKeyboard();
-                ListView listViewSpinner = new ListView(getContext());
-                final List<String> lista = Arrays.asList(getResources().getStringArray(R.array.MagnitudesLong));
+        binding.spinnerMagnitudNewRecipe.setOnClickListener(view -> {
 
-                listViewSpinner.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.spinner_ingredientes_list_layout, lista));
+            hideKeyboard();
+            ListView listViewSpinner = new ListView(getContext());
+            final List<String> lista = Arrays.asList(getResources().getStringArray(R.array.MagnitudesLong));
 
-                listViewSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        _popUpWindow.dismiss();
-                        binding.spinnerMagnitudNewRecipe.setText(getResources().getStringArray(R.array.Magnitudes)[i]);
-                    }
-                });
+            listViewSpinner.setAdapter(new ArrayAdapter<>(getContext(), R.layout.spinner_ingredientes_list_layout, lista));
 
-                _popUpWindow.setConfiguration(view, listViewSpinner);
-            }
+            listViewSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    _popUpWindow.dismiss();
+                    binding.spinnerMagnitudNewRecipe.setText(getResources().getStringArray(R.array.Magnitudes)[i]);
+                }
+            });
+
+            _popUpWindow.setConfiguration(view, listViewSpinner);
         });
 
 
@@ -261,7 +256,7 @@ public class NewRecipeFragment extends Fragment {
                 File storageDir = NewRecipeFragment.this.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
                 // Creem el fitxer
-                File image = null;
+                File image;
                 try {
                     image = File.createTempFile(
                             imageFileName,  /* Prefix */
@@ -472,7 +467,7 @@ public class NewRecipeFragment extends Fragment {
             // Queremos que el texto sea algo como "250.65" no queremos tener mas de 1000
             // Ni tener mas de 2 decimales, tampoco que empieze por punto.
             // Por lo que cuando se modifica el texto comprovaremos que el patron continua correcto
-            if (!Pattern.matches("^[0-9]{1,3}(\\.[0-9]{0,2})?$", editable.toString())){
+            if (!Pattern.matches("^\\d{1,3}(\\.\\d{0,2})?$", editable.toString())){
 
                 // Si el patron no es correcto eliminaremos el ultimo caracter.
                 // O lo que es lo mismo, no se escribira en el EditText
@@ -599,11 +594,9 @@ public class NewRecipeFragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             private final TextView stepTxt, numStep;
-            private final LinearLayout layout;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                layout = itemView.findViewById(R.id.steps_layout_newRecipe);
                 this.stepTxt = itemView.findViewById(R.id.stepTxt_newRecipe);
                 numStep = itemView.findViewById(R.id.numStep_newRecipe);
             }

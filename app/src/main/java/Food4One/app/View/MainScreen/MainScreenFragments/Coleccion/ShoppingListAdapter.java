@@ -72,7 +72,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private final TextView cantidadTxt, multiplicadorTxt;
+        private final TextView cantidadTxt;
         private final CheckBox ingredienteCB;
         private final LinearLayout layout;
 
@@ -81,7 +81,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             this.ingredienteCB = itemView.findViewById(R.id.ingrediente_CB);
 
             this.cantidadTxt = itemView.findViewById(R.id.cantidad_txt);
-            this.multiplicadorTxt = itemView.findViewById(R.id.multiplicador_txt);
             this.layout = itemView.findViewById(R.id.linearLayout_shoppingList);
         }
 
@@ -94,25 +93,20 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             this.cantidadTxt.setText(ingrediente.getCantidadStr());
 
-            this.multiplicadorTxt.setText(Integer.toString(ingrediente.getMultiplicador()));
-
             this.layout.setClickable(true);
 
             // Este listener permite que se active el ceckbox al presionar en cualquier parte
-            this.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            this.layout.setOnClickListener(view -> {
 
-                    final boolean checkState = !ingredienteCB.isChecked();
-                    ingredienteCB.setChecked(checkState); // Invertimos el checked
+                final boolean checkState = !ingredienteCB.isChecked();
+                ingredienteCB.setChecked(checkState); // Invertimos el checked
 
-                    notifyItemRemoved(ingredientesList.getIngredientes().indexOf(ingrediente));
+                notifyItemRemoved(ingredientesList.getIngredientes().indexOf(ingrediente));
 
-                    viewModel.swapCheckedItem(ingrediente, checkState);
-                    // Ahora notificamos al adapter el cambio de ingredientes
-                    secondList.notifyItemInserted(secondList.getItemCount() - 1);
+                viewModel.swapCheckedItem(ingrediente, checkState);
+                // Ahora notificamos al adapter el cambio de ingredientes
+                secondList.notifyItemInserted(secondList.getItemCount() - 1);
 
-                }
             });
 
         }

@@ -83,16 +83,6 @@ public class UserSettingsActivity extends AppCompatActivity {
             }
         });
 
-//        // Prueba
-//        binding.themeModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if (b)
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//            }
-//        });
-
         // Iniciamos todos los textos a su respectivo nombre.
 
         // Descripcion del usuario

@@ -151,7 +151,6 @@ public class ShoppingListViewModel extends ViewModel {
         for(final Ingrediente in: ingredientes.getIngredientes())
             newList.put(in.getId(), in.checked);
 
-        // TODO de momento no compruebo si hay otra lista que se llama igual a si que se sobreescribe
         this.allLists.getValue().put(ingredientes.getListName(), newList);
 
         updateIngredientesList();

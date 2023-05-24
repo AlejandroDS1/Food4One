@@ -306,9 +306,12 @@
         </androidx.recyclerview.widget.RecyclerView>
         <Button
             android:id="@+id/uploadRecipeBtn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="70dp"
+
+            android:layout_gravity="center"
+
+            android:paddingHorizontal="20dp"
             android:layout_marginVertical="15dp"
             android:background="@drawable/botonback"
             android:layout_marginTop="20dp"

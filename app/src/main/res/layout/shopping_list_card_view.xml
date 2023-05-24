@@ -16,8 +16,10 @@
 
         <CheckBox
             android:id="@+id/ingrediente_CB"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:layout_weight="1"
 
             android:text="Arroz con patatas"
             android:textSize="18dp"
@@ -27,27 +29,19 @@
 
         </CheckBox>
 
-
         <TextView
             android:id="@+id/cantidad_txt"
-            android:layout_width="60dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+
+            android:layout_weight="5"
+
             android:gravity="center"
             android:textColor="@color/white"
             android:text="100 Gr"
             android:textSize="16dp">
 
         </TextView>
-
-        <TextView
-            android:id="@+id/multiplicador_txt"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="x1"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
 
     </LinearLayout>
 </LinearLayout>

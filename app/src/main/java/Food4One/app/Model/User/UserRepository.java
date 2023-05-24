@@ -7,8 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -30,7 +28,6 @@ import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
  */
 public class UserRepository {
     private static final String TAG = "Repository";
-    public static String CHARGE = "NotCharge";
 
     /** Autoinstància, pel patró singleton */
     private static final UserRepository mInstance = new UserRepository();
@@ -180,10 +177,10 @@ public class UserRepository {
      * @param email
      * @param firstName
      */
-    public void addUser(
-            String firstName,
-            String email
-    ) {
+    public void addUser(final String firstName,
+                        final String email
+                       ) {
+
         // Obtenir informació personal de l'usuari
         Map<String, Object> signedUpUser = new HashMap<>();
         signedUpUser.put(User.ALERGIAS_TAG, new ArrayList<String>());
@@ -197,17 +194,7 @@ public class UserRepository {
         signedUpUser.put(User.IDINGREDIENTES_LIST_TAG, new ArrayList<String>());
 
         // Afegir-la a la base de dades
-        mDb.collection(User.TAG).document(email).set(signedUpUser)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Sign up completion succeeded");
-                        } else {
-                            Log.d(TAG, "Sign up completion failed");
-                        }
-                    }
-                });
+        mDb.collection(User.TAG).document(email).set(signedUpUser);
     }
 
     /**
@@ -239,7 +226,6 @@ public class UserRepository {
 
         ingredientesList.put(User.IDINGREDIENTES_LIST_TAG, viewModel.getMapAllLists_toDDBB());
 
-        // TODO Todavia no se puede eliminar bien, falta implementacion
         mDb.collection(User.TAG)
                 .document(UserRepository.getUser().getEmail())
                 .set(ingredientesList, SetOptions.merge())
@@ -291,6 +277,7 @@ public class UserRepository {
         return !UserRepository.getUser().userName.equals(userName);
     }
 
+
     // TODO: Si podemos mejorar el paso por parametro de un MutableLiveData mejor
     // Se puede utilizar pasandole un null sino se utiliza para actualizar el texto de UserSettings
     public void setUserDescriptionDDB(String email, String description, @Nullable MutableLiveData<String> mdescription){
@@ -333,7 +320,6 @@ public class UserRepository {
 
         final Map<String, ArrayList<String>> toStore = new HashMap<>();
         toStore.put(User.IDRECETAS_TAG, user.getIdRecetas());
-        // TODO: Alomejor retocar este metodo.
         mDb.collection(User.TAG).document(user.getEmail())
                 .set(toStore, SetOptions.merge());
 
@@ -461,20 +447,7 @@ public class UserRepository {
         HashMap<String, Object> update = new HashMap<>();
         update.put(User.IDINGREDIENTES_LIST_TAG+"."+nameList, dades );
 
-        mDb.collection(User.TAG).document(getUser().getEmail()).update(update)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // Los valores específicos han sido borrados exitosamente
-                Log.d(TAG, "User's Load List is update");
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // Ocurrió un error al borrar los valores específicos
-            }
-        });
+        mDb.collection(User.TAG).document(getUser().getEmail()).update(update);
     }
 
 
@@ -486,19 +459,7 @@ public class UserRepository {
         Map<String, Object> updates = new HashMap<>();
         updates.put(User.IDINGREDIENTES_LIST_TAG+"."+listaName, FieldValue.delete());
 
-        mDb.collection(User.TAG).document(getUser().getEmail()).update(updates)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    Log.d(TAG, "Lista Borrada de BASE DE DATOS");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Error al borrar de BASE DE DATOS");
-
-                }
-            });
+        mDb.collection(User.TAG).document(getUser().getEmail()).update(updates);
 
     }
 }

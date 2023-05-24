@@ -88,33 +88,6 @@ public class IngredientesList{
     public Ingrediente get(final int pos){
         return this.ingredientes.get(pos);
     }
-    public Ingrediente getIngrediente(Ingrediente ingrediente){
-
-        for (Ingrediente _ingrediente: this.ingredientes){
-            if (_ingrediente.equals(ingrediente)) return _ingrediente;
-        }
-        return null;
-    }
-
-    public boolean contains(Ingrediente ingrediente){
-        return this.ingredientes.contains(ingrediente);
-    }
-
-    public IngredientesList mergeLists(IngredientesList _list){
-
-        Ingrediente iterator;
-
-        // Iteramos sobre la lista para identificar elementos repetidos.
-        for (Ingrediente ingrediente: _list.toArrayList()){
-            iterator = this.getIngrediente(ingrediente); //Buscamos si ya existe el elemento
-
-            if (iterator != null) // Si existe, cambiamos el multiplicador.
-                iterator.setMultiplicador(iterator.getMultiplicador() + ingrediente.getMultiplicador());
-            else // Si no existe lo añadimos.
-                this.add(ingrediente);
-        }
-        return this;
-    }
 
     public ArrayList<String> getArrayString(){
         ArrayList<String> stringIngredientes = new ArrayList<>();

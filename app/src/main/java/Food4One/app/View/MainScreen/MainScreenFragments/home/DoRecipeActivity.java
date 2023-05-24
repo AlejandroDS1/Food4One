@@ -23,6 +23,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.base.Joiner;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreenFragments.Coleccion.ShoppingListViewModel;
 import Food4One.app.databinding.ActivityDoRecipeBinding;
@@ -38,7 +40,6 @@ import Food4One.app.databinding.ActivityDoRecipeBinding;
 public class DoRecipeActivity extends AppCompatActivity {
     private IngredienteAdapter ingredientsAdapter;
     private HomeViewModel homeViewModel;
-    private StepsAdapter stepsAdapter;
     ActivityDoRecipeBinding binding;
     private CardView addToListView;
     private Recipe recipeToMake;
@@ -57,8 +58,30 @@ public class DoRecipeActivity extends AppCompatActivity {
         addToListView = binding.addToList;
         addToListView.setVisibility(View.GONE);
 
+        initView();
         cargarDatosRecipeToMake();
         initListeners();
+    }
+
+    private void initView() {
+        final ArrayList<String> alergiasUser = UserRepository.getUser().getAlergias();
+
+        // So el usuario no tiene alergias compatibles hacemos desaparecer el warning
+        if (alergiasUser.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
+
+        final ArrayList<String> alergiasCommon = new ArrayList<>();
+
+        // Llenamos las alergias en comun
+        for (final String alergia : alergiasUser)
+            if (recipeToMake.getAlergias().contains(alergia))
+                alergiasCommon.add(alergia);
+
+        if (alergiasCommon.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
+
+        final String alergias = Joiner.on(", ").join(alergiasCommon);
+
+        // Por ultimo asignamos el texto con las alergias
+        binding.alergiasToDoRecipe.setText(alergias);
     }
 
     private void initListeners() {
@@ -113,7 +136,7 @@ public class DoRecipeActivity extends AppCompatActivity {
             public void onChangedListListener() {
                 userListNames.clear();
                 userListNames.addAll(ShoppingListViewModel.getInstance().getAllListsNames());
-                ((ArrayAdapter)listNames.getAdapter()).notifyDataSetChanged();
+                ((ArrayAdapter<?>)listNames.getAdapter()).notifyDataSetChanged();
             }
         });
         // Declaracion de listeners para las diferentes acciones de la view
@@ -139,7 +162,7 @@ public class DoRecipeActivity extends AppCompatActivity {
             alert.dismiss();
         });
 
-        dialog.findViewById(R.id.BtnCancelar_addToList).setOnClickListener(cancelar -> { alert.dismiss(); });
+        dialog.findViewById(R.id.BtnCancelar_addToList).setOnClickListener(cancelar -> alert.dismiss());
 
         alert.show();
     }
@@ -150,13 +173,12 @@ public class DoRecipeActivity extends AppCompatActivity {
         // Inicio de los componentes para la lista de ingredientes
         ingredientsAdapter = new IngredienteAdapter(recipeToMake.getIngredientes().toArrayStringId());
         // Inicio de los componentes de la lista de pasos
-        stepsAdapter = new StepsAdapter(recipeToMake.getPasos());
 
         binding.ingredientsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.pasosList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         binding.ingredientsList.setAdapter(ingredientsAdapter);
-        binding.pasosList.setAdapter(stepsAdapter);
+        binding.pasosList.setAdapter(new StepsAdapter(recipeToMake.getPasos()));
 
         //Imagen, Descripción y Nombre de la Receta
         binding.descriptionRecipeToDo.setText(recipeToMake.getDescription());
@@ -248,7 +270,7 @@ public class DoRecipeActivity extends AppCompatActivity {
             return pasos.size();
         }
 
-        private class ViewHolder extends RecyclerView.ViewHolder{
+        private static class ViewHolder extends RecyclerView.ViewHolder{
             TextView pasoString, numSteps;
 
             public ViewHolder(@NonNull View itemView) {

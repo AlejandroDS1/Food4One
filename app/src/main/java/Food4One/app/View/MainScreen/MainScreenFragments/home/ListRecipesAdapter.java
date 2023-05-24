@@ -66,7 +66,7 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
 
             imageViewRecipe.setImageResource(item.getImagen());
             nameViewRecipe.setText(item.getNameRecipeCard());
-            // TODO: ESTA PARTE DE CODIGO ES SOLO PARA PROBAR LA RULETA DE JULIA
+
             if (item.getNameRecipeCard().equalsIgnoreCase("Surprise me")) {
                 totalCard.setOnClickListener(new View.OnClickListener() {
                     @Override
