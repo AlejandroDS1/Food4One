@@ -19,6 +19,8 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
@@ -27,7 +29,7 @@ import Food4One.app.View.MainScreen.MainScreenFragments.Coleccion.ShoppingListVi
 import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 
-
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
  */
@@ -328,8 +330,6 @@ public class UserRepository {
         return !UserRepository.getUser().userName.equals(userName);
     }
 
-
-
     // TODO: Si podemos mejorar el paso por parametro de un MutableLiveData mejor
     // Se puede utilizar pasandole un null sino se utiliza para actualizar el texto de UserSettings
     public void setUserDescriptionDDB(String email, String description, @Nullable MutableLiveData<String> mdescription){
@@ -482,6 +482,42 @@ public class UserRepository {
                         Log.d(TAG, "User's Collection is not working");
                     });
     }
+
+    public void setUserCheckedListDDB(Map<String, Map<String, Boolean>> list, IngredientesList checks, IngredientesList unChecks){
+
+        String nameList = checks.getListName(); //Nombre de la Lista
+        Map<String, Boolean> dades = list.get(nameList);  //Objetos dentro de la Lista
+
+        //Objetos qué han cambiado
+        //Por cada objeto cambiado, lo confirmamos...
+        for(String check : checks.toArrayStringId())
+            dades.replace(check, true);
+        //Obtenemos los valores no chekeados
+        for(String check: unChecks.toArrayStringId())
+            dades.replace(check, false);
+
+        //Creamos un nuevo HashMap con los valores cambiados para poder cargarlos a Firebase
+        HashMap<String, Object> update = new HashMap<>();
+        update.put(User.IDINGREDIENTES_LIST_TAG+"."+nameList, dades );
+
+        mDb.collection(User.TAG).document(getUser().getEmail()).update(update)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Los valores específicos han sido borrados exitosamente
+                Log.d(TAG, "User's Load List is update");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Ocurrió un error al borrar los valores específicos
+            }
+        });
+    }
+
+
+
 
     public void deleteListUser(String listaName) {
 

@@ -85,7 +85,6 @@ public class DoRecipeActivity extends AppCompatActivity {
 
         binding.addToList.setOnClickListener(v ->{
             addIngredientesToListCreator();
-            Toast.makeText(this, "Add List Clicked", Toast.LENGTH_SHORT).show();
         });
     }
 

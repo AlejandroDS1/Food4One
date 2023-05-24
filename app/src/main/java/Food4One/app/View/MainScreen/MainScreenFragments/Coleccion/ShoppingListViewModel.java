@@ -105,8 +105,6 @@ public class ShoppingListViewModel extends ViewModel {
         this.checkedItems.getValue().setListName(ingredientesList.getListName());
         this.unCheckedItems.getValue().setListName(ingredientesList.getListName());
 
-
-
         for (Ingrediente in : ingredientesList.getIngredientes()){
             if (in.checked) this.checkedItems.getValue().add(in);
             else this.unCheckedItems.getValue().add(in);
@@ -186,7 +184,10 @@ public class ShoppingListViewModel extends ViewModel {
         // Si se ha encontrado la lista, eliminamos la lista, y actualizamos la base de datos.
 
         //updateIngredientesList(); // Cargamos de base de datos
+        allLists.getValue().remove(listaName);
 
         UserRepository.getInstance().deleteListUser(listaName);
     }
+
+
 }

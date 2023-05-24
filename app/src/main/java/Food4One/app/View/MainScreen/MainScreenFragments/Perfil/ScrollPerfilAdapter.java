@@ -50,7 +50,7 @@ public interface OnClickDoRecipeUser {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         // Inflate crea una view genèrica definida pel layout que l'hi passem (l'user_card_layout)
-        View view = inflater.inflate(R.layout.recetadetails_view_card, parent, false);
+        View view = inflater.inflate(R.layout.scrollperfilview_card, parent, false);
 
         // La classe ViewHolder farà de pont entre la classe User del model i la view (UserCard).
         return new ScrollPerfilAdapter.ViewHolder(view);
@@ -97,7 +97,6 @@ public interface OnClickDoRecipeUser {
             this.mCardDescription = itemView.findViewById(R.id.decriptionDetailReceta);
             this.mCardUserPictureURL = itemView.findViewById(R.id.pictureUserReceta);
             this.mCardRecetaPictureUrl = itemView.findViewById(R.id.pictureDetailReceta);
-
         }
 
         public void bind(final Recipe recetaUser, ScrollPerfilAdapter.OnClickDoRecipeUser listener) {
@@ -116,7 +115,7 @@ public interface OnClickDoRecipeUser {
         private void cargarPhotoUserAndRecipe(Recipe recetaUser) {
             //Es carrega l'imatge de la receta i del User d'internet
             Picasso.get().load(recetaUser.getPictureURL())
-                    .resize(980, 900)
+                    .resize(980, 800)
                     .centerCrop().into(mCardRecetaPictureUrl);
 
             String url = UserRepository.getUser().getProfilePictureURL();

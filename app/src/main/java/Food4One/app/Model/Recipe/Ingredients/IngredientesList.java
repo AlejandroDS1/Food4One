@@ -12,9 +12,7 @@ public class IngredientesList{
     private String listName; // ID para receta o nombre.
     private ArrayList<Ingrediente> ingredientes;
 
-
     // Constructores
-
     /**
      * Crea una lista de ingredientes con su nombre y los id de los ingredientes.
      * @param listName nombre de la lista

@@ -34,20 +34,6 @@
                 app:itemRippleColor="@android:color/transparent"
                 app:labelVisibilityMode="unlabeled"/>
 
-            <TextView
-                android:id="@+id/BtnSaved"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/botonback"
-                android:gravity="center"
-                android:text="Guardados" />
-
-            <TextView
-                android:id="@+id/BtnList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Lista" />
         </LinearLayout>
 
         <FrameLayout

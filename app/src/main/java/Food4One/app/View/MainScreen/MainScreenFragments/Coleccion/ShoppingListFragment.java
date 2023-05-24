@@ -1,5 +1,6 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Coleccion;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +9,14 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.util.ArrayList;
+
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
 
@@ -23,15 +28,8 @@ import Food4One.app.databinding.FragmentShoppingListBinding;
 public class ShoppingListFragment extends Fragment {
 
     public static final String TAG = "ShoppingListFragment";
-    private TextView BtnSaved;
-    private TextView BtnList;
     private FragmentShoppingListBinding binding;
     private ShoppingListViewModel viewModel;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,14 +39,9 @@ public class ShoppingListFragment extends Fragment {
         View root = binding.getRoot();
 
         viewModel = ShoppingListViewModel.getInstance();
-
-        BtnList = getActivity().findViewById(R.id.BtnList);
-        BtnSaved = getActivity().findViewById(R.id.BtnSaved);
-
         initAdapterList();
 
         initView();
-
         //Al precionar Back en este fragment, hay que regresar al fragment del Tab
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -56,13 +49,16 @@ public class ShoppingListFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setReorderingAllowed(true); //Permet tirar enrere
                 fragmentTransaction.replace(R.id.containerFragmentCollection, new AllListsFragment()).commit();
+
+                UserRepository.getInstance().setUserCheckedListDDB( viewModel.getMapAllLists_toDDBB(),
+                        viewModel.getCheckedItemsList().getValue(), viewModel.getUnCheckedItemsList().getValue() );
             }
         });
-
         return root;
     }
 
     private void initView() {
+
         binding.listaNameShoppingList.setText(viewModel.getCheckedItemsList().getValue().getListName());
     }
 
@@ -73,8 +69,7 @@ public class ShoppingListFragment extends Fragment {
         binding.checkedItems.setAdapter(new ShoppingListAdapter(viewModel.getCheckedItemsList().getValue(), viewModel));
 
         binding.UnCheckedItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(viewModel.getUnCheckedItemsList().getValue(), viewModel)
+        binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(viewModel.getUnCheckedItemsList().getValue() , viewModel)
                                                                 .setSecondList((ShoppingListAdapter) binding.checkedItems.getAdapter()));
-
     }
 }
