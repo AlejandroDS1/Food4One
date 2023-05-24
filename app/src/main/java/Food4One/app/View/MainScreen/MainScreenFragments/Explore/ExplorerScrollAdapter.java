@@ -1,6 +1,5 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Explore;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 
 public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAdapter.ViewHolder> {
-    private static Context context;
     /**
      * Definició de listener (interficie)
      * per a quan algú vulgui escoltar un event de OnClickDoRecipe, és a dir,
@@ -54,9 +52,6 @@ public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAd
     }
     public void setOnClickSaveListener(OnClickSaveRecipe listener){
         this.mOnSaveRecipeListener = listener;
-    }
-    public void setContext(Context context){
-        this.context = context;
     }
     @NonNull
     @Override
@@ -132,8 +127,6 @@ notifyItemRemoved(position);
         private long  time=0;
         boolean firstTouch= false;
 
-        private GestureDetector taps ;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.mCardCorazon = itemView.findViewById(R.id.lottieLike);
@@ -168,13 +161,13 @@ notifyItemRemoved(position);
                 mCardSaved.reverseAnimationSpeed();
                 mCardSaved.playAnimation();
                 savedAnim = !savedAnim;
-                Toast.makeText(context, "Se ha borrado de colecciones", Toast.LENGTH_SHORT).show();
+                Toast.makeText(itemView.getContext(), "Se ha borrado de colecciones", Toast.LENGTH_SHORT).show();
             }else{
                 mCardSaved.setMinAndMaxProgress(0.0f, 1.0f);
                 mCardSaved.reverseAnimationSpeed();
                 mCardSaved.playAnimation();
                 savedAnim = !savedAnim;
-                Toast.makeText(context, "Se ha guardado la receta", Toast.LENGTH_SHORT).show();
+                Toast.makeText(itemView.getContext(), "Se ha guardado la receta", Toast.LENGTH_SHORT).show();
             }
             listener.OnClickSave(recipe, savedAnim);
 
@@ -210,7 +203,28 @@ notifyItemRemoved(position);
             cargarPhotoUserAndRecipe(recetaUser);
             mrecipeName.setOnClickListener(view-> { listener.OnClickDoRecipe(recetaUser); });
 
-            imageLikeAnimation(listenerLikeRecipe, recetaUser);
+            // TODO TO CHECK likes y single touch
+            mCardRecetaPictureUrl.setClickable(true);
+            mCardRecetaPictureUrl.setOnTouchListener(new View.OnTouchListener() {
+                GestureDetector gestureDetector = new GestureDetector(itemView.getContext(), new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDoubleTap(@NonNull MotionEvent e) {
+                        Toast.makeText(itemView.getContext(), "Damos LIke", Toast.LENGTH_SHORT).show();
+                        return super.onDoubleTap(e);
+                    }
+                    @Override
+                    public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
+                        Toast.makeText(itemView.getContext(), "Single Tap Abrimos", Toast.LENGTH_SHORT).show();
+                        return super.onSingleTapConfirmed(e);
+                    }
+                });
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    gestureDetector.onTouchEvent(motionEvent);
+                    return true;
+                }
+            });
+            //imageLikeAnimation(listenerLikeRecipe, recetaUser);
         }
 
         public void imageLikeAnimation(ExplorerScrollAdapter.OnLikeRecipeUser listener, Recipe recetaUser){
@@ -251,26 +265,5 @@ notifyItemRemoved(position);
 
         }
 
-    }
-    public abstract class DoubleClickListener implements View.OnClickListener {
-
-        private static final long DOUBLE_CLICK_TIME_DELTA = 300;//milliseconds
-
-        long lastClickTime = 0;
-
-        @Override
-        public void onClick(View v) {
-            long clickTime = System.currentTimeMillis();
-            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA){
-                onDoubleClick(v);
-                lastClickTime = 0;
-            } else {
-                onSingleClick(v);
-            }
-            lastClickTime = clickTime;
-        }
-
-        public abstract void onSingleClick(View v);
-        public abstract void onDoubleClick(View v);
     }
 }

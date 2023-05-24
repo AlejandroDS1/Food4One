@@ -265,6 +265,7 @@ public class UserRepository {
         });
     }
 
+
     /**
      * Este metodo actualiza la base de datso de Firebase con las actualizaciones que puedan haber habido en la lista de ingredientes
      * @param viewModel viewMOdel que contiene el objeto a añadir a base de datos

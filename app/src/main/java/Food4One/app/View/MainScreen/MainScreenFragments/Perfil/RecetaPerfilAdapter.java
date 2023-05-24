@@ -1,6 +1,7 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -143,7 +146,32 @@ public class RecetaPerfilAdapter extends RecyclerView.Adapter<RecetaPerfilAdapte
 
                 recipeCard.setOnClickListener(view->{
                        listener.OnClickDetail(getAdapterPosition(), view.getScrollY());
-                   });
+                });
+
+                recipeCard.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+
+                        final Context context = view.getContext();
+                        Snackbar snackbar = Snackbar.make(view, "Elimina la publicacion", Snackbar.LENGTH_SHORT);
+
+                        snackbar.setTextColor(context.getColor(R.color.naranjaclaro));
+
+                        snackbar.setBackgroundTint(context.getColor(R.color.GrisOscuro));
+
+                        snackbar.setActionTextColor(context.getColor(R.color.orange));
+                        snackbar.setAction("Aceptar", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(view.getContext(), "TODAVIA POR IMPLEMENTAR", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+                        snackbar.show();
+                        return true;
+                    }
+                });
             }
         }
 

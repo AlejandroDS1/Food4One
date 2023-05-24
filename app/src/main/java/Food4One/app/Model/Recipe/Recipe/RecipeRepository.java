@@ -29,7 +29,6 @@ import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
-import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.RotateViewModel;
 
 /**
@@ -185,6 +184,11 @@ public class RecipeRepository {
         //Avisamos a los listeners que se ha cambiado la receta a hacer...
         for (OnLoadRecipeToMake listener : mOnLoadRecipeToMake)
             listener.OnLoadRecipe(recipe);
+    }
+
+
+    public void deleteRecipeDDBB(){
+        // TODO
     }
 
     /**

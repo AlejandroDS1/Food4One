@@ -23,6 +23,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private final ShoppingListViewModel viewModel;
     private ShoppingListAdapter secondList; // Este atributo permite tener los dos adapters vinculados, para hacer los cambios
 
+
+
     public ShoppingListAdapter(@NonNull final IngredientesList ingredientesList,
                                @NonNull final ShoppingListViewModel viewModel) {
         this.ingredientesList = ingredientesList;
