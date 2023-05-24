@@ -80,8 +80,7 @@ public class HomeFragment extends Fragment {
         String [] recetasName = getResources().getStringArray(R.array.nombreRecetasHome);
         int [] recetasImage = {R.drawable.barbacoa_photo, R.drawable.pasta_image,R.drawable.bocatas_photo, R.drawable.arroz_photo,
         R.drawable.cakes_photo, R.drawable.bebidas_photo, R.drawable.surpriseme};
-        for (int i=0; i < recetasName.length; i++){
+        for (int i=0; i < recetasName.length; i++)
             recetasHome.add(new ListRecipes(recetasName[i], recetasImage[i]));
-        }
     }
 }

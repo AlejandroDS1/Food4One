@@ -8,15 +8,12 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
@@ -52,46 +49,46 @@ public class ScrollPerfilFragment extends Fragment {
         // Wait for the data to load
         perfilViewModel.getRecetes()
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<Recipe>>() {
-                    @Override
-                    public void onChanged(ArrayList<Recipe> recipes) {
+                @Override
+                public void onChanged(ArrayList<Recipe> recipes) {
 
-                        //Hay que invertir el  orden de las recetas, ya que el recycle view los
-                        //va añadiendo como una pila, y no como un array
-                        ArrayList<Recipe> recetas = new ArrayList<>();
-                        for(Recipe receta: perfilViewModel.getRecetes().getValue())
-                            recetas.add(receta);
+                    //Hay que invertir el  orden de las recetas, ya que el recycle view los
+                    //va añadiendo como una pila, y no como un array
+                    ArrayList<Recipe> recetas = new ArrayList<>();
+                    for(Recipe receta: perfilViewModel.getRecetes().getValue())
+                        recetas.add(receta);
 
-                        //Collections.reverse(recetas);
+                    //Collections.reverse(recetas);
 
-                        // Set the data on the RecyclerView adapter
-                        //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles
-                        mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas, perfilViewModel);
+                    // Set the data on the RecyclerView adapter
+                    //Instanciamos el Adapter de las fotos como el nuevo diseño con detalles
+                    mCardRecetaRVAdapter = new ScrollPerfilAdapter(recetas, perfilViewModel);
 
-                        mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
-                        //if(focusSelection!= RecyclerView.NO_POSITION)
-                         //   mRecetaCardsRV.scrollToPosition(focusSelection);
-                        mCardRecetaRVAdapter.setOnClickDetailListener(new ScrollPerfilAdapter.OnClickDoRecipeUser() {
-                            @Override
-                            public void OnClickDoRecipe(Recipe recipeToDo) {
-                                HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
-                                startActivity(new Intent(getContext(), DoRecipeActivity.class));
-                            }
-                        });
+                    mRecetaCardsRV.setAdapter(mCardRecetaRVAdapter);
+                    //if(focusSelection!= RecyclerView.NO_POSITION)
+                     //   mRecetaCardsRV.scrollToPosition(focusSelection);
+                    mCardRecetaRVAdapter.setOnClickDetailListener(new ScrollPerfilAdapter.OnClickDoRecipeUser() {
+                        @Override
+                        public void OnClickDoRecipe(Recipe recipeToDo) {
+                            HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
+                            startActivity(new Intent(getContext(), DoRecipeActivity.class));
+                        }
+                    });
 
-                        // Start the transition once all views have been
-                        // measured and laid out
-                        parentView.getViewTreeObserver()
-                                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                                    @Override
-                                    public boolean onPreDraw(){
-                                        parentView.getViewTreeObserver()
-                                                .removeOnPreDrawListener(this);
-                                        startPostponedEnterTransition();
-                                        return true;
-                                    }
-                                });
-                    }
-                });
+                    // Start the transition once all views have been
+                    // measured and laid out
+                    parentView.getViewTreeObserver()
+                            .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                                @Override
+                                public boolean onPreDraw(){
+                                    parentView.getViewTreeObserver()
+                                            .removeOnPreDrawListener(this);
+                                    startPostponedEnterTransition();
+                                    return true;
+                                }
+                            });
+                }
+            });
 
         // Inflate the layout for this fragment
         return binding.getRoot();
@@ -112,7 +109,6 @@ public class ScrollPerfilFragment extends Fragment {
         backBottom.setOnClickListener(v-> { //Regresamos manualmente al Fragment anterior
                 getActivity().getSupportFragmentManager().popBackStackImmediate();
             });
-
 
         //Hay que completar toda la vista antes de hacer el ScrollToPosition
         final Observer<String> dataCargada = new Observer<String>() {

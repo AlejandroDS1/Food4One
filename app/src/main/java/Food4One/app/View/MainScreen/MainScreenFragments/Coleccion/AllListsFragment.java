@@ -27,7 +27,6 @@ import Food4One.app.databinding.FragmentAllListsBinding;
 public class AllListsFragment extends Fragment {
 
     public static final String TAG = "AllListsFragment";
-
     private ShoppingListViewModel viewModel;
     private FragmentAllListsBinding binding;
 

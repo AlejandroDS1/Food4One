@@ -27,7 +27,6 @@ public class ScrollPerfilAdapter extends RecyclerView.Adapter<ScrollPerfilAdapte
 public interface OnClickDoRecipeUser {
     void OnClickDoRecipe(Recipe position);
 }
-
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
     private ScrollPerfilAdapter.OnClickDoRecipeUser mOnClickDoRecipeListener; // Qui hagi de repintar la ReciclerView
     private PerfilViewModel viewModel;
@@ -43,15 +42,12 @@ public interface OnClickDoRecipeUser {
         this.mOnClickDoRecipeListener = listener;
     }
 
-
     @NonNull
     @Override
     public ScrollPerfilAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         // Inflate crea una view genèrica definida pel layout que l'hi passem (l'user_card_layout)
         View view = inflater.inflate(R.layout.scrollperfilview_card, parent, false);
-
         // La classe ViewHolder farà de pont entre la classe User del model i la view (UserCard).
         return new ScrollPerfilAdapter.ViewHolder(view);
     }

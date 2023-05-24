@@ -13,23 +13,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.View.MainScreen.MainScreenFragments.Coleccion.ShoppingListViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.View.MainScreen.MainScreenFragments.Perfil.PerfilViewModel;
-
-import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 /** Classe que fa d'adaptador entre la base de dades (Cloud Firestore) i les classes del model
  * Segueix el patró de disseny Singleton.
  */
@@ -67,8 +62,6 @@ public class UserRepository {
     public interface OnLoadUserDescriptionListener{
         void OnLoadUserDescription(String description);
     }
-
-
     public OnLoadListIngredientesListener onLoadListIngredientesListener;
     public interface OnLoadListIngredientesListener {
         void onLoadListIngredientes();
@@ -154,38 +147,6 @@ public class UserRepository {
     }
     public void setOnLoadUserDescription(OnLoadUserDescriptionListener listener){
         this.mOnLoadUserDescritionListener = listener;
-    }
-
-    /**
-     * Mètode que llegeix els usuaris. Vindrà cridat des de fora i quan acabi,
-     * avisarà sempre als listeners, invocant el seu OnLoadUsers.
-     */
-    public void loadUsers(ArrayList<User> users){
-        users.clear();
-        mDb.collection(User.TAG)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                User user = new User(
-                                        document.getString(User.NAME_TAG),
-                                        document.getString("Email"),
-                                        (ArrayList<String>) document.get(User.ALERGIAS_TAG)
-                                );
-                                users.add(user);
-                            }
-                            /* Callback listeners */
-                            for (OnLoadUsersListener l: mOnLoadUsersListeners) {
-                                l.onLoadUsers(users);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
     }
 
     /**
