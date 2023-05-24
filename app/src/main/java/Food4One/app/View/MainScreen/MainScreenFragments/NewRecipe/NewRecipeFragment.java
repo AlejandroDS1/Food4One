@@ -520,7 +520,7 @@ public class NewRecipeFragment extends Fragment {
         // Getter
         // Conseguimos la lista de Alergias para crear la receta.
 
-        public final class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
             private final CheckBox alergiaCV;
 
@@ -590,7 +590,7 @@ public class NewRecipeFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull StepListAdapter.ViewHolder holder, int position) {
-            holder.bind(this);
+            holder.bind();
         }
         @Override
         public int getItemCount() {
@@ -608,7 +608,7 @@ public class NewRecipeFragment extends Fragment {
                 numStep = itemView.findViewById(R.id.numStep_newRecipe);
             }
 
-            public void bind(StepListAdapter stepListAdapter){
+            public void bind(){
 
                 final int position = getAdapterPosition();
 

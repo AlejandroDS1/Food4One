@@ -10,14 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
-import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
@@ -46,6 +45,8 @@ public class ExploreFragment extends Fragment {
         recicleInit();
         recetasObserver();
 
+        RecipeRepository.getInstance().deleteRecipeDDBB();
+
         mViewModel.loadRecetasExplorer();
 
         return binding.getRoot();
@@ -54,7 +55,6 @@ public class ExploreFragment extends Fragment {
 
     private void recicleInit() {
         adapter = new ExplorerScrollAdapter(mViewModel.getRecetas().getValue());
-        adapter.setContext(getContext());
 
         clickListenersAdapter();
 
