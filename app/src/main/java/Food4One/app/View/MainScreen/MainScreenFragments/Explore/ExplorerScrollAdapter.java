@@ -1,6 +1,7 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Explore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -22,42 +23,20 @@ import java.util.ArrayList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
+import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
 
 public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAdapter.ViewHolder> {
-    private static Context context;
-    /**
-     * Definició de listener (interficie)
-     * per a quan algú vulgui escoltar un event de OnClickDoRecipe, és a dir,
-     * quan l'usuari faci clic en algún dels items de la RecyclerView
-     */
-    public interface OnClickDoRecipeUser {
-        void OnClickDoRecipe(Recipe recipe);
-    }
-    public interface OnClickSaveRecipe{
-        void OnClickSave(Recipe recipe, boolean guardado);
-    }
-    public interface OnLikeRecipeUser{
-        void OnLikeRecipe(Recipe recipe, boolean like);
-    }
+
+    private ExploreViewModel explorerViewModel;
+
     private ArrayList<Recipe> mRecetes; // Referència a la llista de recetes
-    private OnClickDoRecipeUser mOnClickDoRecipeListener; // Qui hagi de repintar la ReciclerView
-    private OnLikeRecipeUser mOnLikeRecipeListener;
-    private OnClickSaveRecipe mOnSaveRecipeListener;
-    public ExplorerScrollAdapter(ArrayList<Recipe> recetaList) {
+
+
+    public ExplorerScrollAdapter(ArrayList<Recipe> recetaList, ExploreViewModel viewModel) {
         this.mRecetes = recetaList; // no fa new (La llista la manté el ViewModel)
+        this.explorerViewModel = viewModel;
     }
-    public void setOnClickDetailListener(ExplorerScrollAdapter.OnClickDoRecipeUser listener) {
-        this.mOnClickDoRecipeListener = listener;
-    }
-    public void setOnLikeRecipeListener(OnLikeRecipeUser listener){
-        this.mOnLikeRecipeListener = listener;
-    }
-    public void setOnClickSaveListener(OnClickSaveRecipe listener){
-        this.mOnSaveRecipeListener = listener;
-    }
-    public void setContext(Context context){
-        this.context = context;
-    }
+
     @NonNull
     @Override
     public ExplorerScrollAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -76,8 +55,7 @@ public class ExplorerScrollAdapter extends RecyclerView.Adapter<ExplorerScrollAd
         // El ViewHolder té el mètode que s'encarrega de llegir els atributs del User (1r parametre),
         // i assignar-los a les variables del ViewHolder.
         // Qualsevol listener que volguem posar a un item, ha d'entrar com a paràmetre extra (2n).
-        holder.bind(mRecetes.get(position), this.mOnClickDoRecipeListener, this.mOnLikeRecipeListener,
-                this.mOnSaveRecipeListener);
+        holder.bind(mRecetes.get(position));
     }
 
     /**
@@ -119,7 +97,7 @@ notifyItemRemoved(position);
      * dels items de la RecyclerView. Podem implementar-ho fora de RecyclerViewAdapter,
      * però es pot fer dins.
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mrecipeName;
         private final ImageView mCardUserPictureURL;
         protected final ImageView mCardRecetaPictureUrl;
@@ -145,7 +123,7 @@ notifyItemRemoved(position);
             this.mCardRecetaPictureUrl = itemView.findViewById(R.id.pictureDetailReceta);
         }
 
-        public void likeAnimMotion(OnLikeRecipeUser listener, Recipe recipe){
+        public void likeAnimMotion(Recipe recipe){
             int like= Integer.parseInt(mCardNumberLikes.getText().toString());
             if(likeAnim){
                 mCardCorazon.setMinAndMaxProgress(0.5f, 1.0f);
@@ -159,32 +137,34 @@ notifyItemRemoved(position);
                 like+=1;
             }
             mCardNumberLikes.setText(String.valueOf(like));
-            listener.OnLikeRecipe(recipe,  likeAnim);
+
+            //Debemos cambiar el like en la base de datos...
+            explorerViewModel.onClickLikeRecipe(recipe, likeAnim);
         }
 
-        public void saveAnimMotion(OnClickSaveRecipe listener, Recipe recipe){
+        public void saveAnimMotion( Recipe recipe){
             if(savedAnim){
                 if(mCardSaved.getSpeed() > 0)
                     mCardSaved.reverseAnimationSpeed();
                 mCardSaved.setProgress(1.0f);
                 mCardSaved.playAnimation();
                 savedAnim = ! savedAnim;
-                Toast.makeText(context, "Se ha borrado de colecciones", Toast.LENGTH_SHORT).show();
+                Toast.makeText(itemView.getContext(), "Se ha borrado de colecciones", Toast.LENGTH_SHORT).show();
             }else{
                 if(mCardSaved.getSpeed() < 0)
                     mCardSaved.reverseAnimationSpeed();
                 mCardSaved.setProgress(1.0f);
                 mCardSaved.playAnimation();
                 savedAnim = ! savedAnim;
-                Toast.makeText(context, "Se ha guardado la receta", Toast.LENGTH_SHORT).show();
+                Toast.makeText(itemView.getContext(), "Se ha guardado la receta", Toast.LENGTH_SHORT).show();
             }
 
-            listener.OnClickSave(recipe, savedAnim);
+            //Se notifica el cambio de guardado de la receta
+            explorerViewModel.onClickSaveRecipe(recipe, savedAnim);
 
         }
 
-        public void bind(final Recipe recetaUser, ExplorerScrollAdapter.OnClickDoRecipeUser listener,
-                         OnLikeRecipeUser listenerLikeRecipe, OnClickSaveRecipe saveListener) {
+        public void bind(final Recipe recetaUser) {
 
             likeAnim = recetaUser.getLikeFromUser();
             //Si esta receta esta en la colección de guardados del usuario, hay que cargar la animación
@@ -208,18 +188,18 @@ notifyItemRemoved(position);
                     mCardSaved.reverseAnimationSpeed();
                 mCardSaved.setProgress(1.0f);
                 mCardSaved.playAnimation();
-
             }
 
             mCardCorazon.setOnClickListener(v->{
-                likeAnimMotion(listenerLikeRecipe, recetaUser);
+                likeAnimMotion(recetaUser);
             });
             mCardSaved.setOnClickListener(v->{
-                saveAnimMotion(saveListener, recetaUser);
+                saveAnimMotion(recetaUser);
             });
 
             mrecipeName.setOnClickListener(view-> {
-                listener.OnClickDoRecipe(recetaUser);
+                //Cargamos la receta que queremos ver y luego empezamos la actividad.
+                loadDoRecipe(recetaUser);
             });
 
             mrecipeName.setText( recetaUser.getNombre());
@@ -228,10 +208,35 @@ notifyItemRemoved(position);
 
             cargarPhotoUserAndRecipe(recetaUser);
 
-            imageLikeAnimation(listenerLikeRecipe, recetaUser);
+            pictureLikeAndDoRecipe(recetaUser);
+
         }
 
-        public void imageLikeAnimation(ExplorerScrollAdapter.OnLikeRecipeUser listener, Recipe recetaUser){
+        private void pictureLikeAndDoRecipe(Recipe recipe) {
+            mCardRecetaPictureUrl.setOnTouchListener(new View.OnTouchListener() {
+                GestureDetector gestureDetector = new GestureDetector(itemView.getContext(), new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDoubleTap(@NonNull MotionEvent e) {
+                        Toast.makeText(itemView.getContext(), "Damos LIke", Toast.LENGTH_SHORT).show();
+                        likeAnimMotion(recipe);
+                        return super.onDoubleTap(e);
+                    }
+                    @Override
+                    public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
+                        Toast.makeText(itemView.getContext(), "Single Tap Abrimos", Toast.LENGTH_SHORT).show();
+                        loadDoRecipe(recipe);
+                        return super.onSingleTapConfirmed(e);
+                    }
+                });
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    gestureDetector.onTouchEvent(motionEvent);
+                    return true;
+                }
+            });
+        }
+
+        public void imageLikeAnimation(Recipe recetaUser){
             mCardRecetaPictureUrl.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -240,7 +245,7 @@ notifyItemRemoved(position);
                             //do stuff here for double tap
                             Log.e("** DOUBLE TAP**"," second tap ");
                             firstTouch = false;
-                            likeAnimMotion(listener, recetaUser);
+                            likeAnimMotion(recetaUser);
                         } else {
                             firstTouch = true;
                             time = System.currentTimeMillis();
@@ -271,6 +276,10 @@ notifyItemRemoved(position);
                 mCardUserPictureURL.setImageResource(R.mipmap.ic_launcher_foreground);
 
         }
+
+        void loadDoRecipe(Recipe recetaUser){
+            explorerViewModel.onClikDoRecipe(recetaUser);
+            itemView.getContext().startActivity(new Intent(itemView.getContext(), DoRecipeActivity.class));}
 
     }
 }

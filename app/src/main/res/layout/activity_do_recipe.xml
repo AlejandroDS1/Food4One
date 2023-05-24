@@ -104,7 +104,7 @@
                 android:textSize="16dp"
                 android:text="Pasos a seguir"/>
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pasosList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

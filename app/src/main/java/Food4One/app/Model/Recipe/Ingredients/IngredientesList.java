@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class IngredientesList {
+public class IngredientesList{
 
     private String listName; // ID para receta o nombre.
     private ArrayList<Ingrediente> ingredientes;

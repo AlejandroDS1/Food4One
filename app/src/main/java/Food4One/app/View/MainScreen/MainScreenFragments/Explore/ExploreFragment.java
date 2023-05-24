@@ -53,10 +53,8 @@ public class ExploreFragment extends Fragment {
 
 
     private void recicleInit() {
-        adapter = new ExplorerScrollAdapter(mViewModel.getRecetas().getValue());
-        adapter.setContext(getContext());
+        adapter = new ExplorerScrollAdapter(mViewModel.getRecetas().getValue(), mViewModel);
 
-        clickListenersAdapter();
 
         recyclerViewExplorer = binding.explorerRecycleView;
         //Ahora le definimos un Manager Recycle View. (Deslizar verticalmente el Recycle)
@@ -65,29 +63,6 @@ public class ExploreFragment extends Fragment {
 
         recyclerViewExplorer.setLayoutManager(manager);
         recyclerViewExplorer.setAdapter(adapter);
-    }
-
-    private void clickListenersAdapter() {
-        adapter.setOnClickDetailListener(new ExplorerScrollAdapter.OnClickDoRecipeUser() {
-            @Override
-            public void OnClickDoRecipe(Recipe recipe) {
-                HomeViewModel.getInstance().loadRecipeToMake(recipe);
-                startActivity(new Intent(getContext(), DoRecipeActivity.class));
-            }
-        });
-
-        adapter.setOnLikeRecipeListener(new ExplorerScrollAdapter.OnLikeRecipeUser() {
-            @Override
-            public void OnLikeRecipe(Recipe recipe, boolean like) {
-                UserRepository.getInstance().setUserLikeDDB(recipe,like );
-            }
-        });
-        adapter.setOnClickSaveListener(new ExplorerScrollAdapter.OnClickSaveRecipe() {
-            @Override
-            public void OnClickSave(Recipe recipe, boolean saved) {
-                UserRepository.getInstance().setUserRecetaCollectionDDB(recipe, saved);
-            }
-        });
     }
 
     private void recetasObserver() {
