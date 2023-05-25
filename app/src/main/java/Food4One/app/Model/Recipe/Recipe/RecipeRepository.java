@@ -437,7 +437,6 @@ public class RecipeRepository {
     }
 
     public void setLikesRecipeDDB(String idRecipe, int like){
-
         HashMap<String, Integer> store = new HashMap<>();
         store.put(Recipe.LIKES_TAG, like);
         mDb.collection(Recipe.TAG).document(idRecipe).set(store, SetOptions.merge()).addOnSuccessListener(documentReference -> {
