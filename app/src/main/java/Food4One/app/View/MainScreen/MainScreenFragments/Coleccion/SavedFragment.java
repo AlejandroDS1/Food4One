@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
+import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
+import Food4One.app.Model.User.UserRepository;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.DoRecipeActivity;
 import Food4One.app.View.MainScreen.MainScreenFragments.home.HomeViewModel;
 import Food4One.app.databinding.FragmentSavedBinding;
@@ -33,7 +36,9 @@ public class SavedFragment extends Fragment {
         binding = FragmentSavedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.emptymessage.setVisibility(View.GONE);
+        //binding.emptymessage.setVisibility(View.GONE);
+
+        setViewVisibility();
 
         cargarRecycleView();
         observerObjectsView();
@@ -55,17 +60,23 @@ public class SavedFragment extends Fragment {
         };
         coleccionViewModel.getmRecipes().observe(this.getViewLifecycleOwner(), observerRecipes);
 
-        RecipeRepository.getInstance().setOnLoadRecetaCollectionListener(new RecipeRepository.OnLoadRecipeCollection() {
+        RecipeRepository.getInstance().addOnLoadRecetaCollectionListener(new RecipeRepository.OnLoadRecipeCollection() {
             @Override
             public void onLoadRecipeCollection(ArrayList<Recipe> recetas) {
                 coleccionViewModel.setRecipes(recetas);
 
-                if (recetas.isEmpty())
-                    binding.emptymessage.setVisibility(View.VISIBLE);
-                else
-                    binding.emptymessage.setVisibility(View.GONE);
+                setViewVisibility();
             }
         });
+
+    }
+
+    private void setViewVisibility(){
+        final ArrayList<Recipe> recetas = coleccionViewModel.getmRecipes().getValue();
+        if (recetas.isEmpty())
+            binding.emptymessage.setVisibility(View.VISIBLE);
+        else
+            binding.emptymessage.setVisibility(View.GONE);
     }
 
     private void cargarRecycleView() {
@@ -76,8 +87,10 @@ public class SavedFragment extends Fragment {
             public void OnLoadRecipe(Recipe recipeToDo) {
                 HomeViewModel.getInstance().loadRecipeToMake(recipeToDo);
                 startActivity(new Intent(getContext(), DoRecipeActivity.class));
+                setViewVisibility();
             }
         });
         binding.recipeRV.setAdapter(mRecipeCardAdapter);
     }
+
 }

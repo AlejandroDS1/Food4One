@@ -15,6 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
+import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentColeccionBinding;
@@ -45,7 +47,16 @@ public class ColeccionFragment extends Fragment {
 
         coleccionViewModel = ColeccionViewModel.getInstance();
 
-        cargarReceptesUsuari();
+        /*
+        RecipeRepository.getInstance().addOnLoadRecetaCollectionListener(new RecipeRepository.OnLoadRecipeCollection() {
+            @Override
+            public void onLoadRecipeCollection(ArrayList<Recipe> recetas) {
+                coleccionViewModel.setRecipes(recetas);
+            }
+        });
+        */
+
+        //cargarReceptesUsuari();
 
         savedListBottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -54,7 +65,7 @@ public class ColeccionFragment extends Fragment {
 
                 switch (item.getItemId()) {
                     case R.id.tab_saved:
-                        if (!fragment.equals("SavedFrag"))
+                        if (! fragment.equals("SavedFrag"))
                             changeFragment = new SavedFragment();
                         fragment = "SavedFrag";
                         break;
@@ -87,6 +98,8 @@ public class ColeccionFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        cargarReceptesUsuari();
+        fragment = " ";
         //Al empezar la vista siempre se verá el fragmento de Guardados
         savedListBottom.setSelectedItemId(R.id.tab_saved);
     }

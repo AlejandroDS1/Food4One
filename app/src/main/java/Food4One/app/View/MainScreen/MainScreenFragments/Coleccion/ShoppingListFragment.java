@@ -52,7 +52,6 @@ public class ShoppingListFragment extends Fragment {
     }
 
     private void initView() {
-
         binding.listaNameShoppingList.setText(viewModel.getCheckedItemsList().getValue().getListName());
     }
 

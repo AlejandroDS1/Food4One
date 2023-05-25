@@ -181,8 +181,6 @@ public class ShoppingListViewModel extends ViewModel {
         if (this.allLists.getValue().get(listaName) == null) return;
 
         // Si se ha encontrado la lista, eliminamos la lista, y actualizamos la base de datos.
-
-        //updateIngredientesList(); // Cargamos de base de datos
         allLists.getValue().remove(listaName);
 
         UserRepository.getInstance().deleteListUser(listaName);
