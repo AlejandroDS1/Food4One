@@ -12,13 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
@@ -30,7 +27,6 @@ import java.util.Random;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.R;
-import Food4One.app.View.MainScreen.MainScreenFragments.Coleccion.RecyclerViewAdapter;
 import rubikstudio.library.LuckyWheelView;
 import rubikstudio.library.model.LuckyItem;
 
@@ -233,7 +229,6 @@ public class RotateActivity extends AppCompatActivity {
             titleSurprise.startAnimation(animation);
             cardView.startAnimation(animation);
         }
-
     }
 
 

@@ -84,7 +84,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             // Carrega foto de l'usuari de la llista directament des d'una Url
             // d'Internet.
-            Picasso.get().load(recipe.getPictureURL()).into(mCardPictureUrl);
+            Picasso.get().load(recipe.getPictureURL()).resize(200, 900).into(mCardPictureUrl);
 
             mCardRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override

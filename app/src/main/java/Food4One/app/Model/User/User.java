@@ -104,8 +104,11 @@ public class User implements Serializable {
 
         boolean arrayBool[] = new boolean[alergias.length];
 
+        // Recorremos el array, cuando son iguales marcamos como true la casilla.
+        int pos;
         for (String alergia : this.alergias)
-            arrayBool[_alergias.indexOf(alergia)] = true;
+            if ((pos = _alergias.indexOf(alergia)) != -1)
+                arrayBool[pos] = true;
 
         return arrayBool;
     }

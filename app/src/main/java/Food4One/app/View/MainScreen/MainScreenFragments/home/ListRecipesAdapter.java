@@ -20,7 +20,6 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
     private ArrayList<ListRecipes> mData;
     private OnClickListenerHomeSelection mOnClickListenerHomeSelection;
 
-
     public ListRecipesAdapter(Context context, ArrayList<ListRecipes> mData) {
         this.context = context;
         this.mData = mData;
@@ -67,7 +66,7 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
 
             imageViewRecipe.setImageResource(item.getImagen());
             nameViewRecipe.setText(item.getNameRecipeCard());
-            // TODO: ESTA PARTE DE CODIGO ES SOLO PARA PROBAR LA RULETA DE JULIA
+
             if (item.getNameRecipeCard().equalsIgnoreCase("Surprise me")) {
                 totalCard.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -82,7 +81,6 @@ public class ListRecipesAdapter extends RecyclerView.Adapter<ListRecipesAdapter.
                     listenerHomeSelection.onClickHomeSelection(item.getNameRecipeCard());
                 }
             });
-
         }
     }
 }

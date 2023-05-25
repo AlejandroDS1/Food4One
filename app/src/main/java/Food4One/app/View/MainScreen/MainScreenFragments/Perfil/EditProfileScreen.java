@@ -67,21 +67,23 @@ public class EditProfileScreen extends AppCompatActivity {
         setErasePictureListener(eliminarAccess);
 
         //Regresamos manualmente al Fragment anterior
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
 
         //Tenemos que escuchar cuando el usuario haya cambiado su photo de perfil
         final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
             public void onChanged(String pictureUrl) {
-                if(! pictureUrl.equals(" ")){
-                Picasso.get()
-                        .load(pictureUrl).resize(1000, 1000)
-                        .into(mLoggedPictureUser);
-                UserRepository.getUser().setProfilePictureURL(pictureUrl);
-                }else
+                if(pictureUrl == null)
                     mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
+                else {
+                    if (!pictureUrl.equals(" ")) {
+                        Picasso.get()
+                                .load(pictureUrl).resize(1000, 1000)
+                                .into(mLoggedPictureUser);
+                        UserRepository.getUser().setProfilePictureURL(pictureUrl);
+                    } else
+                        mLoggedPictureUser.setImageResource(R.mipmap.ic_launcher_foreground);
+                }
             }
         };
         perfilViewModel.getPictureProfileUrl().observe(this, observerPictureUrl);
@@ -180,7 +182,7 @@ public class EditProfileScreen extends AppCompatActivity {
             File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
             // Creem el fitxer
-            File image = null;
+            File image;
             try {
                 image = File.createTempFile(
                         imageFileName,  /* Prefix */
@@ -196,14 +198,13 @@ public class EditProfileScreen extends AppCompatActivity {
             // 1. Especifiquem a res>xml>paths.xml el directori on es guardarà la imatge
             //    de manera definitiva.
             // 2. Afegir al manifest un provider que apunti a paths.xml del pas 1
-            Uri photoUri = FileProvider.getUriForFile(this,
-                    "Food4One.app.fileprovider",
-                    image);
 
             // Per tenir accés a la URI de la foto quan es llenci l'intent de la camara.
             // Perquè encara que li passem la photoUri com a dades extra a l'intent, aquestes
             // no tornen com a resultat de l'Intent.
-            mPhotoUri = photoUri;
+            mPhotoUri = FileProvider.getUriForFile(this,
+                    "Food4One.app.fileprovider",
+                    image);
 
             // Llancem l'intent amb el launcher declarat al començament d'aquest mateix mètode
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

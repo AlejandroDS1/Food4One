@@ -38,10 +38,6 @@
             android:label="@string/title_activity_main_screen"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".View.Authentification.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -51,7 +47,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".View.Authentification.AccessActivity"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

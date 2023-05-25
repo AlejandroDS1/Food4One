@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@android:color/transparent"
+    android:backgroundTint="@color/NegroClaroMain"
+
+    app:cardCornerRadius="18dp">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:backgroundTint="@android:color/transparent"
+        android:background="@android:color/transparent"
+
+        android:orientation="vertical"
+        android:paddingVertical="25dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="25dp"
+
+            android:gravity="center"
+
+            android:text="Modifica el nombre de la lista"
+            android:textColor="@color/orange"
+            android:textSize="18sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="8dp"
+
+            android:backgroundTint="@color/GrisOscuro"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+
+                android:paddingStart="10dp"
+                android:paddingEnd="4dp">
+
+                <EditText
+                    android:id="@+id/listName_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="1"
+
+                    android:background="@android:color/transparent"
+
+                    android:maxLines="1"
+
+                    android:text="Lista name"
+                    android:textColor="@color/orange"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/changeListName_icon_allLists"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="8"
+
+                    android:background="@drawable/upload_todatabase_icon" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/eliminarLista_Btn_dialogAllLists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="5dp"
+
+            android:padding="3dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+
+
+            android:textColor="#FF0000"
+            android:text="ELIMINAR LISTA"
+            android:textSize="19sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+

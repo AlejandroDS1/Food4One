@@ -6,12 +6,13 @@
     android:id="@+id/perfilFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".View.MainScreen.MainScreenFragments.Perfil.Perfil">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="55dp">
+        android:paddingBottom="75dp">
 
         <LinearLayout
             android:id="@+id/linearLayout"

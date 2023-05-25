@@ -40,7 +40,7 @@ import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.Authentification.LoginActivity;
-import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExplorerScrollAdapter;
+import Food4One.app.View.MainScreen.MainScreenFragments.Explore.ExploreViewModel;
 import Food4One.app.databinding.FragmentPerfilBinding;
 
 /**
@@ -58,7 +58,6 @@ public class Perfil extends Fragment {
     private RecetaPerfilAdapter mCardRecetaRVAdapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser userFirebase;
-
     private Uri mPhotoUri;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -158,12 +157,30 @@ public class Perfil extends Fragment {
         mCardRecetaRVAdapter = new RecetaPerfilAdapter(
                 perfilViewModel.getRecetes().getValue(), getActivity() );
 
+
+
+        // Listener para escuchar cuando se elimina una receta
+        mCardRecetaRVAdapter.setOnRemovedRecipeListener(new RecetaPerfilAdapter.OnRemovedRecipeListener() {
+            @Override
+            public void onRemovedRecipe(Recipe recipe, int position) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        perfilViewModel.deleteRecipeDDBB(recipe);
+                        ExploreViewModel.getInstance().loadRecetasExplorer();
+                    }
+                }).start();
+                mCardRecetaRVAdapter.notifyItemRemoved(position);
+            }
+        });
+
+
         //Para las operaciones de las imagenes en el perfil...
         mCardRecetaRVAdapter.setOnClickDetailListener(new RecetaPerfilAdapter.OnClickDetailListener() {
             @Override
-            public void OnClickDetail(int positionX, int positionY) {
+            public void onClickDetail(int position) {
                 //Al clicar se abrirá un nuevo Fragment
-                initScrollViewRecipes(positionX, positionY);
+                initScrollViewRecipes(position);
             }
         });
 
@@ -173,12 +190,10 @@ public class Perfil extends Fragment {
         mLoggedPictureUser = binding.avatarusuario;
         mTakePictureButton = binding.photobuttomPerfil;
     }
-    private void initScrollViewRecipes(int position, int positionY) {
+    private void initScrollViewRecipes(int position) {
 
         Bundle bundle = new Bundle();
         bundle.putInt("RecycleViewPosition", position);
-        bundle.putInt("X", position);
-        bundle.putInt("Y", positionY);
 
         // Create new fragment and transaction
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -273,11 +288,9 @@ public class Perfil extends Fragment {
         });
     }
 
-
     private void initEditPerfilWindow() {
         startActivity(new Intent(this.getContext(), EditProfileScreen.class));
     }
-
 
     @Override
     public void onResume() {
@@ -285,28 +298,5 @@ public class Perfil extends Fragment {
         //Pequeño tiempo antes de borrar la barra de Cargando...
         //try { Thread.sleep(700); } catch (InterruptedException e) { throw new RuntimeException(e);}
         binding.progressBarPerfil.setVisibility(View.GONE);
-    }
-
-    public static class loqueseaAdapter extends ExplorerScrollAdapter{
-
-        public loqueseaAdapter(ArrayList<Recipe> recetaList) {
-            super(recetaList);
-        }
-
-        public final class ViewHolder extends ExplorerScrollAdapter.ViewHolder{
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-            }
-
-            @Override
-            public void bind(Recipe recetaUser, OnClickDoRecipeUser listener, OnLikeRecipeUser listenerLikeRecipe, OnClickSaveRecipe saveListener) {
-                super.bind(recetaUser, listener, listenerLikeRecipe, saveListener);
-
-                this.mCardCorazon.setVisibility(View.GONE);
-
-                this.mCardRecetaPictureUrl.setFocusable(View.NOT_FOCUSABLE);
-            }
-        }
     }
 }

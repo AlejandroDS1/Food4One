@@ -12,7 +12,6 @@ import Food4One.app.Model.Recipe.Ingredients.Ingrediente;
 import Food4One.app.Model.Recipe.Ingredients.IngredientesList;
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
-import Food4One.app.Model.Recipe.Recipe.RecipesUserApp;
 
 public class NewRecipeViewModel extends ViewModel {
 

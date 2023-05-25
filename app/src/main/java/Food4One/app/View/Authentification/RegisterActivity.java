@@ -28,7 +28,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText userName, emailUser, passwordUser, passUConfirm;
     private TextView tornaLogin;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
