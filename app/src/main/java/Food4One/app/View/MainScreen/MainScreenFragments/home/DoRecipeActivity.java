@@ -66,8 +66,8 @@ public class DoRecipeActivity extends AppCompatActivity {
     private void initView() {
         final ArrayList<String> alergiasUser = UserRepository.getUser().getAlergias();
 
-        // So el usuario no tiene alergias compatibles hacemos desaparecer el warning
-        if (alergiasUser.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
+        // Si el usuario no tiene alergias compatibles hacemos desaparecer el warning
+        if (alergiasUser.isEmpty() | recipeToMake.getAlergias() == null) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
 
         final ArrayList<String> alergiasCommon = new ArrayList<>();
 

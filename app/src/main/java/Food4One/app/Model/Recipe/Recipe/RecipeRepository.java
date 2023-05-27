@@ -220,7 +220,6 @@ public class RecipeRepository {
         //Se cargan todas las recetas de la base de datos...
         if(fragment.equals("COLLECTION"))
             if(idRecetasUser.isEmpty()) {
-                mOnLoadRecipeCollection.onLoadRecipeCollection(recetaUsers);
                 return;
             }
 

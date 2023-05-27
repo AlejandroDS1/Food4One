@@ -191,7 +191,7 @@ public class UserRepository {
         signedUpUser.put(User.IDCOLLECTIONS_TAG, new ArrayList<String>());
         signedUpUser.put(User.LIKESRECIPES_TAG, new ArrayList<String>());
         signedUpUser.put(User.PICTUREURL_TAG, null);
-        signedUpUser.put(User.IDINGREDIENTES_LIST_TAG, new ArrayList<String>());
+        signedUpUser.put(User.IDINGREDIENTES_LIST_TAG,new HashMap<String,HashMap>());
 
         // Afegir-la a la base de dades
         mDb.collection(User.TAG).document(email).set(signedUpUser);
@@ -346,6 +346,8 @@ public class UserRepository {
                     user.setIdRecetas((ArrayList<String>) document.get(User.IDRECETAS_TAG));
 
                     user.setLikesRecipes( createHashMap((ArrayList<String>) document.get(User.LIKESRECIPES_TAG)));
+
+                    user.setIngredientesList((HashMap<String,HashMap>) document.get(User.IDINGREDIENTES_LIST_TAG));
 
                     ExploreViewModel.getInstance();
 

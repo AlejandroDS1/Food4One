@@ -151,8 +151,6 @@ public class AllListsFragment extends Fragment {
 
                     view.findViewById(R.id.changeListName_icon_allLists).setOnClickListener(uploadListener -> {
 
-                            final int LAST_POSITION = allLists.indexOf(PREVIOUS_LISTNAME);
-
                             final String newListaName = listName_editText.getText().toString();
 
                             // Si el nombre de la lista no es valido se lo notificamos al usuario con un toast
@@ -168,8 +166,10 @@ public class AllListsFragment extends Fragment {
 
                             viewModel.changeListName(newListaName, listaName);
 
+                            final int LAST_POSITION = getAdapterPosition();
+
                             allLists.set(LAST_POSITION, newListaName);
-                            notifyItemChanged(LAST_POSITION);
+                            notifyItemRemoved(LAST_POSITION);
                             alert.dismiss();
                     });
 
@@ -178,7 +178,7 @@ public class AllListsFragment extends Fragment {
                         // Lanzamos este codigo en otro hilo para la subida a la base de datos de la modificacion en las listas.
                         viewModel.deleteList(listaName); // Eliminamos la lista, tambien en base de datos.
 
-                        //xallLists.remove(getAdapterPosition());
+                        allLists.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         alert.dismiss();
                     });

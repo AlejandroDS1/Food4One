@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                                     } else
                                         Toast.makeText(getApplicationContext(), "No se ha verificado el correo", Toast.LENGTH_SHORT).show();
                                 }
-                                //EN el caso de que no se pueda hacer el Login se muestra por pantalla el fallo--------------------------
+                                //En el caso de que no se pueda hacer el Login se muestra por pantalla el fallo--------------------------
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {

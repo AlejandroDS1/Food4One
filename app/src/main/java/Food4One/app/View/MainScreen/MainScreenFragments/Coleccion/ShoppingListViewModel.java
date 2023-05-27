@@ -17,7 +17,6 @@ import Food4One.app.Model.User.UserRepository;
 public class ShoppingListViewModel extends ViewModel {
 
     private final MutableLiveData<Map<String, Map<String, Boolean>>> allLists;
-//    private final MutableLiveData<List<IngredientesList>> allLists;
     private final MutableLiveData<IngredientesList> unCheckedItems;
     private final MutableLiveData<IngredientesList> checkedItems;
     // Listener atributes
@@ -70,7 +69,8 @@ public class ShoppingListViewModel extends ViewModel {
             public void onLoadListIngredientes() {
                 if (allLists.getValue() == null) allLists.setValue(new HashMap<>());
                 if (allLists.getValue().isEmpty()) { // Si es igual a null es porque no tiene ingerdientes guardados
-                    onListIsEmptyListener.onListIsEmptyListener();
+                    if (onListIsEmptyListener != null)
+                        onListIsEmptyListener.onListIsEmptyListener();
                 }else // Si no es null es porque hay una lista.
                     if (onChangedListsListener != null)
                         for (OnChangedListsListener listener : onChangedListsListener)
@@ -182,7 +182,7 @@ public class ShoppingListViewModel extends ViewModel {
 
         // Si se ha encontrado la lista, eliminamos la lista, y actualizamos la base de datos.
 
-        //updateIngredientesList(); // Cargamos de base de datos
+        updateIngredientesList(); // Cargamos de base de datos
         allLists.getValue().remove(listaName);
 
         UserRepository.getInstance().deleteListUser(listaName);
