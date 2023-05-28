@@ -178,7 +178,7 @@ public class AllListsFragment extends Fragment {
                         // Lanzamos este codigo en otro hilo para la subida a la base de datos de la modificacion en las listas.
                         viewModel.deleteList(listaName); // Eliminamos la lista, tambien en base de datos.
 
-                        //xallLists.remove(getAdapterPosition());
+                        allLists.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         alert.dismiss();
                     });

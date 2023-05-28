@@ -51,6 +51,7 @@ public class ColeccionFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment changeFragment = null;
+                String actualFragment = fragment;
 
                 switch (item.getItemId()) {
                     case R.id.tab_saved:
@@ -69,9 +70,9 @@ public class ColeccionFragment extends Fragment {
                         fragment = "SavedFrag";
                         break;
                 }
-
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.containerFragmentCollection, changeFragment).commit();
+                if(! actualFragment.equals(fragment))
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.containerFragmentCollection, changeFragment).commit();
                 return true;
             }
         });
