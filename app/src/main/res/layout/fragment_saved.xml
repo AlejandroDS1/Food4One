@@ -43,6 +43,8 @@ tools:context=".View.MainScreen.MainScreenFragments.Coleccion.SavedFragment">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/naranjaclaro"
+
+                android:visibility="gone"
                 android:textSize="18dp"
                 android:layout_marginTop="50dp"
                 android:padding="50dp"

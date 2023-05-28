@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:text="Esto es colección"
+        android:text="Esto es coleccion"
         android:textAlignment="center"
         android:textColor="@color/black">
 
@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/navegationColeectionFragments"
+                android:id="@+id/navegationCollectionFragments"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginRight="40dp"
@@ -40,7 +40,8 @@
             android:id="@+id/containerFragmentCollection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"/>
+            android:paddingTop="10dp">
+        </FrameLayout>
 
 
     </LinearLayout>

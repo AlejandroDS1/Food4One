@@ -85,7 +85,7 @@ public class RecipeRepository {
 
     public ArrayList<OnLoadRecetaListener> mOnloadRecetaListeners = new ArrayList<>();
     public OnLoadRecipeExplorer mOnLoadRecetasExplorer;
-    public OnLoadRecipeCollection mOnLoadRecipeCollection;
+    public ArrayList<OnLoadRecipeCollection> mOnLoadRecipeCollection = new ArrayList<>();
 
     public interface OnLoadRecetaApp{
         void onLoadRecipeApp(ArrayList<Recipe> recetas);
@@ -169,8 +169,8 @@ public class RecipeRepository {
     public void setOnLoadUserPictureListener(OnLoadRecetaPictureUrlListener listener) {
         mOnLoadRecetaPictureUrlListener = listener;
     }
-    public void setOnLoadRecetaCollectionListener(OnLoadRecipeCollection listener){
-        this.mOnLoadRecipeCollection = listener;
+    public void addOnLoadRecetaCollectionListener(OnLoadRecipeCollection listener){
+        this.mOnLoadRecipeCollection.add(listener);
     }
     public void setOnLoadRecetasExplorer(OnLoadRecipeExplorer listener){
         this.mOnLoadRecetasExplorer = listener;
@@ -220,6 +220,8 @@ public class RecipeRepository {
         //Se cargan todas las recetas de la base de datos...
         if(fragment.equals("COLLECTION"))
             if(idRecetasUser.isEmpty()) {
+                for(OnLoadRecipeCollection listener: mOnLoadRecipeCollection)
+                    listener.onLoadRecipeCollection(recetaUsers);
                 return;
             }
 
@@ -265,8 +267,10 @@ public class RecipeRepository {
 
                 private void onLoadRecetasListenerMethod(String fragment) {
                     /*Llamamos a sus listeners*/
-                    if(fragment.equals("COLLECTION"))
-                        mOnLoadRecipeCollection.onLoadRecipeCollection(recetaUsers);
+                    if(fragment.equals("COLLECTION")) {
+                        for(OnLoadRecipeCollection listener: mOnLoadRecipeCollection)
+                            listener.onLoadRecipeCollection(recetaUsers);
+                    }
                     else
                         for (OnLoadRecetaListener l : mOnloadRecetaListeners)
                             l.onLoadRecetas(recetaUsers);

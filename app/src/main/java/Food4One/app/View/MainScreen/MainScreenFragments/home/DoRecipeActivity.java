@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -15,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -66,14 +66,14 @@ public class DoRecipeActivity extends AppCompatActivity {
     private void initView() {
         final ArrayList<String> alergiasUser = UserRepository.getUser().getAlergias();
 
-        // Si el usuario no tiene alergias compatibles hacemos desaparecer el warning
-        if (alergiasUser.isEmpty() | recipeToMake.getAlergias() == null) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
+        // So el usuario no tiene alergias compatibles hacemos desaparecer el warning
+        if (alergiasUser.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
 
         final ArrayList<String> alergiasCommon = new ArrayList<>();
 
         // Llenamos las alergias en comun
         for (final String alergia : alergiasUser)
-            if (recipeToMake.getAlergias().contains(alergia))
+            if (recipeToMake.getAlergias()!=null && recipeToMake.getAlergias().contains(alergia))
                 alergiasCommon.add(alergia);
 
         if (alergiasCommon.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
@@ -128,6 +128,7 @@ public class DoRecipeActivity extends AppCompatActivity {
         final EditText listaName = dialog.findViewById(R.id.texto_listaName_alertdialog);
 
         final List<String> userListNames = ShoppingListViewModel.getInstance().getAllListsNames();
+        final TextView guardarBtn = dialog.findViewById(R.id.BtnGuardar_addToList);
 
         listNames.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_ingredientes_list_layout, userListNames));
 
@@ -140,25 +141,28 @@ public class DoRecipeActivity extends AppCompatActivity {
             }
         });
         // Declaracion de listeners para las diferentes acciones de la view
-        listNames.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                listaName.setText(userListNames.get(i)); // El texto del edit text sera el de la lista
-            }
+        listNames.setOnItemClickListener((adapterView, view, i, l) -> {
+            listaName.setText(userListNames.get(i)); // El texto del edit text sera el de la lista
         });
 
         AlertDialog alert = builder.create();
 
         // Boton para guardar en base de datos
-        dialog.findViewById(R.id.BtnGuardar_addToList).setOnClickListener(guardarDDBB -> {
+        guardarBtn.setOnClickListener(guardarDDBB -> {
 
-            // Creamos un nuevo hilo para subir las recetas, de esta manera si la conexion es lenta da la ilusion de que va mas rapido
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes, listaName.getText().toString());
-                }
-            }).start();
+            if (listaName.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "El nombre no puede estar vacio", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+                // Creamos un nuevo hilo para subir las recetas, de esta manera si la conexion es lenta da la ilusion de que va mas rapido
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes, listaName.getText().toString());
+                        Toast.makeText(getApplicationContext(), "Lista guardada", Toast.LENGTH_SHORT).show();
+                    }
+                }).start();
             alert.dismiss();
         });
 

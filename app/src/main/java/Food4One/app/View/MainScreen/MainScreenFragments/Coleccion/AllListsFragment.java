@@ -42,7 +42,6 @@ public class AllListsFragment extends Fragment {
         binding = FragmentAllListsBinding.inflate(inflater, container, false);
 
         viewModel = ShoppingListViewModel.getInstance();
-
         initAdapters();
         changeAllListListener();
 
@@ -57,13 +56,25 @@ public class AllListsFragment extends Fragment {
                     binding.listAllLists.getAdapter().notifyDataSetChanged();
             }
         });
+    }
 
+    void itemRemoved(){
+        if (binding.listAllLists.getAdapter().getItemCount() == 0){
+            binding.emptyListNotifyer.setVisibility(View.VISIBLE);
+            binding.listAllLists.setVisibility(View.GONE);
+        }
     }
 
     private void initAdapters() {
 
         binding.listAllLists.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listAllLists.setAdapter(new AllListsAdapter(viewModel.getAllListsNames()));
+
+        // Comprovacion del estado de la lista.
+        if (binding.listAllLists.getAdapter().getItemCount() != 0){
+            binding.emptyListNotifyer.setVisibility(View.GONE);
+            binding.listAllLists.setVisibility(View.VISIBLE);
+        }
 
         viewModel.setOnChangedListsListener(new ShoppingListViewModel.OnChangedListsListener() {
             @Override
@@ -151,6 +162,8 @@ public class AllListsFragment extends Fragment {
 
                     view.findViewById(R.id.changeListName_icon_allLists).setOnClickListener(uploadListener -> {
 
+                            final int LAST_POSITION = allLists.indexOf(PREVIOUS_LISTNAME);
+
                             final String newListaName = listName_editText.getText().toString();
 
                             // Si el nombre de la lista no es valido se lo notificamos al usuario con un toast
@@ -166,10 +179,8 @@ public class AllListsFragment extends Fragment {
 
                             viewModel.changeListName(newListaName, listaName);
 
-                            final int LAST_POSITION = getAdapterPosition();
-
                             allLists.set(LAST_POSITION, newListaName);
-                            notifyItemRemoved(LAST_POSITION);
+                            notifyItemChanged(LAST_POSITION);
                             alert.dismiss();
                     });
 
@@ -180,6 +191,7 @@ public class AllListsFragment extends Fragment {
 
                         allLists.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
+                        itemRemoved();
                         alert.dismiss();
                     });
                     alert.show();

@@ -191,7 +191,7 @@ public class UserRepository {
         signedUpUser.put(User.IDCOLLECTIONS_TAG, new ArrayList<String>());
         signedUpUser.put(User.LIKESRECIPES_TAG, new ArrayList<String>());
         signedUpUser.put(User.PICTUREURL_TAG, null);
-        signedUpUser.put(User.IDINGREDIENTES_LIST_TAG,new HashMap<String,HashMap>());
+        signedUpUser.put(User.IDINGREDIENTES_LIST_TAG, new ArrayList<String>());
 
         // Afegir-la a la base de dades
         mDb.collection(User.TAG).document(email).set(signedUpUser);
@@ -210,7 +210,8 @@ public class UserRepository {
                     // Conseguimos el atributo que queremos
                     _listaIngredientes.setValue((Map<String, Map<String, Boolean>>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG));
 
-                onLoadListIngredientesListener.onLoadListIngredientes();
+                if (onLoadListIngredientesListener != null)
+                    onLoadListIngredientesListener.onLoadListIngredientes();
             }
         });
     }
@@ -347,8 +348,6 @@ public class UserRepository {
 
                     user.setLikesRecipes( createHashMap((ArrayList<String>) document.get(User.LIKESRECIPES_TAG)));
 
-                    user.setIngredientesList((HashMap<String,HashMap>) document.get(User.IDINGREDIENTES_LIST_TAG));
-
                     ExploreViewModel.getInstance();
 
                     for (OnLoadUsersListener l: mOnLoadUsersListeners)
@@ -434,6 +433,7 @@ public class UserRepository {
 
     public void setUserCheckedListDDB(Map<String, Map<String, Boolean>> list, IngredientesList checks, IngredientesList unChecks){
 
+        if(list==null || checks== null) return;
         String nameList = checks.getListName(); //Nombre de la Lista
         Map<String, Boolean> dades = list.get(nameList);  //Objetos dentro de la Lista
 

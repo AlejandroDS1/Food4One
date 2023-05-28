@@ -14,8 +14,11 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import Food4One.app.Model.Recipe.Recipe.RecipeList;
+import Food4One.app.Model.Recipe.Recipe.Recipe;
+import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentColeccionBinding;
@@ -26,7 +29,7 @@ public class ColeccionFragment extends Fragment {
     private FragmentColeccionBinding binding;
     private BottomNavigationView savedListBottom;
     private ColeccionViewModel coleccionViewModel;
-    private String fragment = "";
+    private String fragment = "FIRST";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class ColeccionFragment extends Fragment {
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        savedListBottom = binding.navegationColeectionFragments;
+        savedListBottom = binding.navegationCollectionFragments;
 
         Animation animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.recycler_view_left_fadein);
         animation.setDuration(600);
@@ -46,23 +49,23 @@ public class ColeccionFragment extends Fragment {
 
         coleccionViewModel = ColeccionViewModel.getInstance();
 
-        cargarReceptesUsuari();
-
         savedListBottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment changeFragment = null;
-
+                String actualFragment = fragment;
                 switch (item.getItemId()) {
                     case R.id.tab_saved:
-                        if (!fragment.equals("SavedFrag"))
+                        if (! fragment.equals("SavedFrag")) {
                             changeFragment = new SavedFragment();
+                        }
                         fragment = "SavedFrag";
                         break;
 
                     case R.id.tab_list:
                         if (!fragment.equals("AllList"))
                             changeFragment = new AllListsFragment();
+
                         fragment = "AllList";
                         break;
                     default:
@@ -71,7 +74,8 @@ public class ColeccionFragment extends Fragment {
                         break;
                 }
 
-                getActivity().getSupportFragmentManager().beginTransaction()
+                if(! actualFragment.equals(fragment))
+                    getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.containerFragmentCollection, changeFragment).commit();
                 return true;
             }
@@ -82,13 +86,14 @@ public class ColeccionFragment extends Fragment {
     private void cargarReceptesUsuari() {
         // A partir d'aquí, en cas que es faci cap canvi a la llista de receptes, ColeccionFragment ho sabrà
         // Internament pobla les receptes de la DDBB
-        if(RecipeList.getInstance().size() == 0) //Si aún no se cargaron las recetas del usuario
-            coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet()));
+        coleccionViewModel.loadRecetasOfUserFromRepository(new ArrayList<>(UserRepository.getUser().getIdCollections().keySet()));
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        cargarReceptesUsuari();
+        fragment = " ";
         //Al empezar la vista siempre se verá el fragmento de Guardados
         savedListBottom.setSelectedItemId(R.id.tab_saved);
     }
