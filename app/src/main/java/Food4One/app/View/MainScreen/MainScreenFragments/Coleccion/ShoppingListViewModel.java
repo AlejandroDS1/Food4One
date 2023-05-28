@@ -165,10 +165,12 @@ public class ShoppingListViewModel extends ViewModel {
 
         Map<String, Boolean> ingredientesList = this.allLists.getValue().get(prevListName);
 
-        allLists.getValue().remove(prevListName);
-        allLists.getValue().put(newListaName, ingredientesList);
-
         this.deleteList(prevListName);
+        //Añadimos el nuevo nombre de la lista al HashMap del ViewModel
+        allLists.getValue().put(newListaName, ingredientesList);
+        //Y ahora actualizamos los datos en la Base de datos
+        UserRepository.getInstance().setUserIngredientesListDDBB(this);
+
     }
 
 

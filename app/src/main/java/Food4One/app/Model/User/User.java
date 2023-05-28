@@ -30,10 +30,6 @@ public class User implements Serializable {
     private HashMap<String, Boolean>  idCollections;
     private HashMap<String, Boolean> likesRecipes;
 
-    // ATRIBUTOS OPCIONALES *******
-    // PREMIUM BOOLEAN IDEA PARA EL FINAL
-    // LISTAS (compra)
-
     public User(){}
     public User(String userName, String email) {
         this.userName = userName;
@@ -98,11 +94,12 @@ public class User implements Serializable {
      */
     public boolean[] getBooleanArrayAlergias(String[] alergias){
 
+        boolean arrayBool[] = new boolean[alergias.length];
+        if(this.alergias==null) return arrayBool;
+
         if (this.alergias.isEmpty()) return new boolean[alergias.length];
 
         List<String> _alergias = Arrays.asList(alergias);
-
-        boolean arrayBool[] = new boolean[alergias.length];
 
         // Recorremos el array, cuando son iguales marcamos como true la casilla.
         int pos;

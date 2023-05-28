@@ -27,10 +27,14 @@ public class UserSettingsViewModel extends ViewModel {
     public UserSettingsViewModel(){
 
         User user = UserRepository.getUser();
-        String _alergias = user.getAlergias().toString();
-
+        String _alergias;
         this.alergiasText = new MutableLiveData<>();
-        this.alergiasText.setValue(_alergias.substring(1, _alergias.length() - 1));
+
+        ArrayList<String> userAlerg = user.getAlergias();
+        if(userAlerg!=null){
+            _alergias = userAlerg.toString();
+            this.alergiasText.setValue(_alergias.substring(1, _alergias.length() - 1));
+        }
 
         this.userName = new MutableLiveData<>();
         this.userName.setValue(user.getUserName());

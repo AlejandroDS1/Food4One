@@ -1,14 +1,23 @@
 package Food4One.app.View.MainScreen.MainScreenFragments.Perfil;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+
+import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.ActivityUserSettingsBinding;
@@ -76,13 +85,6 @@ public class UserSettingsActivity extends AppCompatActivity {
 
     private void initLayout(){
 
-        binding.themeModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Toast.makeText(getApplicationContext(), "Unimplemented", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         // Iniciamos todos los textos a su respectivo nombre.
 
         // Descripcion del usuario
@@ -99,12 +101,25 @@ public class UserSettingsActivity extends AppCompatActivity {
         binding.layoutDescripcionSettings.setOnClickListener(v -> {
             userSettingsViewModel.changeDescriptionListener(UserSettingsActivity.this);
         });
+        binding.premiumButton.setVisibility(View.GONE);
 
+        binding.layoutPasswordSettings.setOnClickListener(v->{
+            FirebaseAuth.getInstance().sendPasswordResetEmail(UserRepository.getUser().getEmail())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful())
+                        Toast.makeText(getApplicationContext(), "Correo de Cambio de contraseña enviado", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
     private void configAlergias() {
 
         // Config text view de las alergias del usuario
-        binding.arrUsrAlergiasSettings.setText(UserRepository.getUser().getAlergias().toString());
+        ArrayList<String> alergias = UserRepository.getUser().getAlergias();
+        if(alergias!=null)
+            binding.arrUsrAlergiasSettings.setText(alergias.toString());
 
         alergias_arr = getResources().getStringArray(R.array.Alergias);
 

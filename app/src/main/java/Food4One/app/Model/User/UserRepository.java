@@ -191,7 +191,7 @@ public class UserRepository {
         signedUpUser.put(User.IDCOLLECTIONS_TAG, new ArrayList<String>());
         signedUpUser.put(User.LIKESRECIPES_TAG, new ArrayList<String>());
         signedUpUser.put(User.PICTUREURL_TAG, null);
-        signedUpUser.put(User.IDINGREDIENTES_LIST_TAG, new ArrayList<String>());
+        signedUpUser.put(User.IDINGREDIENTES_LIST_TAG, new HashMap<String, Map<String, Boolean> >());
 
         // Afegir-la a la base de dades
         mDb.collection(User.TAG).document(email).set(signedUpUser);
@@ -359,6 +359,7 @@ public class UserRepository {
             private HashMap<String, Boolean> createHashMap(ArrayList<String> strings) {
 
                 HashMap<String, Boolean> mapForUser = new HashMap<>();
+                if(strings!=null)
                 for(String data: strings)
                     mapForUser.put(data, true);
 

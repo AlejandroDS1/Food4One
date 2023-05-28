@@ -105,7 +105,7 @@ public class Perfil extends Fragment {
         final Observer<String> observerPictureUrl = new Observer<String>() {
             @Override
             public void onChanged(String pictureUrl) {
-                if(! pictureUrl.equals(" ")){
+                if(! (pictureUrl.equals(" ") && pictureUrl==null) ){
                     Picasso.get()
                             .load(pictureUrl).resize(200, 200)
                             .into(mLoggedPictureUser);

@@ -224,6 +224,7 @@ public class RecipeRepository {
                     listener.onLoadRecipeCollection(recetaUsers);
                 return;
             }
+        if(idRecetasUser== null) return;
 
         Iterator iterator = idRecetasUser.iterator();
         String userID = UserRepository.getUser().getEmail();

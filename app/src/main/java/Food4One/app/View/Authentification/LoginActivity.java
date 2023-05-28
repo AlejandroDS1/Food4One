@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import Food4One.app.Model.User.User;
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.View.MainScreen.MainScreen;
@@ -73,15 +74,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                         //Ahora que es seguro que el usuario existirá en la App,
                                         //lo añadimos a los demás usuarios guardados en el Respository de la App
-                                        if (FirebaseFirestore.getInstance().collection(email).get() == null) {
+                                        if (FirebaseFirestore.getInstance().collection(User.TAG).document(email).get() == null) {
                                             String userName = getIntent().getStringExtra("nameUser"); // Conseguimos el username
 
                                             // Añadimos el usuario a la base de datos, de momento solo el username y el email.
                                             mUserRespository.addUser(userName, email);
                                             UserRepository.getUser(userName, email); // Creamos el objeto user.
-                                        } else{
+                                        } else
                                             mUserRespository.loadUserFromDDB(email);
-                                        }
 
                                         //Cuando vaya bien empezará la ventana Main
                                         startActivity(new Intent(LoginActivity.this, MainScreen.class));

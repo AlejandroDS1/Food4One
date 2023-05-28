@@ -65,16 +65,25 @@ public class DoRecipeActivity extends AppCompatActivity {
 
     private void initView() {
         final ArrayList<String> alergiasUser = UserRepository.getUser().getAlergias();
+        binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
 
-        // So el usuario no tiene alergias compatibles hacemos desaparecer el warning
-        if (alergiasUser.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
+        //Si aún no tiene alergias designadas no las puede mostrar
+        if (alergiasUser==null)
+            return;
+
+        // El usuario no tiene alergias compatibles
+        if(alergiasUser.isEmpty()) return;
 
         final ArrayList<String> alergiasCommon = new ArrayList<>();
 
         // Llenamos las alergias en comun
-        for (final String alergia : alergiasUser)
-            if (recipeToMake.getAlergias()!=null && recipeToMake.getAlergias().contains(alergia))
+        for (final String alergia : alergiasUser) {
+            ArrayList<String > recipeAlergias = recipeToMake.getAlergias();
+            if (recipeAlergias != null && recipeAlergias.contains(alergia))
                 alergiasCommon.add(alergia);
+            if(recipeAlergias != null && alergia.equals("Gluten") && recipeAlergias.contains("Pan"))
+                alergiasCommon.add(alergia);
+        }
 
         if (alergiasCommon.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);
 
@@ -108,7 +117,7 @@ public class DoRecipeActivity extends AppCompatActivity {
         binding.addToList.setOnClickListener(v ->{
 
             if (((IngredienteAdapter) binding.ingredientsList.getAdapter()).selectedIngredientes.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "La lista no puede estar vacia", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Selecciona Ingredientes de la Receta", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -134,6 +143,10 @@ public class DoRecipeActivity extends AppCompatActivity {
         final EditText listaName = dialog.findViewById(R.id.texto_listaName_alertdialog);
 
         final List<String> userListNames = ShoppingListViewModel.getInstance().getAllListsNames();
+        //Si no hay listas hechas por el usuario no mostramos el título de listas
+        if(userListNames.isEmpty())
+            dialog.findViewById(R.id.titleListas).setVisibility(View.GONE);
+
         final TextView guardarBtn = dialog.findViewById(R.id.BtnGuardar_addToList);
 
         listNames.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_ingredientes_list_layout, userListNames));
@@ -166,9 +179,9 @@ public class DoRecipeActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes, listaName.getText().toString());
-                    Toast.makeText(getApplicationContext(), "Lista guardada", Toast.LENGTH_SHORT).show();
                 }
             }).start();
+            Toast.makeText(getApplicationContext(), "Lista guardada", Toast.LENGTH_SHORT).show();
         alert.dismiss();
         });
 
