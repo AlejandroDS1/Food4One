@@ -210,7 +210,8 @@ public class UserRepository {
                     // Conseguimos el atributo que queremos
                     _listaIngredientes.setValue((Map<String, Map<String, Boolean>>) task.getResult().get(User.IDINGREDIENTES_LIST_TAG));
 
-                onLoadListIngredientesListener.onLoadListIngredientes();
+                if (onLoadListIngredientesListener != null)
+                    onLoadListIngredientesListener.onLoadListIngredientes();
             }
         });
     }

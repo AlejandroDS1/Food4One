@@ -56,13 +56,25 @@ public class AllListsFragment extends Fragment {
                     binding.listAllLists.getAdapter().notifyDataSetChanged();
             }
         });
+    }
 
+    void itemRemoved(){
+        if (binding.listAllLists.getAdapter().getItemCount() == 0){
+            binding.emptyListNotifyer.setVisibility(View.VISIBLE);
+            binding.listAllLists.setVisibility(View.GONE);
+        }
     }
 
     private void initAdapters() {
 
         binding.listAllLists.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.listAllLists.setAdapter(new AllListsAdapter(viewModel.getAllListsNames()));
+
+        // Comprovacion del estado de la lista.
+        if (binding.listAllLists.getAdapter().getItemCount() != 0){
+            binding.emptyListNotifyer.setVisibility(View.GONE);
+            binding.listAllLists.setVisibility(View.VISIBLE);
+        }
 
         viewModel.setOnChangedListsListener(new ShoppingListViewModel.OnChangedListsListener() {
             @Override
@@ -179,6 +191,7 @@ public class AllListsFragment extends Fragment {
 
                         allLists.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
+                        itemRemoved();
                         alert.dismiss();
                     });
                     alert.show();
