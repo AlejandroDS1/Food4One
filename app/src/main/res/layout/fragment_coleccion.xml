@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/navegationColeectionFragments"
+                android:id="@+id/navegationCollectionFragments"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginRight="40dp"

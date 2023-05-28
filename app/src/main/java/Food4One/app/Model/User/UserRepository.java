@@ -432,6 +432,7 @@ public class UserRepository {
 
     public void setUserCheckedListDDB(Map<String, Map<String, Boolean>> list, IngredientesList checks, IngredientesList unChecks){
 
+        if(list==null || checks== null) return;
         String nameList = checks.getListName(); //Nombre de la Lista
         Map<String, Boolean> dades = list.get(nameList);  //Objetos dentro de la Lista
 

@@ -36,8 +36,6 @@ public class SavedFragment extends Fragment {
         binding = FragmentSavedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //binding.emptymessage.setVisibility(View.GONE);
-
         setViewVisibility();
 
         cargarRecycleView();

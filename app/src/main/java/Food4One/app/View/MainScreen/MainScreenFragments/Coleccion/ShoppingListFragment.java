@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import Food4One.app.Model.User.UserRepository;
 import Food4One.app.R;
 import Food4One.app.databinding.FragmentShoppingListBinding;
@@ -43,9 +45,6 @@ public class ShoppingListFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setReorderingAllowed(true); //Permet tirar enrere
                 fragmentTransaction.replace(R.id.containerFragmentCollection, new AllListsFragment()).commit();
-
-                UserRepository.getInstance().setUserCheckedListDDB( viewModel.getMapAllLists_toDDBB(),
-                        viewModel.getCheckedItemsList().getValue(), viewModel.getUnCheckedItemsList().getValue() );
             }
         });
         return root;
@@ -64,5 +63,15 @@ public class ShoppingListFragment extends Fragment {
         binding.UnCheckedItems.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.UnCheckedItems.setAdapter(new ShoppingListAdapter(viewModel.getUnCheckedItemsList().getValue() , viewModel)
                                                                 .setSecondList((ShoppingListAdapter) binding.checkedItems.getAdapter()));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //Si cambiamos de Fragmento quedamos en Stop de este fragment,
+        //       pero también debemos guardar cualquier cambio efectuado mientras
+        //              estabamos en este fragmento...
+        UserRepository.getInstance().setUserCheckedListDDB( viewModel.getMapAllLists_toDDBB(),
+                viewModel.getCheckedItemsList().getValue(), viewModel.getUnCheckedItemsList().getValue() );
     }
 }

@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Food4One.app.Model.Recipe.Recipe.Recipe;
 import Food4One.app.Model.Recipe.Recipe.RecipeRepository;
@@ -27,7 +29,7 @@ public class ColeccionFragment extends Fragment {
     private FragmentColeccionBinding binding;
     private BottomNavigationView savedListBottom;
     private ColeccionViewModel coleccionViewModel;
-    private String fragment = "";
+    private String fragment = "FIRST";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class ColeccionFragment extends Fragment {
         binding = FragmentColeccionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        savedListBottom = binding.navegationColeectionFragments;
+        savedListBottom = binding.navegationCollectionFragments;
 
         Animation animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.recycler_view_left_fadein);
         animation.setDuration(600);
@@ -47,32 +49,23 @@ public class ColeccionFragment extends Fragment {
 
         coleccionViewModel = ColeccionViewModel.getInstance();
 
-        /*
-        RecipeRepository.getInstance().addOnLoadRecetaCollectionListener(new RecipeRepository.OnLoadRecipeCollection() {
-            @Override
-            public void onLoadRecipeCollection(ArrayList<Recipe> recetas) {
-                coleccionViewModel.setRecipes(recetas);
-            }
-        });
-        */
-
-        //cargarReceptesUsuari();
-
         savedListBottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment changeFragment = null;
-
+                String actualFragment = fragment;
                 switch (item.getItemId()) {
                     case R.id.tab_saved:
-                        if (! fragment.equals("SavedFrag"))
+                        if (! fragment.equals("SavedFrag")) {
                             changeFragment = new SavedFragment();
+                        }
                         fragment = "SavedFrag";
                         break;
 
                     case R.id.tab_list:
                         if (!fragment.equals("AllList"))
                             changeFragment = new AllListsFragment();
+
                         fragment = "AllList";
                         break;
                     default:
@@ -81,7 +74,8 @@ public class ColeccionFragment extends Fragment {
                         break;
                 }
 
-                getActivity().getSupportFragmentManager().beginTransaction()
+                if(! actualFragment.equals(fragment))
+                    getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.containerFragmentCollection, changeFragment).commit();
                 return true;
             }

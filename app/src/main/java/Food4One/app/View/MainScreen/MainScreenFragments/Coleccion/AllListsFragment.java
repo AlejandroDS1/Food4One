@@ -42,7 +42,6 @@ public class AllListsFragment extends Fragment {
         binding = FragmentAllListsBinding.inflate(inflater, container, false);
 
         viewModel = ShoppingListViewModel.getInstance();
-
         initAdapters();
         changeAllListListener();
 

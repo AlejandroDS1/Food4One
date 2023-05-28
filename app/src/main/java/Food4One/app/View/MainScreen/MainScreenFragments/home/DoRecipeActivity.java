@@ -73,7 +73,7 @@ public class DoRecipeActivity extends AppCompatActivity {
 
         // Llenamos las alergias en comun
         for (final String alergia : alergiasUser)
-            if (recipeToMake.getAlergias().contains(alergia))
+            if (recipeToMake.getAlergias()!=null && recipeToMake.getAlergias().contains(alergia))
                 alergiasCommon.add(alergia);
 
         if (alergiasCommon.isEmpty()) binding.layoutAlergiasDoRecipe.setVisibility(View.GONE);

@@ -70,7 +70,8 @@ public class ShoppingListViewModel extends ViewModel {
             public void onLoadListIngredientes() {
                 if (allLists.getValue() == null) allLists.setValue(new HashMap<>());
                 if (allLists.getValue().isEmpty()) { // Si es igual a null es porque no tiene ingerdientes guardados
-                    onListIsEmptyListener.onListIsEmptyListener();
+                    if(onListIsEmptyListener != null)
+                        onListIsEmptyListener.onListIsEmptyListener();
                 }else // Si no es null es porque hay una lista.
                     if (onChangedListsListener != null)
                         for (OnChangedListsListener listener : onChangedListsListener)
