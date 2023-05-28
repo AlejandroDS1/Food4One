@@ -20,6 +20,7 @@ public class User implements Serializable {
     public final static String IDRECETAS_TAG = "idRecetas";
     public final static String IDINGREDIENTES_LIST_TAG = "IngredientesList";
 
+    private static User user;
     public String userName;
     private String descripcion;
     private String email;
@@ -28,7 +29,6 @@ public class User implements Serializable {
     private ArrayList<String> alergias;
     private HashMap<String, Boolean>  idCollections;
     private HashMap<String, Boolean> likesRecipes;
-    private HashMap<String,HashMap> IngredientesList;
 
     // ATRIBUTOS OPCIONALES *******
     // PREMIUM BOOLEAN IDEA PARA EL FINAL
@@ -135,9 +135,4 @@ public class User implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public void setIngredientesList(HashMap<String, HashMap> ingredientesList) {
-        this.IngredientesList = ingredientesList;
-    }
-
 }

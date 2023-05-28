@@ -106,6 +106,12 @@ public class DoRecipeActivity extends AppCompatActivity {
         });
 
         binding.addToList.setOnClickListener(v ->{
+
+            if (((IngredienteAdapter) binding.ingredientsList.getAdapter()).selectedIngredientes.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "La lista no puede estar vacia", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             addIngredientesToListCreator();
         });
     }
@@ -155,15 +161,15 @@ public class DoRecipeActivity extends AppCompatActivity {
                 return;
             }
 
-                // Creamos un nuevo hilo para subir las recetas, de esta manera si la conexion es lenta da la ilusion de que va mas rapido
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes, listaName.getText().toString());
-                        Toast.makeText(getApplicationContext(), "Lista guardada", Toast.LENGTH_SHORT).show();
-                    }
-                }).start();
-            alert.dismiss();
+            // Creamos un nuevo hilo para subir las recetas, de esta manera si la conexion es lenta da la ilusion de que va mas rapido
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ShoppingListViewModel.getInstance().addIngredientesList_toDDBB(ingredientsAdapter.selectedIngredientes, listaName.getText().toString());
+                    Toast.makeText(getApplicationContext(), "Lista guardada", Toast.LENGTH_SHORT).show();
+                }
+            }).start();
+        alert.dismiss();
         });
 
         dialog.findViewById(R.id.BtnCancelar_addToList).setOnClickListener(cancelar -> alert.dismiss());

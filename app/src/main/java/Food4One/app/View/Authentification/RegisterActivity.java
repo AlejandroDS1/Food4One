@@ -54,13 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
             else if (! passwordUser.getText().toString().equals(passUConfirm.getText().toString())) {
                 //Si no se ha confirmado correctamente la contraseña se muestra un mensaje avisando al usuario
                 Toast.makeText(getApplicationContext(), "Error al confirmar la contraseña", Toast.LENGTH_SHORT).show();
-            }else if (passwordUser.getText().length() < 6) {
-                //Si la contraseña es demasiado corta se muestra un mensaje avisando al usuario
-                Toast.makeText(getApplicationContext(), "Contraseña mínimo 6 carácteres", Toast.LENGTH_SHORT).show();
+
             }else{
                 String nameUser = userName.getText().toString();
                 String email = emailUser.getText().toString();
-
+                String pass = passwordUser.getText().toString();
                 //FIREBASE______INFORMATION_______________________________________________
                 auth.createUserWithEmailAndPassword(email, passwordUser.getText().toString())
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
